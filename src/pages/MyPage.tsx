@@ -3,7 +3,7 @@ import React from 'react'
 type Props = {}
 
 const MyPage = (props: Props) => {
-  return <div>MyPage</div>
+  return <main>MyPage</main>
 }
 
 export default MyPage

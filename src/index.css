@@ -208,3 +208,8 @@ input[type='time'] {
   -webkit-border-radius: 0;
   outline: 0;
 }
+
+footer {
+  position: fixed;
+  bottom: 0;
+}
