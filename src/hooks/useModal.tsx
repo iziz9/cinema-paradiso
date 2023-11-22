@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-const useModal = (props: Props) => {
+const useModal = () => {
   return <div>useModal</div>
 }
 

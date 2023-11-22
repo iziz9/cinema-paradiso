@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-const useInfinityScroll = (props: Props) => {
+const useInfinityScroll = () => {
   return <div>useInfinityScroll</div>
 }
 

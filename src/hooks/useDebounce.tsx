@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-const useDebounce = (props: Props) => {
+const useDebounce = () => {
   return <div>useDebounce</div>
 }
 

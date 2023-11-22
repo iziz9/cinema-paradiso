@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-const MainPage = (props: Props) => {
+const MainPage = () => {
   return <main>MainPage</main>
 }
 

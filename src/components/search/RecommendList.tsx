@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-const RecommendList = (props: Props) => {
+const RecommendList = () => {
   return <div>RecommendList</div>
 }
 
