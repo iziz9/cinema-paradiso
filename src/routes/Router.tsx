@@ -1,3 +1,4 @@
+import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import ErrorPage from '../pages/ErrorPage'
 import App from '../App'
@@ -14,9 +15,9 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: PATH.MAIN, element: <MainPage /> },
       { path: PATH.MYPAGE, element: <MyPage /> },
-      { path: PATH.SEARCH, element: <SearchPage /> },
-    ],
-  },
+      { path: PATH.SEARCH, element: <SearchPage /> }
+    ]
+  }
 ])
 
 export default router

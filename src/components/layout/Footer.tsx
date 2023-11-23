@@ -1,19 +1,47 @@
 import React from 'react'
+import styled from 'styled-components'
+import InnerLayout from './InnerLayout'
+import { GithubIcon } from '../../constants/icon'
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear()
   return (
-    <footer>
-      <div>
-        <a href="https://github.com/iziz9/cinema-paradiso" target="_blank" rel="noreferrer">
-          iziz9 Repository
-        </a>
-        <div>
-          <img src="" className="w-36 right-0" />
+    <FooterContainer>
+      <InnerLayout>
+        <div className="logo">
+          <img src="/logo.webp" alt="logo" />
         </div>
-        <span>&copy; 2023 CINEMA PARADISO. All Rights Reserved.</span>
-      </div>
-    </footer>
+        <div className="copyright">
+          <span>&copy; {currentYear} CINEMA PARADISO. All Rights Reserved.</span>
+          <a href="https://github.com/iziz9/cinema-paradiso" target="_blank" rel="noreferrer">
+            <GithubIcon />
+          </a>
+        </div>
+      </InnerLayout>
+    </FooterContainer>
   )
 }
+
+const FooterContainer = styled.footer`
+  position: relative;
+  width: 100%;
+  height: 100px;
+  color: var(--colors-gray);
+
+  .logo {
+    padding-top: 16px;
+    img {
+      width: 100px;
+      height: 45px;
+    }
+  }
+
+  .copyright {
+    font-size: 12px;
+    line-height: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+  }
+`
 
 export default Footer
