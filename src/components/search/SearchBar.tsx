@@ -50,7 +50,7 @@ const SearchBarContainer = styled.div`
 
     .search-icon {
       position: absolute;
-      top: 45%;
+      top: 15px;
       right: 20px;
       cursor: pointer;
     }
