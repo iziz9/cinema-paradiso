@@ -1,26 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
+import RecommendList from '../components/search/RecommendList'
 
 const MainPage = () => {
   return (
     <MainContainer>
       <SearchBar />
-      <div className="favorite">
-        <img src="/logo.webp" alt="img" /> <img src="/logo.webp" alt="img" /> <img src="/logo.webp" alt="img" />
-      </div>
-      <div className="favorite">
-        <img src="/logo.webp" alt="img" /> <img src="/logo.webp" alt="img" /> <img src="/logo.webp" alt="img" />
-      </div>
-      <div className="favorite">
-        <img src="/logo.webp" alt="img" /> <img src="/logo.webp" alt="img" /> <img src="/logo.webp" alt="img" />
-      </div>
+      <RecommendList title={'이런 영화는 어떠세요?'} />
+      <RecommendList title={'오늘의 SF 추천 영화'} />
+      <RecommendList title={'오늘의 로맨스 추천 영화'} />
     </MainContainer>
   )
 }
 
 const MainContainer = styled.main`
-  height: 900px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
   .favorite {
     width: 90%;
