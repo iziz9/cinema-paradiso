@@ -7,11 +7,13 @@ import 'slick-carousel/slick/slick-theme.css'
 const RecommendList = ({ title }: { title: string }) => {
   const settings = {
     dots: true,
+    dotsClass: 'slick-dots slick-thumb',
     infinite: true,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 5,
     initialSlide: 0,
+    // swipeToSlide: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -66,6 +68,15 @@ const RecommendList = ({ title }: { title: string }) => {
           <div className="poster">
             <img src="/poster.jpg" alt="img5" />
           </div>
+          <div className="poster">
+            <img src="/poster.jpg" alt="img6" />
+          </div>
+          <div className="poster">
+            <img src="/poster.jpg" alt="img7" />
+          </div>
+          <div className="poster">
+            <img src="/poster.jpg" alt="img8" />
+          </div>
         </Slider>
       </div>
     </RecommendSection>
@@ -78,7 +89,7 @@ const RecommendSection = styled.section`
   margin-top: 20px;
 
   .list-slider {
-    background-color: #ffffff16;
+    /* background-color: #ffffff16; */
     width: 90%;
     margin: auto;
     display: flex;
@@ -97,7 +108,7 @@ const RecommendSection = styled.section`
 
     img {
       position: relative;
-      width: 80%;
+      width: 90%;
       margin: auto;
     }
   }
