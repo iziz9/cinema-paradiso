@@ -14,7 +14,7 @@ const Inner = styled.div`
   max-width: 1024px;
   height: 100%;
   margin: auto;
-  padding: 0 32px;
+  padding: 0 16px;
   box-sizing: border-box;
 `
 
