@@ -15,23 +15,9 @@ const MainPage = () => {
 }
 
 const MainContainer = styled.main`
-  height: 600px;
   display: flex;
   flex-direction: column;
   gap: 30px;
-
-  .favorite {
-    width: 90%;
-    margin: 25px auto;
-    background-color: #96969645;
-    display: flex;
-    justify-content: center;
-
-    img {
-      width: 200px;
-      height: auto;
-    }
-  }
 `
 
 export default MainPage

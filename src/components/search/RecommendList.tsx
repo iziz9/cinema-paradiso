@@ -9,32 +9,39 @@ const RecommendList = ({ title }: { title: string }) => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 5,
+          slidesToScroll: 5,
           infinite: true,
           dots: true
         }
       },
       {
-        breakpoint: 600,
+        breakpoint: 834,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          initialSlide: 4
+        }
+      },
+      {
+        breakpoint: 680,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3
         }
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToShow: 2,
+          slidesToScroll: 2
         }
       }
     ]
@@ -45,19 +52,19 @@ const RecommendList = ({ title }: { title: string }) => {
         <h3>{title}</h3>
         <Slider {...settings}>
           <div className="poster">
-            <img src="/logo.webp" alt="img1" />
+            <img src="/poster.jpg" alt="img1" />
           </div>
           <div className="poster">
-            <img src="/logo.webp" alt="img2" />
+            <img src="/poster.jpg" alt="img2" />
           </div>
           <div className="poster">
-            <img src="/logo.webp" alt="img3" />
+            <img src="/poster.jpg" alt="img3" />
           </div>
           <div className="poster">
-            <img src="/logo.webp" alt="img4" />
+            <img src="/poster.jpg" alt="img4" />
           </div>
           <div className="poster">
-            <img src="/logo.webp" alt="img5" />
+            <img src="/poster.jpg" alt="img5" />
           </div>
         </Slider>
       </div>
@@ -67,26 +74,31 @@ const RecommendList = ({ title }: { title: string }) => {
 
 const RecommendSection = styled.section`
   position: relative;
+  width: 100%;
   margin-top: 20px;
 
   .list-slider {
-    width: 80%;
+    background-color: #ffffff16;
+    width: 90%;
     margin: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 15px 0;
   }
 
   h3 {
-    font-size: 1.2rem;
+    font-size: 20px;
   }
 
   .poster {
     position: relative;
     width: 100%;
+
     img {
       position: relative;
-      width: 40%;
+      width: 80%;
+      margin: auto;
     }
   }
 `
