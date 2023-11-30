@@ -1,19 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import RecommendItem from './RecommendItem'
+import { NextIcon, PrevIcon } from '../../constants/icon'
 
 const RecommendList = ({ title }: { title: string }) => {
+  const [currentNumber, setCurrentNumber] = useState(0)
+
+  const NextArrow = () => {
+    return (
+      <button onClick={() => setCurrentNumber((prev) => prev + 1)}>
+        <NextIcon />
+      </button>
+    )
+  }
+  const PrevArrow = () => {
+    return (
+      <button onClick={() => setCurrentNumber((prev) => prev - 1)}>
+        <PrevIcon />
+      </button>
+    )
+  }
+
   const settings = {
-    dots: true,
-    dotsClass: 'slick-dots slick-thumb',
     infinite: true,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 5,
     initialSlide: 0,
-    // swipeToSlide: true,
+    swipeToSlide: true, //모바일 테스트
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -53,30 +72,16 @@ const RecommendList = ({ title }: { title: string }) => {
       <div className="list-slider">
         <h3>{title}</h3>
         <Slider {...settings}>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img1" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img2" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img3" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img4" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img5" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img6" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img7" />
-          </div>
-          <div className="poster">
-            <img src="/poster.jpg" alt="img8" />
-          </div>
+          <RecommendItem number={0} />
+          <RecommendItem number={1} />
+          <RecommendItem number={2} />
+          <RecommendItem number={3} />
+          <RecommendItem number={4} />
+          <RecommendItem number={5} />
+          <RecommendItem number={6} />
+          <RecommendItem number={7} />
+          <RecommendItem number={8} />
+          <RecommendItem number={9} />
         </Slider>
       </div>
     </RecommendSection>
@@ -88,6 +93,10 @@ const RecommendSection = styled.section`
   width: 100%;
   margin-top: 20px;
 
+  h3 {
+    font-size: 20px;
+  }
+
   .list-slider {
     /* background-color: #ffffff16; */
     width: 90%;
@@ -96,20 +105,30 @@ const RecommendSection = styled.section`
     flex-direction: column;
     gap: 20px;
     padding: 15px 0;
-  }
-
-  h3 {
-    font-size: 20px;
-  }
-
-  .poster {
-    position: relative;
-    width: 100%;
 
     img {
-      position: relative;
-      width: 90%;
-      margin: auto;
+      overflow: visible;
+      transition: transform 0.3s;
+      &:hover {
+        transform: scale(1.3);
+        -webkit-transform: scale(1.3); /* 크롬, 사파리 */
+        -moz-transform: scale(1.3); /* 파이어폭스 */
+        -ms-transform: scale(1.3); /* IE */
+        -o-transform: scale(1.3); /* 오페라 */
+      }
+    }
+
+    .next-icon,
+    .prev-icon {
+      display: block;
+      position: absolute;
+      color: red;
+    }
+  }
+
+  @media (max-width: 833px) {
+    h3 {
+      font-size: 17px;
     }
   }
 `
