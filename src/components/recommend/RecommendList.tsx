@@ -1,38 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import RecommendItem from './RecommendItem'
-import { NextIcon, PrevIcon } from '../../constants/icon'
 
 const RecommendList = ({ title }: { title: string }) => {
-  const [currentNumber, setCurrentNumber] = useState(0)
-
-  const NextArrow = () => {
-    return (
-      <button onClick={() => setCurrentNumber((prev) => prev + 1)}>
-        <NextIcon />
-      </button>
-    )
-  }
-  const PrevArrow = () => {
-    return (
-      <button onClick={() => setCurrentNumber((prev) => prev - 1)}>
-        <PrevIcon />
-      </button>
-    )
-  }
-
   const settings = {
     infinite: true,
+    dots: false,
+    // arrows: false,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 5,
     initialSlide: 0,
     swipeToSlide: true, //모바일 테스트
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -40,7 +22,7 @@ const RecommendList = ({ title }: { title: string }) => {
           slidesToShow: 5,
           slidesToScroll: 5,
           infinite: true,
-          dots: true
+          dots: false
         }
       },
       {
@@ -98,7 +80,7 @@ const RecommendSection = styled.section`
   }
 
   .list-slider {
-    /* background-color: #ffffff16; */
+    position: relative;
     width: 90%;
     margin: auto;
     display: flex;
@@ -106,23 +88,29 @@ const RecommendSection = styled.section`
     gap: 20px;
     padding: 15px 0;
 
+    .slick-list {
+      height: auto;
+    }
+
     img {
-      overflow: visible;
       transition: transform 0.3s;
       &:hover {
-        transform: scale(1.3);
-        -webkit-transform: scale(1.3); /* 크롬, 사파리 */
-        -moz-transform: scale(1.3); /* 파이어폭스 */
-        -ms-transform: scale(1.3); /* IE */
-        -o-transform: scale(1.3); /* 오페라 */
+        z-index: 100;
+        transform: scale(1.1);
+        -webkit-transform: scale(1.1); /* 크롬, 사파리 */
+        -moz-transform: scale(1.1); /* 파이어폭스 */
+        -ms-transform: scale(1.1); /* IE */
+        -o-transform: scale(1.1); /* 오페라 */
       }
     }
 
-    .next-icon,
-    .prev-icon {
-      display: block;
+    button::before {
+      color: var(--colors-green);
+      width: 1.5rem;
+      height: 1.5rem;
+      font-size: 30px;
       position: absolute;
-      color: red;
+      left: -4px;
     }
   }
 

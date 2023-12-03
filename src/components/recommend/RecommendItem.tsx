@@ -15,10 +15,13 @@ const ItemContainer = styled.div`
   .poster {
     position: relative;
     width: 100%;
+    aspect-ratio: 1/1.3;
 
     img {
       position: relative;
       width: 90%;
+      height: 100%;
+      object-fit: cover;
       margin: auto;
     }
   }

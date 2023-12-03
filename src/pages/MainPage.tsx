@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
-import RecommendList from '../components/search/RecommendList'
+import RecommendList from '../components/recommend/RecommendList'
 
 const MainPage = () => {
   return (
