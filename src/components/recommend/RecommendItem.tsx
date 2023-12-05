@@ -1,9 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const RecommendItem = ({ number }: { number: number }) => {
+type PropsType = {
+  number: number
+  onClick: () => void
+}
+
+const RecommendItem = ({ number, onClick }: PropsType) => {
   return (
-    <ItemContainer>
+    <ItemContainer onClick={onClick}>
       <div className="poster">
         <img src={`/poster${number}.jpeg`} alt="img" />
       </div>

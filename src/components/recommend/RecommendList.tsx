@@ -4,66 +4,26 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import RecommendItem from './RecommendItem'
+import { carouselSettings } from './CarouselSettings'
+import { useNavigate } from 'react-router-dom'
 
 const RecommendList = ({ title }: { title: string }) => {
-  const settings = {
-    infinite: true,
-    dots: false,
-    // arrows: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    initialSlide: 0,
-    swipeToSlide: true, //모바일 테스트
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
-          infinite: true,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 834,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          initialSlide: 4
-        }
-      },
-      {
-        breakpoint: 680,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
-        }
-      }
-    ]
-  }
+  const navigate = useNavigate()
   return (
     <RecommendSection>
       <div className="list-slider">
         <h3>{title}</h3>
-        <Slider {...settings}>
-          <RecommendItem number={0} />
-          <RecommendItem number={1} />
-          <RecommendItem number={2} />
-          <RecommendItem number={3} />
-          <RecommendItem number={4} />
-          <RecommendItem number={5} />
-          <RecommendItem number={6} />
-          <RecommendItem number={7} />
-          <RecommendItem number={8} />
-          <RecommendItem number={9} />
+        <Slider {...carouselSettings}>
+          <RecommendItem number={0} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={1} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={2} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={3} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={4} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={5} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={6} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={7} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={8} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={9} onClick={() => navigate('detail/579974')} />
         </Slider>
       </div>
     </RecommendSection>
@@ -94,6 +54,7 @@ const RecommendSection = styled.section`
 
     img {
       transition: transform 0.3s;
+      cursor: pointer;
       &:hover {
         z-index: 100;
         transform: scale(1.1);
@@ -104,13 +65,19 @@ const RecommendSection = styled.section`
       }
     }
 
-    button::before {
-      color: var(--colors-green);
-      width: 1.5rem;
-      height: 1.5rem;
-      font-size: 30px;
+    button {
       position: absolute;
-      left: -4px;
+      z-index: 10;
+      height: 100%;
+      top: 0;
+      /* background-color: aliceblue; */
+
+      &.prev {
+        left: -30px;
+      }
+      &.next {
+        right: -30px;
+      }
     }
   }
 

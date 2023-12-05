@@ -13,27 +13,30 @@ const DetailPage = () => {
             <h1>the TRUMAN show TRUMAN show TRUMAN show</h1>
           </div>
           <div className="row">
-            <h2>개봉연도</h2>
+            <h2>개봉</h2>
             <span>2023</span>
           </div>
           <div className="row">
             <h2>감독</h2>
-            <span>credits / directing </span>
+            <div className="director">
+              <span>credits/directing</span>
+            </div>
           </div>
           <div className="row">
             <h2>장르</h2>
-            <span className="genere">애니메이션</span>
-            <span className="genere">가족</span>
-            <span className="genere">음악</span>
-            <span className="genere">판타지</span>
+            <div className="genere">
+              <button className="genere">애니메이션</button>
+              <button className="genere">가족</button>
+              <button className="genere">음악</button>
+              <button className="genere">판타지</button>
+            </div>
           </div>
           <div className="row">
             <h2>출연</h2>
-            <span>Anna Kendrick</span>
-            <span>Anna Kendrick</span>
-            <span>Anna Kendrick</span>
-            <span>Anna Kendrick</span>
-            <span>...</span>
+            <div className="credits">
+              <span>Anna Kendrick</span>, <span>Anna Kendrick</span>, <span>Anna Kendrick</span>,
+              <span>Anna Kendrick</span>, <span>...</span>
+            </div>
           </div>
           <HeartSection>❤️ 관심목록에 추가</HeartSection>
         </div>
@@ -50,10 +53,11 @@ const DetailPage = () => {
 
 const DetailContainer = styled.main`
   position: relative;
-  background-color: #ffffff1b;
+  background-color: #48484830;
   border-radius: 10px;
   text-align: center;
-  padding: 16px;
+  margin-top: 30px;
+  padding: 30px 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -72,6 +76,7 @@ const UpperSection = styled.section`
     position: relative;
     width: 30%;
     background-color: blanchedalmond;
+    margin: auto;
 
     img {
       position: relative;
@@ -87,21 +92,36 @@ const UpperSection = styled.section`
     width: 65%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    line-height: 1.5rem;
 
     .row {
       display: flex;
-      gap: 15px;
 
       h1 {
         font-size: 1.7rem;
-        margin: 0 auto 16px;
-        font-weight: 700;
+        margin: 0 auto 30px;
+        font-weight: 900;
       }
       h2 {
+        display: block;
         font-weight: 600;
+        margin-right: 10px;
+        word-break: keep-all;
       }
-      span {
+
+      .genere,
+      .credits,
+      .director {
+        text-align: left;
+        button {
+          color: white;
+          /* background-color: var(--colors-green); */
+          background-color: #a1ba5049;
+          border-radius: 8px;
+          padding: 2px 5px;
+          margin-right: 5px;
+        }
       }
     }
   }
@@ -109,11 +129,27 @@ const UpperSection = styled.section`
   @media (max-width: 560px) {
     display: flex;
     flex-direction: column;
+
+    .desc {
+      width: 100%;
+      .row {
+        h1 {
+          font-size: 1.3rem;
+          word-break: break-all;
+        }
+      }
+    }
+
+    .poster {
+      width: 60%;
+      margin-bottom: 30px;
+    }
   }
 `
 
 const HeartSection = styled.section`
   position: relative;
+  margin-top: 30px;
 `
 
 const LowerSection = styled.section`
