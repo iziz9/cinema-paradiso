@@ -1,32 +1,26 @@
-export const PrevArrow = ({ onClick }: { onClick: any }) => {
+export const PrevArrow = ({ onClick }: { onClick: () => void }) => {
   return (
     <button onClick={onClick} className="prev">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="40px"
-        height="40px"
-        viewBox="0 0 16 16"
-        version="1.1"
-      >
-        <path fill="#444" d="M12 13h-2l-5-5 5-5h2l-5 5z" />
+      <svg className="custom-0" viewBox="0 0 10 40" width="40px" height="40px">
+        <path
+          fill="#444"
+          d="M9.476.09c.452.226.65.805.44 1.295L1.985 20l7.933 18.615c.208.49.011 1.07-.44 1.295-.452.226-.987.012-1.196-.477L0 20 8.281.567c.209-.49.744-.703 1.195-.477Z"
+        ></path>
       </svg>
     </button>
   )
 }
 
-export const NextArrow = ({ onClick }: { onClick: any }) => {
+export const NextArrow = ({ onClick }: { onClick: () => void }) => {
   return (
     <button onClick={onClick} className="next">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="40px"
-        height="40px"
-        viewBox="0 0 16 16"
-        version="1.1"
-      >
-        <path fill="#444" d="M4 13h2l5-5-5-5h-2l5 5z" />
+      <svg className="custom-0" viewBox="0 0 10 40" width="40px" height="40px">
+        <path
+          fill="#444"
+          fillRule="evenodd"
+          d="M.524.09c-.452.226-.65.805-.44 1.295L8.015 20 .083 38.615c-.208.49-.011 1.07.44 1.295.452.226.987.012 1.196-.477L10 20 1.719.567C1.51.077.975-.136.524.09Z"
+          clipRule="evenodd"
+        ></path>
       </svg>
     </button>
   )

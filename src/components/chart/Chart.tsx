@@ -1,11 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import Example from './Ch'
 
 const Chart = () => {
   return (
     <ChartContainer>
       <div>나의 영화 취향</div>
-      <div>차트</div>
+      <div>
+        <div>차트</div>
+        <Example />
+      </div>
     </ChartContainer>
   )
 }

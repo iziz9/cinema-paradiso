@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 
 const DetailPage = () => {
   return (
@@ -38,7 +39,16 @@ const DetailPage = () => {
               <span>Anna Kendrick</span>, <span>...</span>
             </div>
           </div>
-          <HeartSection>❤️ 관심목록에 추가</HeartSection>
+          <HeartSection>
+            <button>
+              <BookmarkBlankIcon />
+              <span>관심등록</span>
+            </button>
+            <button>
+              <BookmarkFillIcon />
+              <span>관심삭제</span>
+            </button>
+          </HeartSection>
         </div>
       </UpperSection>
       <LowerSection>
@@ -53,10 +63,9 @@ const DetailPage = () => {
 
 const DetailContainer = styled.main`
   position: relative;
-  background-color: #48484830;
-  border-radius: 10px;
+  background-color: #48484830; //url
   text-align: center;
-  margin-top: 30px;
+  margin-top: 10px;
   padding: 30px 20px;
   box-sizing: border-box;
   display: flex;
@@ -75,7 +84,6 @@ const UpperSection = styled.section`
   .poster {
     position: relative;
     width: 30%;
-    background-color: blanchedalmond;
     margin: auto;
 
     img {
@@ -94,13 +102,14 @@ const UpperSection = styled.section`
     flex-direction: column;
     gap: 10px;
     line-height: 1.5rem;
+    margin: auto auto;
 
     .row {
       display: flex;
 
       h1 {
         font-size: 1.7rem;
-        margin: 0 auto 30px;
+        margin: 0 auto 20px;
         font-weight: 900;
       }
       h2 {
@@ -116,7 +125,6 @@ const UpperSection = styled.section`
         text-align: left;
         button {
           color: white;
-          /* background-color: var(--colors-green); */
           background-color: #a1ba5049;
           border-radius: 8px;
           padding: 2px 5px;
@@ -142,14 +150,28 @@ const UpperSection = styled.section`
 
     .poster {
       width: 60%;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
   }
 `
 
 const HeartSection = styled.section`
   position: relative;
-  margin-top: 30px;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+
+  button {
+    color: #ffffff55;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+      font-size: 14px;
+    }
+  }
 `
 
 const LowerSection = styled.section`
