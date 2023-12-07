@@ -7,9 +7,10 @@ const MainPage = () => {
   return (
     <MainContainer>
       <SearchBar />
-      <RecommendList title={'이런 영화는 어떠세요?'} />
+      <RecommendList title={'지금 가장 인기있는 영화'} />
       <RecommendList title={'오늘의 SF 추천 영화'} />
       <RecommendList title={'오늘의 로맨스 추천 영화'} />
+      <RecommendList title={'관객 평점이 가장 높은 영화'} />
     </MainContainer>
   )
 }

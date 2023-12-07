@@ -1,67 +1,77 @@
 import React from 'react'
 import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
+import RecommendList from '../components/recommend/RecommendList'
 
 const DetailPage = () => {
   return (
-    <DetailContainer>
-      <UpperSection>
-        <div className="poster">
-          <img src="/poster1.jpeg" alt="poster" />
-        </div>
-        <div className="desc">
-          <div className="row">
-            <h1>the TRUMAN show TRUMAN show TRUMAN show</h1>
+    <Container>
+      <DetailSection>
+        <DetailUpper>
+          <div className="poster">
+            <img src="/poster1.jpeg" alt="poster" />
           </div>
-          <div className="row">
-            <h2>개봉</h2>
-            <span>2023</span>
-          </div>
-          <div className="row">
-            <h2>감독</h2>
-            <div className="director">
-              <span>credits/directing</span>
+          <div className="desc">
+            <div className="row">
+              <h1>the TRUMAN show TRUMAN show TRUMAN show</h1>
             </div>
-          </div>
-          <div className="row">
-            <h2>장르</h2>
-            <div className="genere">
-              <button className="genere">애니메이션</button>
-              <button className="genere">가족</button>
-              <button className="genere">음악</button>
-              <button className="genere">판타지</button>
+            <div className="row">
+              <h2>개봉</h2>
+              <span>2023</span>
             </div>
-          </div>
-          <div className="row">
-            <h2>출연</h2>
-            <div className="credits">
-              <span>Anna Kendrick</span>, <span>Anna Kendrick</span>, <span>Anna Kendrick</span>,
-              <span>Anna Kendrick</span>, <span>...</span>
+            <div className="row">
+              <h2>감독</h2>
+              <div className="director">
+                <span>credits/directing</span>
+              </div>
             </div>
+            <div className="row">
+              <h2>장르</h2>
+              <div className="genere">
+                <button className="genere">애니메이션</button>
+                <button className="genere">가족</button>
+                <button className="genere">음악</button>
+                <button className="genere">판타지</button>
+              </div>
+            </div>
+            <div className="row">
+              <h2>출연</h2>
+              <div className="credits">
+                <span>Anna Kendrick</span>, <span>Anna Kendrick</span>, <span>Anna Kendrick</span>,
+                <span>Anna Kendrick</span>, <span>...</span>
+              </div>
+            </div>
+            <DetailMiddle>
+              <button>
+                <BookmarkBlankIcon />
+                <span>관심등록</span>
+              </button>
+              <button>
+                <BookmarkFillIcon />
+                <span>관심삭제</span>
+              </button>
+            </DetailMiddle>
           </div>
-          <HeartSection>
-            <button>
-              <BookmarkBlankIcon />
-              <span>관심등록</span>
-            </button>
-            <button>
-              <BookmarkFillIcon />
-              <span>관심삭제</span>
-            </button>
-          </HeartSection>
-        </div>
-      </UpperSection>
-      <LowerSection>
-        전 세계 모든 트롤을 열광케 했던 최고의 아이돌 그룹 ‘브로존’. 역대급 무대 실수와 형제 간의 불화로 결국 해체한 뒤,
-        모두에게 잊혀 간다. 그러던 어느 날, ‘브로존’의 황금막내 ‘브랜치’는 메인보컬 ‘플로이드’가 슈퍼스타 ‘벨벳’과
-        ‘비니어’에게 잡혀 재능을 빼앗기고 있다는 소식을 듣는다. 그를 구하기 위해서는 흩어져 있는 ‘브로존’을 재결합하고
-        완벽한 화음을 되찾아야 하는데… 12월, 가장 짜릿한 컴백 무대의 시작!
-      </LowerSection>
-    </DetailContainer>
+        </DetailUpper>
+        <DetailLower>
+          전 세계 모든 트롤을 열광케 했던 최고의 아이돌 그룹 ‘브로존’. 역대급 무대 실수와 형제 간의 불화로 결국 해체한
+          뒤, 모두에게 잊혀 간다. 그러던 어느 날, ‘브로존’의 황금막내 ‘브랜치’는 메인보컬 ‘플로이드’가 슈퍼스타 ‘벨벳’과
+          ‘비니어’에게 잡혀 재능을 빼앗기고 있다는 소식을 듣는다. 그를 구하기 위해서는 흩어져 있는 ‘브로존’을 재결합하고
+          완벽한 화음을 되찾아야 하는데… 12월, 가장 짜릿한 컴백 무대의 시작!
+        </DetailLower>
+      </DetailSection>
+      <RelatedSection>
+        <RecommendList title={`<${'RRR'}> 비슷한 영화`} />
+      </RelatedSection>
+    </Container>
   )
 }
 
-const DetailContainer = styled.main`
+const Container = styled.main`
+  position: relative;
+`
+
+const DetailSection = styled.section`
   position: relative;
   background-color: #48484830; //url
   text-align: center;
@@ -73,7 +83,7 @@ const DetailContainer = styled.main`
   gap: 30px;
 `
 
-const UpperSection = styled.section`
+const DetailUpper = styled.div`
   position: relative;
   width: 100%;
   height: auto;
@@ -155,7 +165,7 @@ const UpperSection = styled.section`
   }
 `
 
-const HeartSection = styled.section`
+const DetailMiddle = styled.div`
   position: relative;
   width: 100%;
   margin-top: 20px;
@@ -174,9 +184,11 @@ const HeartSection = styled.section`
   }
 `
 
-const LowerSection = styled.section`
+const DetailLower = styled.div`
   position: relative;
   line-height: 1.5rem;
 `
+
+const RelatedSection = styled.section``
 
 export default DetailPage
