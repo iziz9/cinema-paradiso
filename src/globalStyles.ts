@@ -76,6 +76,7 @@ const GlobalStyles = createGlobalStyle`
     --colors-yellow: #F4BA24;
     --colors-green: #A1BA50;
     --colors-gray: #cecece;
+    --colors-transgray: #f8f8f814;
     
     font-family: 'SUITE-Regular', sans-serif;
     position: relative;

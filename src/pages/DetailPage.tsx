@@ -13,32 +13,30 @@ const DetailPage = () => {
           </div>
           <div className="desc">
             <div className="row">
-              <h1>the TRUMAN show TRUMAN show TRUMAN show</h1>
+              <h1>트루먼 쇼</h1>
             </div>
             <div className="row">
               <h2>개봉</h2>
-              <span>2023</span>
+              <span>1998</span>
             </div>
             <div className="row">
               <h2>감독</h2>
               <div className="director">
-                <span>credits/directing</span>
+                <span>Peter Weir</span>
               </div>
             </div>
             <div className="row">
               <h2>장르</h2>
               <div className="genere">
-                <button className="genere">애니메이션</button>
-                <button className="genere">가족</button>
-                <button className="genere">음악</button>
-                <button className="genere">판타지</button>
+                <button className="genere">코미디</button>
+                <button className="genere">드라마</button>
               </div>
             </div>
             <div className="row">
               <h2>출연</h2>
               <div className="credits">
-                <span>Anna Kendrick</span>, <span>Anna Kendrick</span>, <span>Anna Kendrick</span>,
-                <span>Anna Kendrick</span>, <span>...</span>
+                <span>Jim Carrey</span>, <span>Layra Linney</span>, <span>Noah Emmerich</span>,
+                <span>Natascha McElhone</span>, <span>Holland Taylor</span>, <span>...</span>
               </div>
             </div>
             <DetailMiddle>
@@ -46,18 +44,20 @@ const DetailPage = () => {
                 <BookmarkBlankIcon />
                 <span>관심등록</span>
               </button>
-              <button>
+              {/* <button>
                 <BookmarkFillIcon />
                 <span>관심삭제</span>
-              </button>
+              </button> */}
             </DetailMiddle>
           </div>
         </DetailUpper>
         <DetailLower>
-          전 세계 모든 트롤을 열광케 했던 최고의 아이돌 그룹 ‘브로존’. 역대급 무대 실수와 형제 간의 불화로 결국 해체한
-          뒤, 모두에게 잊혀 간다. 그러던 어느 날, ‘브로존’의 황금막내 ‘브랜치’는 메인보컬 ‘플로이드’가 슈퍼스타 ‘벨벳’과
-          ‘비니어’에게 잡혀 재능을 빼앗기고 있다는 소식을 듣는다. 그를 구하기 위해서는 흩어져 있는 ‘브로존’을 재결합하고
-          완벽한 화음을 되찾아야 하는데… 12월, 가장 짜릿한 컴백 무대의 시작!
+          트루먼 버뱅크는 작고 조용한 섬마을에 사는 평범한 세일즈맨이다. 그런 그가 자신의 삶에 대해 의문을 갖기 시작한
+          것은 평소와 다름없이 평범한 어느 날, 갑자기 하늘에서 촬영용 조명등이 떨어지고, 어렸을 적 자신이 익사를 직접
+          목격했던 아버지가 살아오고, 또 누군가에 의해 끌려가는 등 상식 밖의 일들이 벌어지고 나서부터였다. 평생을 그다지
+          신경쓰지 않고 지냈던 일상이었지만 주변을 보니 이상한 일이 너무 많았다. 결국 자신이 특별한 상황에 놓여있다는
+          확신을 하게된 트루먼은 첫사랑 실비아의 모든 것이 다 거짓라는 말을 되새기며 일상으로부터 탈출을 결심하게
+          되는데...
         </DetailLower>
       </DetailSection>
       <RelatedSection>
@@ -180,6 +180,9 @@ const DetailMiddle = styled.div`
     align-items: center;
     span {
       font-size: 14px;
+    }
+    &:hover {
+      color: var(--colors-green);
     }
   }
 `

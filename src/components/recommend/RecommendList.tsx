@@ -14,16 +14,16 @@ const RecommendList = ({ title }: { title: string }) => {
       <div className="list-slider">
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
-          <RecommendItem number={0} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={1} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={2} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={3} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={4} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={5} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={6} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={7} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={8} onClick={() => navigate('detail/579974')} />
-          <RecommendItem number={9} onClick={() => navigate('detail/579974')} />
+          <RecommendItem number={0} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={1} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={2} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={3} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={4} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={5} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={6} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={7} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={8} onClick={() => navigate('/detail/579974')} />
+          <RecommendItem number={9} onClick={() => navigate('/detail/579974')} />
         </Slider>
       </div>
     </RecommendSection>
@@ -70,7 +70,6 @@ const RecommendSection = styled.section`
       z-index: 10;
       height: 100%;
       top: 0;
-      /* background-color: aliceblue; */
 
       &.prev {
         left: -30px;
