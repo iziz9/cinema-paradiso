@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import RecommendList from '../components/recommend/RecommendList'
+import { getPopularMovieList } from '../api/request'
 
 const MainPage = () => {
+  useEffect(() => {
+    // getPopularMovieList()
+  }, [])
+
   return (
     <MainContainer>
       <SearchBar />
