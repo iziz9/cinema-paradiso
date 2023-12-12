@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { useNavigate } from 'react-router-dom'
 import PATH from '../../routes/routePath'
+import DropDownBox from './DropDownBox'
 
 const SearchBar = () => {
   const navigate = useNavigate() //검색어 navi props 넘기기
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
 
   return (
     <SearchBarContainer>
@@ -14,12 +16,16 @@ const SearchBar = () => {
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
           <SearchIcon />
         </div>
+        <DropDownBox
+          list={['집으로...', '집에 가는 길', '집에 가고 싶다', '집집 집잇업 집집 집잇업 집집 집잇업 집집 집잇업']}
+        />
       </div>
     </SearchBarContainer>
   )
 }
 
 const SearchBarContainer = styled.div`
+  position: relative;
   height: 70px;
   padding: 15px 0;
   box-sizing: border-box;
@@ -39,7 +45,7 @@ const SearchBarContainer = styled.div`
       padding: 0 25px;
       box-sizing: border-box;
       font-size: 1rem;
-      background-color: #ffffff53;
+      background-color: #242424;
       color: var(--colors-light);
 
       &::placeholder {
@@ -56,5 +62,4 @@ const SearchBarContainer = styled.div`
     }
   }
 `
-
 export default SearchBar
