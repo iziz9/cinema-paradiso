@@ -34,7 +34,7 @@ const MyPageContainer = styled.main`
   position: relative;
 
   .no-result {
-    background-color: var(--colors-transgray);
+    background-color: var(--colors-darkgray);
     display: flex;
     flex-direction: column;
     gap: 8px;

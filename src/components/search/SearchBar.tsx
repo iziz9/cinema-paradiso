@@ -7,7 +7,6 @@ import DropDownBox from './DropDownBox'
 
 const SearchBar = () => {
   const navigate = useNavigate() //검색어 navi props 넘기기
-  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
 
   return (
     <SearchBarContainer>
@@ -45,7 +44,7 @@ const SearchBarContainer = styled.div`
       padding: 0 25px;
       box-sizing: border-box;
       font-size: 1rem;
-      background-color: #242424;
+      background-color: var(--colors-darkgray);
       color: var(--colors-light);
 
       &::placeholder {

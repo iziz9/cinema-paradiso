@@ -5,9 +5,13 @@ import DropDownItem from './DropDownItem'
 const DropDownBox = ({ list }: { list: string[] }) => {
   return list.length ? (
     <DropDownContainer>
-      {list.map((item) => (
-        <DropDownItem title={item} key={item} />
-      ))}
+      {/* {list.map((item) => (
+        <DropDownItem title={item} isFocused={true} key={item} />
+      ))} */}
+      <DropDownItem title={'abc'} isFocused={false} />
+      <DropDownItem title={'abc'} isFocused={false} />
+      <DropDownItem title={'abc'} isFocused={true} />
+      <DropDownItem title={'abc'} isFocused={false} />
     </DropDownContainer>
   ) : (
     <DropDownContainer>
@@ -22,7 +26,7 @@ const DropDownContainer = styled.ul`
   min-height: 100px;
   z-index: 30;
   margin-top: 3px;
-  background-color: #242424;
+  background-color: var(--colors-darkgray);
   color: var(--colors-light);
   border: 1px solid var(--colors-green);
   border-radius: 20px;

@@ -61,7 +61,7 @@ const Chart = () => {
 
 const ChartContainer = styled.section`
   position: relative;
-  background-color: var(--colors-transgray);
+  background-color: var(--colors-darkgray);
 `
 const Inner = styled.div`
   display: flex;
