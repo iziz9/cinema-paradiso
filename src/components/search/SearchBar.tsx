@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { useNavigate } from 'react-router-dom'
@@ -8,17 +8,26 @@ import DropDownBox from './DropDownBox'
 const SearchBar = () => {
   const navigate = useNavigate() //검색어 navi props 넘기기
   //dropdown 열기/닫기
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
 
   return (
     <SearchBarContainer>
       <div className="searchbar">
-        <input type="text" placeholder="어떤 영화를 찾아볼까요?" maxLength={20} />
+        <input
+          type="text"
+          placeholder="어떤 영화를 찾아볼까요?"
+          maxLength={20}
+          onFocus={() => setIsDropDownOpen(true)}
+        />
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
           <SearchIcon />
         </div>
-        {/* <DropDownBox
-          list={['집으로...', '집에 가는 길', '집에 가고 싶다', '집집 집잇업 집집 집잇업 집집 집잇업 집집 집잇업']}
-        /> */}
+        {isDropDownOpen && (
+          <DropDownBox
+            list={['집으로...', '집에 가는 길', '집에 가고 싶다', '집집 집잇업 집집 집잇업 집집 집잇업 집집 집잇업']}
+            data-testid="dropdown"
+          />
+        )}
       </div>
     </SearchBarContainer>
   )
