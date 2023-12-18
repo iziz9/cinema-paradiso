@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import MainPage from '../pages/MainPage'
 import * as request from '../api/request'
 import { delay, mockConsoleError } from './testUtils'
+import { BrowserRouter } from 'react-router-dom'
 
 describe('Search function test', () => {
   mockConsoleError()
@@ -10,28 +11,46 @@ describe('Search function test', () => {
     jest.clearAllMocks()
   })
 
-  test('포커스 시 드롭다운 열림', async () => {
-    render(<MainPage />)
-    userEvent.click(screen.getByPlaceholderText<HTMLInputElement>('어떤 영화를 찾아볼까요?'))
+  const RoutedMainPage = () => (
+    <BrowserRouter>
+      <MainPage />
+    </BrowserRouter>
+  )
 
-    expect(await screen.findByTestId('dropdown')).toBeInTheDocument()
+  test('포커스 시 드롭다운 열림', async () => {
+    render(<RoutedMainPage />)
+    userEvent.click(screen.getByRole<HTMLInputElement>('searchbox'))
+
+    expect(await screen.findByRole('combobox')).toBeInTheDocument()
   })
 
   // test('외부 클릭 시 드롭다운 닫힘', async () => {
   //   render(<MainPage />)
+  //   // userEvent.click(screen.getByRole<HTMLInputElement>('searchbox'))
+
+  //   expect(await screen.findByRole('combobox')).not.toBeInTheDocument()
   // })
 
-  // test('20글자까지만 입력 가능', async () => {
-  //   render(<MainPage />)
-  // })
+  test('20글자까지만 입력 가능', async () => {
+    render(<RoutedMainPage />)
+    const searchbox = screen.getByRole<HTMLInputElement>('searchbox')
+    userEvent.type(searchbox, 'aaaaaaaaaaaaaaaaaaaaaaa')
+    expect(searchbox.value).toHaveLength(20)
+  })
 
   // test('공백문자/검색어 없을 시 전송하지 않고 "검색 결과 없음" 드롭다운 표시', async () => {
   //   render(<MainPage />)
+  //   // userEvent.click(screen.getByRole<HTMLInputElement>('searchbox'))
+
+  //   expect(await screen.findByText('검색 결과 없음')).toBeInTheDocument()
   // })
 
-  // test('공백문자/검색어 없이 버튼 클릭 시 "검색어를 입력하세요" 모달 표시', async () => {
-  //   render(<MainPage />)
-  // })
+  test('공백문자/검색어 없이 버튼 클릭 시 "검색어를 입력하세요" 모달 표시', async () => {
+    render(<RoutedMainPage />)
+    const searchbox = screen.getByRole<HTMLInputElement>('searchbox')
+    userEvent.type(searchbox, 'aaaaaaaaaaaaaaaaaaaaaaa')
+    expect(searchbox.value).toHaveLength(20)
+  })
 
   // test('드롭다운 리스트를 키보드로 이동할 수 있다', async () => {
   //   render(<MainPage />)

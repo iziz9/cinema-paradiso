@@ -18,6 +18,7 @@ const SearchBar = () => {
           placeholder="어떤 영화를 찾아볼까요?"
           maxLength={20}
           onFocus={() => setIsDropDownOpen(true)}
+          role="searchbox"
         />
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
           <SearchIcon />
@@ -25,7 +26,6 @@ const SearchBar = () => {
         {isDropDownOpen && (
           <DropDownBox
             list={['집으로...', '집에 가는 길', '집에 가고 싶다', '집집 집잇업 집집 집잇업 집집 집잇업 집집 집잇업']}
-            data-testid="dropdown"
           />
         )}
       </div>

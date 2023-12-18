@@ -4,7 +4,7 @@ import DropDownItem from './DropDownItem'
 
 const DropDownBox = ({ list }: { list: string[] }) => {
   return list.length ? (
-    <DropDownContainer>
+    <DropDownContainer role="combobox">
       {list.map((item) => (
         <DropDownItem title={item} isFocused={false} key={item} />
       ))}
