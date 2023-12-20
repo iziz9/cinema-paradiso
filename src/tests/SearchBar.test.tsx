@@ -29,7 +29,7 @@ describe('Search function test', () => {
   test('20글자까지만 입력 가능', async () => {
     render(<RoutedMainPage />)
     const searchbox = screen.getByRole<HTMLInputElement>('searchbox')
-    userEvent.type(searchbox, 'aaaaaaaaaaaaaaaaaaaaaaa')
+    userEvent.type(searchbox, 'aaaaaaaaaaaaㅋㅌ ㅕㅣㅕaaaaaaaaaaa')
     expect(searchbox.value).toHaveLength(20)
   })
 
