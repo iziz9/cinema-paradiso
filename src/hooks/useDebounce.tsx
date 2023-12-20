@@ -1,7 +1,16 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 
-const useDebounce = () => {
-  return <div>useDebounce</div>
+function useDebounce(searchValue: string) {
+  const [debouncedValue, setDebouncedValue] = useState(searchValue) //없애도?
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      return setDebouncedValue(searchValue)
+    }, 300)
+    return () => clearTimeout(timeoutId)
+  }, [searchValue])
+
+  return debouncedValue
 }
 
 export default useDebounce

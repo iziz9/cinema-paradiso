@@ -1,14 +1,59 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { useNavigate } from 'react-router-dom'
 import PATH from '../../routes/routePath'
 import DropDownBox from './DropDownBox'
+import useDebounce from '../../hooks/useDebounce'
+import { checkInputValid } from '../../utils/InputValidation'
 
 const SearchBar = () => {
   const navigate = useNavigate() //검색어 navi props 넘기기
-  //dropdown 열기/닫기
+  const [tempQuery, setTempQuery] = useState<string>('')
+  const debouncedValue = useDebounce(tempQuery)
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
+  const [focusIndex, setFocusIndex] = useState<number>(-1)
+  const [recommendList, setRecommendList] = useState<[]>([])
+  const [searchValue, setSearchValue] = useState<string>('')
+
+  const setSearchValueHandler = (query: string) => setSearchValue(query)
+
+  useEffect(() => {
+    if (debouncedValue.length === 0 || debouncedValue.trim() === '') {
+      return setRecommendList([])
+    }
+    const isValid = checkInputValid(debouncedValue)
+    isValid && setSearchValueHandler(debouncedValue)
+  }, [debouncedValue])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTempQuery(e.target.value)
+    setFocusIndex(-1)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!recommendList) return
+    // const isLastIndex = focusIndex + 1 === recommendList.length
+
+    switch (e.key) {
+      case 'ArrowDown':
+        if (focusIndex === recommendList.length - 1) return setFocusIndex(0)
+        setFocusIndex((prev: number) => prev + 1)
+        break
+      case 'ArrowUp':
+        if (focusIndex === 0) return false
+        setFocusIndex((prev: number) => prev - 1)
+        break
+      case 'Escape':
+        setFocusIndex(-1)
+        setSearchValueHandler('')
+        break
+      case 'Enter':
+        if (focusIndex === -1) return false
+        setFocusIndex(0)
+      // setTempQuery(recommendList[focusIndex])
+    }
+  }
 
   return (
     <SearchBarContainer>
@@ -18,6 +63,8 @@ const SearchBar = () => {
           placeholder="어떤 영화를 찾아볼까요?"
           maxLength={20}
           onFocus={() => setIsDropDownOpen(true)}
+          onChange={(e) => handleInputChange(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
           role="searchbox"
         />
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>

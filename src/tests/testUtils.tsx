@@ -1,3 +1,8 @@
+import { BrowserRouter } from 'react-router-dom'
+import MainPage from '../pages/MainPage'
+import { JsxElement } from 'typescript'
+import { ReactNode } from 'react'
+
 export async function delay(ms: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -10,3 +15,5 @@ export function mockConsoleError() {
 
   return consoleMock
 }
+
+export const RoutedPage = ({ page }: { page: ReactNode }) => <BrowserRouter>{page}</BrowserRouter>
