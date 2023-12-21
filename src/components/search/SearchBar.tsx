@@ -8,25 +8,7 @@ import useDebounce from '../../hooks/useDebounce'
 import { checkInputValid } from '../../utils/InputValidation'
 import { getAutoCompletionList } from '../../api/request'
 import { IAutoCompleteList } from '../../types/types'
-
-interface Action {
-  type: 'INDEX_INCREMENT' | 'INDEX_DECREMENT' | 'INDEX_RESET'
-}
-export const focusIndexReducer = (focusIndex: number, action: Action) => {
-  switch (action.type) {
-    case 'INDEX_INCREMENT':
-      return focusIndex + 1
-    case 'INDEX_DECREMENT':
-      return focusIndex - 1
-    case 'INDEX_RESET':
-      return (focusIndex = -1)
-    default:
-      return focusIndex
-  }
-}
-const MIN_INDEX = 0
-const MAX_INDEX = 10
-export const DEFAULT_INDEX = -1
+import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 
 const SearchBar = () => {
   const navigate = useNavigate() //검색어 navi props 넘기기
@@ -35,57 +17,49 @@ const SearchBar = () => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [autoCompleteList, setAutoCompleteList] = useState<IAutoCompleteList[]>([])
   const [searchValue, setSearchValue] = useState<string>('')
-  const [focusIndex, dispatch] = useReducer(focusIndexReducer, -1)
-  const setSearchValueHandler = (query: string) => setSearchValue(query)
+  const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
   const DropDownRef = useRef<HTMLUListElement>(null)
+
+  //마우스로도 포커스 해야됨
 
   useEffect(() => {
     if (debouncedValue.length === 0 || debouncedValue.trim() === '') {
       return setAutoCompleteList([])
     }
     const isValid = checkInputValid(debouncedValue)
-    isValid && setSearchValueHandler(debouncedValue)
+    isValid && setSearchValue(debouncedValue)
   }, [debouncedValue])
 
   useEffect(() => {
     const getList = async () => {
       const res = await getAutoCompletionList(searchValue)
-      setAutoCompleteList(res)
+      setAutoCompleteList(res.slice(0, MAX_INDEX))
     }
     searchValue && getList()
   }, [searchValue])
 
   useEffect(() => {
     const ul = DropDownRef.current
-    if (ul) {
-      if (focusIndex < -1) {
-        // 리스트의 포커스를 벗어났을 때 다시 포커스 할 수 있도록 인덱스 리셋
-        dispatch({ type: 'INDEX_RESET' })
-      } else if (focusIndex >= MAX_INDEX) {
-        const hasScrollbar = ul.scrollHeight > ul.clientHeight
-        if (hasScrollbar) {
-          const focusedItem = ul.children[focusIndex]
-          focusedItem.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-      }
+    if (ul && focusIndex < DEFAULT_INDEX) {
+      dispatch({ type: 'RESET' })
     }
   }, [focusIndex])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTempQuery(e.target.value)
-    dispatch({ type: 'INDEX_RESET' })
+    dispatch({ type: 'RESET' })
   }
 
-  const setValAndResetIdx = (value: string) => {
-    setSearchValue(value)
-    dispatch({ type: 'INDEX_RESET' })
+  const resetQueryAndIndex = (query: string) => {
+    setTempQuery(query)
+    dispatch({ type: 'RESET' })
   }
 
   const changeInputValue = () => {
-    const focusedList = DropDownRef.current?.children[focusIndex + 1]
-    const textValue = focusedList?.textContent
-    if (textValue && textValue.length > 0) {
-      setValAndResetIdx(textValue)
+    const focusedList = DropDownRef.current?.children[focusIndex]
+    const query = focusedList?.textContent
+    if (query && query.length > 0) {
+      resetQueryAndIndex(query)
     }
   }
 
@@ -96,14 +70,14 @@ const SearchBar = () => {
       switch (e.key) {
         case 'ArrowDown':
           if (!isLastIndex) {
-            dispatch({ type: 'INDEX_INCREMENT' })
+            dispatch({ type: 'INCREMENT' })
           }
           break
         case 'ArrowUp':
-          dispatch({ type: 'INDEX_DECREMENT' })
+          dispatch({ type: 'DECREMENT' })
           break
         case 'Escape':
-          dispatch({ type: 'INDEX_RESET' })
+          dispatch({ type: 'RESET' })
           e.currentTarget.blur()
           break
         case 'Enter':
@@ -123,6 +97,7 @@ const SearchBar = () => {
           onFocus={() => setIsDropDownOpen(true)}
           onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => handleKeyDown(e)}
+          value={tempQuery}
           role="searchbox"
         />
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
