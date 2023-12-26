@@ -13,18 +13,23 @@ describe('Search function test', () => {
 
   const RoutedMainPage = () => <RoutedPage page={<MainPage />} />
 
-  test('포커스 시 드롭다운 열림', async () => {
+  // test('포커스 시 드롭다운 열림, 외부 클릭 시 드롭다운 닫힘', async () => {
+  //   render(<RoutedMainPage />)
+  //   userEvent.click(screen.getByRole<HTMLInputElement>('searchbox'))
+  //   expect(await screen.findByRole('combobox')).toBeInTheDocument()
+
+  //   // userEvent.
+  //   expect(await screen.findByRole('combobox')).not.toBeInTheDocument()
+  // })
+
+  test('포커스 시 드롭다운 열림, esc키 누르면 드롭다운 닫힘', async () => {
     render(<RoutedMainPage />)
     userEvent.click(screen.getByRole<HTMLInputElement>('searchbox'))
     expect(await screen.findByRole('combobox')).toBeInTheDocument()
+
+    userEvent.keyboard('{Escape}') //esc누르면 닫힘
+    expect(await screen.findByRole('combobox')).not.toBeInTheDocument()
   })
-
-  // test('외부 클릭 시 드롭다운 닫힘', async () => {
-  // render(<RoutedMainPage />)
-  //   // userEvent.click(screen.getByRole<HTMLInputElement>('searchbox'))
-
-  //   expect(await screen.findByRole('combobox')).not.toBeInTheDocument()
-  // })
 
   test('20글자까지만 입력 가능', async () => {
     render(<RoutedMainPage />)
@@ -48,20 +53,22 @@ describe('Search function test', () => {
   // })
 
   // test('드롭다운 리스트를 키보드로 이동할 수 있다', async () => {
-  //   render(<MainPage />)
+  //   render(<RoutedMainPage />)
+  //   const searchbox = screen.getByRole<HTMLInputElement>('searchbox')
+  //   userEvent.keyboard()
   // })
 
   // test('드롭다운 마지막 리스트에서 아래 방향키를 누르면 동작하지 않는다', async () => {
-  //   render(<MainPage />)
+  //   render(<RoutedMainPage />)
   // })
 
   // test('드롭다운 첫 번째 리스트에서 위 방향키를 누르면 input으로 포커스가 돌아간다', async () => {
-  //   render(<MainPage />)
+  //   render(<RoutedMainPage />)
   // })
   // test('input에 포커스 된 상태에서 위 방향키를 누르면 동작하지 않는다', async () => {
-  //   render(<MainPage />)
+  //   render(<RoutedMainPage />)
   // })
   // test('드롭다운을 닫았다가 다시 열면 input으로 포커스가 돌아간다', async () => {
-  //   render(<MainPage />)
+  //   render(<RoutedMainPage />)
   // })
 })

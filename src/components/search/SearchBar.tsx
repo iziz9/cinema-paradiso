@@ -10,15 +10,20 @@ import { getAutoCompletionList } from '../../api/request'
 import { IAutoCompleteList } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 
-const SearchBar = () => {
+type SearchBarType = {
+  isDropDownOpen: boolean
+  setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>
+  dropDownRef: React.RefObject<HTMLUListElement>
+}
+
+const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBarType) => {
   const navigate = useNavigate() //검색어 navi props 넘기기
   const [tempQuery, setTempQuery] = useState<string>('')
   const debouncedValue = useDebounce(tempQuery)
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [autoCompleteList, setAutoCompleteList] = useState<IAutoCompleteList[]>([])
   const [searchValue, setSearchValue] = useState<string>('')
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
-  const DropDownRef = useRef<HTMLUListElement>(null)
+  // const DropDownRef = useRef<HTMLUListElement>(null)
 
   //마우스로도 포커스 해야됨
 
@@ -39,7 +44,7 @@ const SearchBar = () => {
   }, [searchValue])
 
   useEffect(() => {
-    const ul = DropDownRef.current
+    const ul = dropDownRef.current
     if (ul && focusIndex < DEFAULT_INDEX) {
       dispatch({ type: 'RESET' })
     }
@@ -56,7 +61,7 @@ const SearchBar = () => {
   }
 
   const changeInputValue = () => {
-    const focusedList = DropDownRef.current?.children[focusIndex]
+    const focusedList = dropDownRef.current?.children[focusIndex]
     const query = focusedList?.textContent
     if (query && query.length > 0) {
       resetQueryAndIndex(query)
@@ -103,7 +108,7 @@ const SearchBar = () => {
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
           <SearchIcon />
         </div>
-        {isDropDownOpen && <DropDownBox list={autoCompleteList} focusIndex={focusIndex} ref={DropDownRef} />}
+        {isDropDownOpen && <DropDownBox list={autoCompleteList} focusIndex={focusIndex} ref={dropDownRef} />}
       </div>
     </SearchBarContainer>
   )
