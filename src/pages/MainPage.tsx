@@ -12,18 +12,6 @@ const MainPage = () => {
     // getPopularMovieList()
   }, [])
 
-  // useEffect(() => {
-  //   const handleDropDownClose = (e: { target: any }) => {
-  //     // useRef current에 담긴 엘리먼트 바깥을 클릭 시 드롭메뉴 닫힘
-  //     if (DropDownRef.current && isDropDownOpen && !DropDownRef.current.contains(e.target)) {
-  //       setisDropDownOpen(false)
-  //     }
-  //   }
-  //   document.addEventListener('click', handleDropDownClose)
-
-  //   return () => document.removeEventListener('click', handleDropDownClose)
-  // }, [isDropDownOpen])
-
   return (
     <MainContainer>
       <SearchBar isDropDownOpen={isDropDownOpen} setIsDropDownOpen={setisDropDownOpen} dropDownRef={DropDownRef} />

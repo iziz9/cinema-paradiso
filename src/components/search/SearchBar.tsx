@@ -1,30 +1,25 @@
-import React, { KeyboardEvent, useEffect, useReducer, useRef, useState } from 'react'
+import React, { KeyboardEvent, useEffect, useReducer, useState } from 'react'
 import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { useNavigate } from 'react-router-dom'
-import PATH from '../../routes/routePath'
 import DropDownBox from './DropDownBox'
 import useDebounce from '../../hooks/useDebounce'
 import { checkInputValid } from '../../utils/InputValidation'
 import { getSearchingMovieList } from '../../api/request'
-import { IAutoCompleteList } from '../../types/types'
+import { IAutoCompleteList, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 
-type SearchBarType = {
-  isDropDownOpen: boolean
-  setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>
-  dropDownRef: React.RefObject<HTMLUListElement>
-}
-
-const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBarType) => {
-  const navigate = useNavigate() //검색어 navi props 넘기기
+const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
+  const navigate = useNavigate()
   const [tempQuery, setTempQuery] = useState<string>('')
   const debouncedValue = useDebounce(tempQuery)
   const [autoCompleteList, setAutoCompleteList] = useState<IAutoCompleteList[]>([])
   const [searchValue, setSearchValue] = useState<string>('')
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
 
-  //마우스로도 포커스 해야됨
+  const goToSearchPage = () => {
+    navigate(`search/${searchValue}`)
+  }
 
   useEffect(() => {
     if (debouncedValue.length === 0 || debouncedValue.trim() === '') {
@@ -89,7 +84,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
           break
         case 'Enter':
           if (focusIndex >= MIN_INDEX) changeInputValue()
-          else if (focusIndex < MIN_INDEX) navigate(PATH.SEARCH)
+          else if (focusIndex < MIN_INDEX) goToSearchPage()
           break
       }
     }
@@ -103,12 +98,13 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
           placeholder="어떤 영화를 찾아볼까요?"
           maxLength={20}
           onFocus={() => setIsDropDownOpen(true)}
+          onBlur={() => setIsDropDownOpen(false)}
           onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => handleKeyDown(e)}
           value={tempQuery}
           role="searchbox"
         />
-        <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
+        <div className="search-icon" onClick={() => goToSearchPage()}>
           <SearchIcon />
         </div>
         {isDropDownOpen && (

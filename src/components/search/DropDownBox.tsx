@@ -5,7 +5,7 @@ import { IDropDownBox } from '../../types/types'
 
 const DropDownBox = ({ list, focusIndex, resetQueryAndIndex }: IDropDownBox, ref: Ref<HTMLUListElement>) => {
   return list.length ? (
-    <DropDownContainer role="combobox" ref={ref}>
+    <DropDownContainer ref={ref}>
       {list.map((item, index) => (
         <DropDownItem
           title={item.title || item.name}

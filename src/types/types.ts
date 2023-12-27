@@ -29,10 +29,14 @@ export interface IAutoCompleteList {
   vote_average: number
   vote_count: number
 }
-
 export interface IDropDownBox {
   list: IAutoCompleteList[]
   focusIndex: number
   resetQueryAndIndex: (query: string) => void
   ref: Ref<HTMLUListElement>
+}
+export interface ISearchBar {
+  isDropDownOpen: boolean
+  setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>
+  dropDownRef: React.RefObject<HTMLUListElement>
 }
