@@ -24,10 +24,10 @@ export const getTopRatedMovieList = async () => {
     })
 }
 
-export const getAutoCompletionList = async (query: string) => {
+export const getSearchingMovieList = async (query: string, page = 1) => {
   return await axiosInstance
-    .get(`search/multi?query=${query}&include_adult=true&language=ko-KR&page=1`, {
-      params: { ...defaultOption, page: 1 }
+    .get(`search/multi?query=${query}&include_adult=true`, {
+      params: { ...defaultOption, page }
     })
     .then((res) => {
       console.log(res.data.results)

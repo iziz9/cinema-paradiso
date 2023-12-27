@@ -1,19 +1,18 @@
 import React, { Ref, forwardRef } from 'react'
 import styled from 'styled-components'
 import DropDownItem from './DropDownItem'
-import { IAutoCompleteList } from '../../types/types'
+import { IDropDownBox } from '../../types/types'
 
-type DropDownBoxType = {
-  list: IAutoCompleteList[]
-  focusIndex: number
-  ref: Ref<HTMLUListElement>
-}
-
-const DropDownBox = ({ list, focusIndex }: DropDownBoxType, ref: Ref<HTMLUListElement>) => {
+const DropDownBox = ({ list, focusIndex, resetQueryAndIndex }: IDropDownBox, ref: Ref<HTMLUListElement>) => {
   return list.length ? (
     <DropDownContainer role="combobox" ref={ref}>
       {list.map((item, index) => (
-        <DropDownItem title={item.title || item.name} isFocused={focusIndex === index} key={item.id} />
+        <DropDownItem
+          title={item.title || item.name}
+          isFocused={focusIndex === index}
+          resetQueryAndIndex={resetQueryAndIndex}
+          key={item.id}
+        />
       ))}
     </DropDownContainer>
   ) : (

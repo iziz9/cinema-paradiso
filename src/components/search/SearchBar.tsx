@@ -6,7 +6,7 @@ import PATH from '../../routes/routePath'
 import DropDownBox from './DropDownBox'
 import useDebounce from '../../hooks/useDebounce'
 import { checkInputValid } from '../../utils/InputValidation'
-import { getAutoCompletionList } from '../../api/request'
+import { getSearchingMovieList } from '../../api/request'
 import { IAutoCompleteList } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 
@@ -23,7 +23,6 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
   const [autoCompleteList, setAutoCompleteList] = useState<IAutoCompleteList[]>([])
   const [searchValue, setSearchValue] = useState<string>('')
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
-  // const DropDownRef = useRef<HTMLUListElement>(null)
 
   //마우스로도 포커스 해야됨
 
@@ -37,7 +36,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
 
   useEffect(() => {
     const getList = async () => {
-      const res = await getAutoCompletionList(searchValue)
+      const res = await getSearchingMovieList(searchValue)
       setAutoCompleteList(res.slice(0, MAX_INDEX))
     }
     searchValue && getList()
@@ -48,7 +47,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
     if (ul && focusIndex < DEFAULT_INDEX) {
       dispatch({ type: 'RESET' })
     }
-  }, [focusIndex])
+  }, [focusIndex, dropDownRef])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTempQuery(e.target.value)
@@ -69,9 +68,11 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (autoCompleteList.length === 0 && e.key === 'Escape') {
+      setIsDropDownOpen(false)
+    }
     if (!e.nativeEvent.isComposing && autoCompleteList.length > 0) {
       const isLastIndex = focusIndex + 1 === autoCompleteList.length
-
       switch (e.key) {
         case 'ArrowDown':
           if (!isLastIndex) {
@@ -84,9 +85,11 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
         case 'Escape':
           dispatch({ type: 'RESET' })
           e.currentTarget.blur()
+          setIsDropDownOpen(false)
           break
         case 'Enter':
           if (focusIndex >= MIN_INDEX) changeInputValue()
+          else if (focusIndex < MIN_INDEX) navigate(PATH.SEARCH)
           break
       }
     }
@@ -108,7 +111,14 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: SearchBar
         <div className="search-icon" onClick={() => navigate(PATH.SEARCH)}>
           <SearchIcon />
         </div>
-        {isDropDownOpen && <DropDownBox list={autoCompleteList} focusIndex={focusIndex} ref={dropDownRef} />}
+        {isDropDownOpen && (
+          <DropDownBox
+            list={autoCompleteList}
+            focusIndex={focusIndex}
+            resetQueryAndIndex={resetQueryAndIndex}
+            ref={dropDownRef}
+          />
+        )}
       </div>
     </SearchBarContainer>
   )

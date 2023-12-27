@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, Ref } from 'react'
 
 export interface ChildrenProps {
   children: ReactNode
@@ -9,6 +9,7 @@ export interface IAutoCompleteLayout extends ChildrenProps {
 export interface IDropDownItem {
   title: string
   isFocused: boolean
+  resetQueryAndIndex: (query: string) => void
 }
 export interface IAutoCompleteList {
   adult: boolean
@@ -27,4 +28,11 @@ export interface IAutoCompleteList {
   poster_path: string
   vote_average: number
   vote_count: number
+}
+
+export interface IDropDownBox {
+  list: IAutoCompleteList[]
+  focusIndex: number
+  resetQueryAndIndex: (query: string) => void
+  ref: Ref<HTMLUListElement>
 }

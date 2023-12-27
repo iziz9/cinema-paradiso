@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { IDropDownItem } from '../../types/types'
 
-const DropDownItem = ({ title, isFocused }: IDropDownItem) => {
+const DropDownItem = ({ title, isFocused, resetQueryAndIndex }: IDropDownItem) => {
   return (
-    <DropDownItemContainer $isfocused={isFocused.toString()}>
+    <DropDownItemContainer $isfocused={isFocused.toString()} onClick={() => resetQueryAndIndex(title)}>
       <div className="icon">
         <SearchIcon />
       </div>
@@ -36,6 +36,11 @@ const DropDownItemContainer = styled.li<{ $isfocused: string }>`
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
+
+    &:hover {
+      color: var(--colors-green);
+      cursor: pointer;
+    }
   }
 `
 export default DropDownItem
