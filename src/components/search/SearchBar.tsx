@@ -18,9 +18,12 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
 
   const goToSearchPage = () => {
+    if (!searchValue) {
+      return alert('검색어를 입력해주세요.')
+    }
     navigate(`search/${searchValue}`)
   }
-
+  // searchValue 문자열 지운 후 공백문자만 입력하면 공백으로 인식 못하는 오류-수정하기
   useEffect(() => {
     if (debouncedValue.length === 0 || debouncedValue.trim() === '') {
       return setAutoCompleteList([])
@@ -64,7 +67,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (autoCompleteList.length === 0 && e.key === 'Escape') {
-      setIsDropDownOpen(false)
+      return setIsDropDownOpen(false)
     }
     if (!e.nativeEvent.isComposing && autoCompleteList.length > 0) {
       const isLastIndex = focusIndex + 1 === autoCompleteList.length
@@ -83,7 +86,8 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           setIsDropDownOpen(false)
           break
         case 'Enter':
-          if (focusIndex >= MIN_INDEX) changeInputValue()
+          if (!searchValue.trim().length) goToSearchPage()
+          else if (focusIndex >= MIN_INDEX) changeInputValue()
           else if (focusIndex < MIN_INDEX) goToSearchPage()
           break
       }
@@ -98,13 +102,14 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           placeholder="어떤 영화를 찾아볼까요?"
           maxLength={20}
           onFocus={() => setIsDropDownOpen(true)}
-          onBlur={() => setIsDropDownOpen(false)}
+          // onBlur={() => setIsDropDownOpen(false)}
           onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => handleKeyDown(e)}
           value={tempQuery}
           role="searchbox"
+          required
         />
-        <div className="search-icon" onClick={() => goToSearchPage()}>
+        <div className="search-icon" onClick={() => goToSearchPage()} data-testid="searchbutton">
           <SearchIcon />
         </div>
         {isDropDownOpen && (

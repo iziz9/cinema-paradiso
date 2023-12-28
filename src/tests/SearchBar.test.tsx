@@ -46,15 +46,22 @@ describe('Search function test', () => {
     expect(await screen.findByText('검색 결과가 없습니다.')).toBeInTheDocument()
   })
 
-  // test('공백문자/검색어 없이 검색버튼 클릭 시 "검색어를 입력하세요" alert 표시', async () => {
-  //   render(<RoutedMainPage />)
-  //   const searchbox = screen.getByRole<HTMLInputElement>('searchbox')
-  //   userEvent.type(searchbox, 'aaaaaaaaaaaaaaaaaaaaaaa')
-  //   expect(searchbox.value).toHaveLength(20)
-  // })
+  test('공백문자/검색어 없이 검색버튼 클릭 시 "검색어를 입력하세요" alert 표시', async () => {
+    render(<RoutedMainPage />)
+    const searchbutton = screen.getByTestId<HTMLButtonElement>('searchbutton')
+    window.alert = jest.fn()
+    userEvent.click(searchbutton)
+    await waitFor(() => {
+      expect(window.alert).toBeCalledWith('검색어를 입력해주세요.')
+    })
+  })
 
   // test('드롭다운 마지막 리스트에서 아래 방향키를 누르면 동작하지 않는다', async () => {
   //   render(<RoutedMainPage />)
+  //   const searchbox = screen.getByRole<HTMLInputElement>('searchbox')
+  //   userEvent.type(searchbox, '집')
+  //   expect(await screen.findByText('검색 결과가 없습니다.')).toBeInTheDocument()
+  //   userEvent.keyboard('{Escape}')
   // })
 
   // test('드롭다운 첫 번째 리스트에서 위 방향키를 누르면 input으로 포커스가 돌아간다', async () => {

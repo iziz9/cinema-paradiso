@@ -5,7 +5,12 @@ import { IDropDownItem } from '../../types/types'
 
 const DropDownItem = ({ title, isFocused, resetQueryAndIndex }: IDropDownItem) => {
   return (
-    <DropDownItemContainer $isfocused={isFocused.toString()} onClick={() => resetQueryAndIndex(title)}>
+    <DropDownItemContainer
+      $isfocused={isFocused.toString()}
+      onClick={() => {
+        resetQueryAndIndex(title)
+      }}
+    >
       <div className="icon">
         <SearchIcon />
       </div>
