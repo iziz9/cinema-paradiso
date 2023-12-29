@@ -102,7 +102,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           placeholder="어떤 영화를 찾아볼까요?"
           maxLength={20}
           onFocus={() => setIsDropDownOpen(true)}
-          // onBlur={() => setIsDropDownOpen(false)}
+          // onBlur={() => setIsDropDownOpen(false)} //드롭다운 클릭 blur로 인식 문제
           onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => handleKeyDown(e)}
           value={tempQuery}

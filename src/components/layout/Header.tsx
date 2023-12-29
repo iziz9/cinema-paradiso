@@ -34,7 +34,7 @@ const Header = () => {
 const HeaderContainer = styled.header`
   position: relative;
   width: 100%;
-  height: 80px;
+  height: var(--height-header-pc);
 
   .layout {
     height: 100%;
@@ -63,7 +63,7 @@ const HeaderContainer = styled.header`
   }
 
   @media (max-width: 833px) {
-    height: 60px;
+    height: var(--height-header-mobile);
 
     img {
       width: 90px;

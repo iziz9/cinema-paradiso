@@ -28,8 +28,8 @@ const GlobalStyles = createGlobalStyle`
 
   main {
     height: auto;
-    min-height: 100%;
     padding-bottom: 40px;
+    min-height: calc(100vh - var(--height-header-pc) - var(--height-footer) - 20px);
   }
 
   footer {
@@ -68,6 +68,11 @@ const GlobalStyles = createGlobalStyle`
     /* Screen max-width */
     --screen-m: 833px;
     --screen-pc: 1024px;
+
+    /* Screen height */
+    --height-header-pc: 80px;
+    --height-header-mobile: 60px;
+    --height-footer: 100px;
 
     /* Colors */
     --colors-dark: #3a3a3a;

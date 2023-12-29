@@ -25,7 +25,7 @@ const Footer = () => {
 const FooterContainer = styled.footer`
   position: relative;
   width: 100%;
-  height: 100px;
+  height: var(--height-footer);
   color: var(--colors-gray);
 
   .logo {
