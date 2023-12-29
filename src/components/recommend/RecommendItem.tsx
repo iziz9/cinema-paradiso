@@ -10,7 +10,7 @@ const RecommendItem = ({ number, onClick }: PropsType) => {
   return (
     <ItemContainer onClick={onClick}>
       <div className="poster">
-        <img src={`/poster${number}.jpeg`} alt="img" />
+        <img src={`/poster${number}.jpeg`} alt="poster" />
       </div>
     </ItemContainer>
   )

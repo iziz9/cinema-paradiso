@@ -66,7 +66,8 @@ const GlobalStyles = createGlobalStyle`
 
   #root {
     /* Screen max-width */
-    --screen-m: 833px;
+    --screen-mobile: 450px;
+    --screen-tablet: 833px;
     --screen-pc: 1024px;
 
     /* Screen height */
@@ -82,6 +83,8 @@ const GlobalStyles = createGlobalStyle`
     --colors-green: #A1BA50;
     --colors-gray: #cecece;
     --colors-darkgray: #242424;
+    --colors-transdark: #00000040;
+    --colors-transblack: #000000c7;
     
     font-family: 'SUITE-Regular', sans-serif;
     position: relative;
