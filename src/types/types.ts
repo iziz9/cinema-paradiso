@@ -11,7 +11,7 @@ export interface IDropDownItem {
   isFocused: boolean
   resetQueryAndIndex: (query: string) => void
 }
-export interface IAutoCompleteList {
+export interface IMovieInfo {
   adult: boolean
   backdrop_path: string
   first_air_date: string
@@ -30,7 +30,7 @@ export interface IAutoCompleteList {
   vote_count: number
 }
 export interface IDropDownBox {
-  list: IAutoCompleteList[]
+  list: IMovieInfo[]
   focusIndex: number
   resetQueryAndIndex: (query: string) => void
   ref: Ref<HTMLUListElement>
@@ -39,4 +39,27 @@ export interface ISearchBar {
   isDropDownOpen: boolean
   setIsDropDownOpen: React.Dispatch<React.SetStateAction<boolean>>
   dropDownRef: React.RefObject<HTMLUListElement>
+}
+export interface IResultList {
+  resultList: IMovieInfo
+}
+export interface IMovieDetail {
+  adult: boolean
+  backdrop_path: string
+  genres: { id: number; name: string }[]
+  id: number
+  imdb_id: string
+  originam_title: string
+  overview: string
+  popularity: number
+  poster_path: string
+  production_countries: { iso_3166_1: string; name: string }[]
+  release_date: string
+  revenue: number
+  runtime: number
+  status: string
+  tagline: string
+  title: string
+  vote_average: number
+  vote_count: number
 }

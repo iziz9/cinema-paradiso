@@ -1,20 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
+import { IResultList } from '../types/types'
+import { useNavigate } from 'react-router-dom'
 
 const SearchPage = () => {
   const isMobile = useMediaQuery({
     query: '(max-width: 833px)'
   })
+  const navigate = useNavigate()
   const DropDownRef = useRef<HTMLUListElement>(null)
   const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
   const [focusedMovieId, setFocusedMovieId] = useState<number>(-1) // 영화 아이디, 타이틀과 같을 경우 overlay 표시
+  const movieId = 1903
 
   return (
     <SearchPageContainer>
       <SearchBar isDropDownOpen={isDropDownOpen} setIsDropDownOpen={setisDropDownOpen} dropDownRef={DropDownRef} />
       <ListContainer>
+        <ListItem onClick={() => navigate(`/detail/${movieId}`, { state: { movieId } })}>
+          <div className="poster">
+            <img src="/poster1.jpeg" alt="poster" />
+          </div>
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
+          </div>
+        </ListItem>
         <ListItem>
           <div className="poster">
             <img src="/poster1.jpeg" alt="poster" />
@@ -22,37 +36,77 @@ const SearchPage = () => {
           <div className="overlay">
             <p className="title">트루먼 쇼</p>
             <p className="director">감독</p>
-            <p className="genre">코미디 · 가족 </p>
+            <p className="genre">코미디 · 가족</p>
           </div>
         </ListItem>
         <ListItem>
           <div className="poster">
             <img src="/poster1.jpeg" alt="poster" />
           </div>
-        </ListItem>
-        <ListItem>
-          <div className="poster">
-            <img src="/poster1.jpeg" alt="poster" />
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
           </div>
         </ListItem>
         <ListItem>
           <div className="poster">
             <img src="/poster1.jpeg" alt="poster" />
           </div>
-        </ListItem>
-        <ListItem>
-          <div className="poster">
-            <img src="/poster0.jpeg" alt="poster" />
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
           </div>
         </ListItem>
         <ListItem>
           <div className="poster">
-            <img src="/poster0.jpeg" alt="poster" />
+            <img src="/poster1.jpeg" alt="poster" />
+          </div>
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
           </div>
         </ListItem>
         <ListItem>
           <div className="poster">
-            <img src="/poster0.jpeg" alt="poster" />
+            <img src="/poster1.jpeg" alt="poster" />
+          </div>
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="poster">
+            <img src="/poster1.jpeg" alt="poster" />
+          </div>
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="poster">
+            <img src="/poster1.jpeg" alt="poster" />
+          </div>
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
+          </div>
+        </ListItem>
+        <ListItem>
+          <div className="poster">
+            <img src="/poster1.jpeg" alt="poster" />
+          </div>
+          <div className="overlay">
+            <p className="title">트루먼 쇼</p>
+            <p className="director">감독</p>
+            <p className="genre">코미디 · 가족</p>
           </div>
         </ListItem>
       </ListContainer>
@@ -132,10 +186,10 @@ const ListItem = styled.li`
       font-weight: 700;
     }
     .director {
-      margin-top: 5px;
+      margin-top: 3px;
     }
     .genre {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
   }
 `

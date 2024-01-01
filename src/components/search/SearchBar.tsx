@@ -6,14 +6,14 @@ import DropDownBox from './DropDownBox'
 import useDebounce from '../../hooks/useDebounce'
 import { checkInputValid } from '../../utils/InputValidation'
 import { getSearchingMovieList } from '../../api/request'
-import { IAutoCompleteList, ISearchBar } from '../../types/types'
+import { IMovieInfo, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
   const [tempQuery, setTempQuery] = useState<string>('')
   const debouncedValue = useDebounce(tempQuery)
-  const [autoCompleteList, setAutoCompleteList] = useState<IAutoCompleteList[]>([])
+  const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
   const [searchValue, setSearchValue] = useState<string>('')
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
 
@@ -21,7 +21,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     if (!searchValue) {
       return alert('검색어를 입력해주세요.')
     }
-    navigate(`search/${searchValue}`)
+    navigate(`/search/${searchValue}`)
   }
   // searchValue 문자열 지운 후 공백문자만 입력하면 공백으로 인식 못하는 오류-수정하기
   useEffect(() => {

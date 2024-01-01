@@ -1,68 +1,84 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/recommend/RecommendList'
+import { useLocation } from 'react-router-dom'
+import { getMovieDetail } from '../api/request'
+import { IMovieDetail } from '../types/types'
 
 const DetailPage = () => {
+  const location = useLocation()
+  const [movieInfo, setMovieInfo] = useState<IMovieDetail>()
+  const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
+
+  useEffect(() => {
+    const requestGetMovieDetail = async () => {
+      const res = await getMovieDetail(location.state.movieId)
+      setMovieInfo(res)
+      //감독, 배우는 credit api 추가요청 필요
+    }
+    requestGetMovieDetail()
+  }, [location])
+
   return (
     <Container>
-      <DetailSection>
-        <DetailUpper>
-          <div className="poster">
-            <img src="/poster1.jpeg" alt="poster" />
-          </div>
-          <div className="desc">
-            <div className="row">
-              <h1>트루먼 쇼</h1>
-            </div>
-            <div className="row">
-              <h2>개봉</h2>
-              <span>1998</span>
-            </div>
-            <div className="row">
-              <h2>감독</h2>
-              <div className="director">
-                <span>Peter Weir</span>
+      {movieInfo && (
+        <>
+          <DetailSection>
+            <DetailUpper>
+              <div className="poster">
+                <img src={POSTER_BASE_URL + movieInfo.poster_path} alt="poster" />
               </div>
-            </div>
-            <div className="row">
-              <h2>장르</h2>
-              <div className="genere">
-                <button className="genere">코미디</button>
-                <button className="genere">드라마</button>
-              </div>
-            </div>
-            <div className="row">
-              <h2>출연</h2>
-              <div className="credits">
-                <span>Jim Carrey</span>, <span>Layra Linney</span>, <span>Noah Emmerich</span>,
-                <span>Natascha McElhone</span>, <span>Holland Taylor</span>, <span>...</span>
-              </div>
-            </div>
-            <DetailMiddle>
-              <button>
-                <BookmarkBlankIcon />
-                <span>관심등록</span>
-              </button>
-              {/* <button>
+              <div className="desc">
+                <div className="row">
+                  <h1>{movieInfo.title}</h1>
+                </div>
+                <div className="row">
+                  <h2>개봉</h2>
+                  <span>{movieInfo.release_date}</span>
+                </div>
+                <div className="row">
+                  <h2>감독</h2>
+                  <div className="director">
+                    <span>감독api</span>
+                  </div>
+                </div>
+                <div className="row">
+                  <h2>장르</h2>
+                  <div className="genere">
+                    {movieInfo.genres.map((genre) => (
+                      <button className="genere" key={genre.id}>
+                        {genre.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="row">
+                  <h2>출연</h2>
+                  <div className="credits">
+                    <span>Jim Carrey</span>, <span>Layra Linney</span>, <span>Noah Emmerich</span>,
+                    <span>Natascha McElhone</span>, <span>Holland Taylor</span>, <span>...</span>
+                  </div>
+                </div>
+                <DetailMiddle>
+                  <button>
+                    <BookmarkBlankIcon />
+                    <span>관심등록</span>
+                  </button>
+                  {/* <button>
                 <BookmarkFillIcon />
                 <span>관심삭제</span>
               </button> */}
-            </DetailMiddle>
-          </div>
-        </DetailUpper>
-        <DetailLower>
-          트루먼 버뱅크는 작고 조용한 섬마을에 사는 평범한 세일즈맨이다. 그런 그가 자신의 삶에 대해 의문을 갖기 시작한
-          것은 평소와 다름없이 평범한 어느 날, 갑자기 하늘에서 촬영용 조명등이 떨어지고, 어렸을 적 자신이 익사를 직접
-          목격했던 아버지가 살아오고, 또 누군가에 의해 끌려가는 등 상식 밖의 일들이 벌어지고 나서부터였다. 평생을 그다지
-          신경쓰지 않고 지냈던 일상이었지만 주변을 보니 이상한 일이 너무 많았다. 결국 자신이 특별한 상황에 놓여있다는
-          확신을 하게된 트루먼은 첫사랑 실비아의 모든 것이 다 거짓라는 말을 되새기며 일상으로부터 탈출을 결심하게
-          되는데...
-        </DetailLower>
-      </DetailSection>
-      <RelatedSection>
-        <RecommendList title={`<${'RRR'}> 비슷한 영화`} />
-      </RelatedSection>
+                </DetailMiddle>
+              </div>
+            </DetailUpper>
+            <DetailLower>{movieInfo.overview}</DetailLower>
+          </DetailSection>
+          <RelatedSection>
+            <RecommendList title={`<${'RRR'}> 비슷한 영화`} />
+          </RelatedSection>
+        </>
+      )}
     </Container>
   )
 }
@@ -93,7 +109,7 @@ const DetailUpper = styled.div`
 
   .poster {
     position: relative;
-    width: 30%;
+    /* width: 30%; */
     margin: auto;
 
     img {

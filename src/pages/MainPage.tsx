@@ -26,7 +26,7 @@ const MainPage = () => {
 const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 `
 
 export default MainPage
