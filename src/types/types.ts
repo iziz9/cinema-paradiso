@@ -63,3 +63,36 @@ export interface IMovieDetail {
   vote_average: number
   vote_count: number
 }
+export interface IMovieCredits {
+  id: number
+  cast: IMovieCreditsCast[]
+  crew: ImovieCreditsCrew[]
+}
+interface IMovieCreditsCast {
+  adult: boolean
+  gender: number
+  id: number
+  known_for_department: string
+  name: string
+  original_name: string
+  popularity: number
+  profile_path: string
+  cast_id: number
+  character: string
+  credit_id: string
+  order: number
+  job: string
+}
+interface ImovieCreditsCrew {
+  adult: boolean
+  credit_id: string
+  department: string
+  gender: number
+  id: number
+  job: string
+  known_for_department: string
+  name: string
+  original_name: string
+  popularity: number
+  profile_path: string
+}

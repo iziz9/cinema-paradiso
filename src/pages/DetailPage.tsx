@@ -3,50 +3,56 @@ import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/recommend/RecommendList'
 import { useLocation } from 'react-router-dom'
-import { getMovieDetail } from '../api/request'
-import { IMovieDetail } from '../types/types'
+import { getMovieCredits, getMovieDetail } from '../api/request'
+import { IMovieCredits, IMovieDetail } from '../types/types'
 
 const DetailPage = () => {
   const location = useLocation()
-  const [movieInfo, setMovieInfo] = useState<IMovieDetail>()
+  const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
+  const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
   const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
+  const MAX_CAST_NUMBER = 6
 
   useEffect(() => {
     const requestGetMovieDetail = async () => {
-      const res = await getMovieDetail(location.state.movieId)
-      setMovieInfo(res)
-      //감독, 배우는 credit api 추가요청 필요
+      const detailsRes = await getMovieDetail(location.state.movieId)
+      setMovieDetails(detailsRes)
+      const creditsRes = await getMovieCredits(location.state.movieId)
+      setMovieCredits(creditsRes)
+      console.log(creditsRes)
     }
     requestGetMovieDetail()
   }, [location])
 
   return (
     <Container>
-      {movieInfo && (
+      {movieDetails && movieCredits && (
         <>
           <DetailSection>
             <DetailUpper>
               <div className="poster">
-                <img src={POSTER_BASE_URL + movieInfo.poster_path} alt="poster" />
+                <img src={POSTER_BASE_URL + movieDetails.poster_path} alt="poster" />
               </div>
               <div className="desc">
                 <div className="row">
-                  <h1>{movieInfo.title}</h1>
+                  <h1>{movieDetails.title}</h1>
                 </div>
                 <div className="row">
                   <h2>개봉</h2>
-                  <span>{movieInfo.release_date}</span>
+                  <span>{movieDetails.release_date}</span>
                 </div>
                 <div className="row">
                   <h2>감독</h2>
                   <div className="director">
-                    <span>감독api</span>
+                    {movieCredits.crew.map((crew) => (
+                      <>{crew.job === 'Director' && <span key={crew.id}>{crew.name}</span>}</>
+                    ))}
                   </div>
                 </div>
                 <div className="row">
                   <h2>장르</h2>
                   <div className="genere">
-                    {movieInfo.genres.map((genre) => (
+                    {movieDetails.genres.map((genre) => (
                       <button className="genere" key={genre.id}>
                         {genre.name}
                       </button>
@@ -56,8 +62,11 @@ const DetailPage = () => {
                 <div className="row">
                   <h2>출연</h2>
                   <div className="credits">
-                    <span>Jim Carrey</span>, <span>Layra Linney</span>, <span>Noah Emmerich</span>,
-                    <span>Natascha McElhone</span>, <span>Holland Taylor</span>, <span>...</span>
+                    {movieCredits.cast.map((cast, index) => (
+                      <>{index <= MAX_CAST_NUMBER && <span key={cast.id}>{cast.name}, </span>}</>
+                    ))}
+                    {/* <span>Jim Carrey</span>, <span>Layra Linney</span>, <span>Noah Emmerich</span>,
+                     <span>Natascha McElhone</span>, <span>Holland Taylor</span>, <span>...</span> */}
                   </div>
                 </div>
                 <DetailMiddle>
@@ -72,10 +81,10 @@ const DetailPage = () => {
                 </DetailMiddle>
               </div>
             </DetailUpper>
-            <DetailLower>{movieInfo.overview}</DetailLower>
+            <DetailLower>{movieDetails.overview}</DetailLower>
           </DetailSection>
           <RelatedSection>
-            <RecommendList title={`<${'RRR'}> 비슷한 영화`} />
+            <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} />
           </RelatedSection>
         </>
       )}

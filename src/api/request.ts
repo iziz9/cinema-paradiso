@@ -34,10 +34,19 @@ export const getSearchingMovieList = async (query: string, page = 1) => {
       return res.data.results
     })
 }
-
 export const getMovieDetail = async (movieId: number) => {
   return await axiosInstance
     .get(`movie/${movieId}`, {
+      params: { ...defaultOption }
+    })
+    .then((res) => {
+      console.log(res.data)
+      return res.data
+    })
+}
+export const getMovieCredits = async (movieId: number) => {
+  return await axiosInstance
+    .get(`movie/${movieId}/credits`, {
       params: { ...defaultOption }
     })
     .then((res) => {
