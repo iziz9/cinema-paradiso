@@ -2,23 +2,42 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import RecommendList from '../components/recommend/RecommendList'
-import { getPopularMovieList } from '../api/request'
+import { getPopularMovieList, getTopRatedMovieList } from '../api/request'
+import { IMovieInfo } from '../types/types'
+
+const RECOMMEND_LIST_DEFAULT: IMovieInfo[] = []
 
 const MainPage = () => {
   const DropDownRef = useRef<HTMLUListElement>(null)
   const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
+  const [popularMovies, setPopularMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [sfMovies, setSfMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [romanceMovies, setRomanceMovies] = useState(RECOMMEND_LIST_DEFAULT)
 
   useEffect(() => {
-    // getPopularMovieList()
+    const getRecommendLists = async () => {
+      const popularRes = await getPopularMovieList()
+      setPopularMovies(popularRes)
+      const topRatedRes = await getTopRatedMovieList()
+      setTopRatedMovies(topRatedRes)
+    }
+    getRecommendLists()
   }, [])
+
+  const movieRecommendList = [
+    { title: '지금 가장 인기있는 영화', movieList: popularMovies },
+    { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
+    // { title: '오늘의 SF 추천 영화', movieList: sfMovies },
+    // { title: '오늘의 로맨스 추천 영화', movieList: romanceMovies }
+  ]
 
   return (
     <MainContainer>
       <SearchBar isDropDownOpen={isDropDownOpen} setIsDropDownOpen={setisDropDownOpen} dropDownRef={DropDownRef} />
-      <RecommendList title={'지금 가장 인기있는 영화'} />
-      <RecommendList title={'오늘의 SF 추천 영화'} />
-      <RecommendList title={'오늘의 로맨스 추천 영화'} />
-      <RecommendList title={'관객 평점이 가장 높은 영화'} />
+      {movieRecommendList.map((list, index) => (
+        <RecommendList title={list.title} movieList={list.movieList} key={index} />
+      ))}
     </MainContainer>
   )
 }

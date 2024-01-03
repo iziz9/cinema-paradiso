@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
-import { IResultList } from '../types/types'
 import { useNavigate } from 'react-router-dom'
 
 const SearchPage = () => {

@@ -8,7 +8,7 @@ const DropDownBox = ({ list, focusIndex, resetQueryAndIndex }: IDropDownBox, ref
     <DropDownContainer ref={ref}>
       {list.map((item, index) => (
         <DropDownItem
-          title={item.title || item.name}
+          title={item.title}
           isFocused={focusIndex === index}
           resetQueryAndIndex={resetQueryAndIndex}
           key={item.id}

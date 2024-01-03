@@ -16,15 +16,15 @@ const MyPage = () => {
             <img src="/mypage_example.webp" alt="관심영화 등록 방법" />
           </div>
         </div>
-        <RecommendList title={'관객 평점이 가장 높은 영화'} />
-        <RecommendList title={'지금 가장 인기있는 영화'} />
+        {/* <RecommendList title={'관객 평점이 가장 높은 영화'} /> */}
+        {/* <RecommendList title={'지금 가장 인기있는 영화'} /> */}
       </MyPageContainer>
     )
   return (
     <MyPageContainer>
       <Chart />
-      <RecommendList title={'관심 등록한 영화'} />
-      <RecommendList title={'취향 저격 추천 영화'} />
+      {/* <RecommendList title={'관심 등록한 영화'} /> */}
+      {/* <RecommendList title={'취향 저격 추천 영화'} /> */}
     </MyPageContainer>
   )
 }

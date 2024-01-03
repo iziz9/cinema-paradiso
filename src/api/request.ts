@@ -5,7 +5,7 @@ const defaultOption = { language: 'ko-KR' }
 export const getPopularMovieList = async () => {
   return await axiosInstance
     .get(`movie/popular`, {
-      params: { ...defaultOption, page: 1 }
+      params: { ...defaultOption, page: 1, region: 410 }
     })
     .then((res) => {
       console.log(res.data.results)
@@ -15,8 +15,8 @@ export const getPopularMovieList = async () => {
 
 export const getTopRatedMovieList = async () => {
   return await axiosInstance
-    .get(`discover/movie`, {
-      params: { ...defaultOption, page: 1 }
+    .get(`movie/top_rated`, {
+      params: { ...defaultOption, page: 1, region: 410 }
     })
     .then((res) => {
       console.log(res.data.results)
@@ -26,7 +26,7 @@ export const getTopRatedMovieList = async () => {
 
 export const getSearchingMovieList = async (query: string, page = 1) => {
   return await axiosInstance
-    .get(`search/multi?query=${query}&include_adult=true`, {
+    .get(`search/movie?query=${query}&include_adult=true`, {
       params: { ...defaultOption, page }
     })
     .then((res) => {
@@ -52,5 +52,15 @@ export const getMovieCredits = async (movieId: number) => {
     .then((res) => {
       console.log(res.data)
       return res.data
+    })
+}
+export const getMovieSimilar = async (movieId: number) => {
+  return await axiosInstance
+    .get(`movie/${movieId}/similar`, {
+      params: { ...defaultOption, page: 1 }
+    })
+    .then((res) => {
+      console.log(res.data.results)
+      return res.data.results
     })
 }

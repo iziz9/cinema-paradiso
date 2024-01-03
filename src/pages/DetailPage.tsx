@@ -3,23 +3,25 @@ import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/recommend/RecommendList'
 import { useLocation } from 'react-router-dom'
-import { getMovieCredits, getMovieDetail } from '../api/request'
-import { IMovieCredits, IMovieDetail } from '../types/types'
+import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/request'
+import { IMovieCredits, IMovieDetail, IResultList } from '../types/types'
 
 const DetailPage = () => {
   const location = useLocation()
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
+  const [similarMovies, setSimilarMovies] = useState([])
   const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
   const MAX_CAST_NUMBER = 6
 
   useEffect(() => {
     const requestGetMovieDetail = async () => {
-      const detailsRes = await getMovieDetail(location.state.movieId)
+      const detailsRes = await getMovieDetail(location.state)
       setMovieDetails(detailsRes)
-      const creditsRes = await getMovieCredits(location.state.movieId)
+      const creditsRes = await getMovieCredits(location.state)
       setMovieCredits(creditsRes)
-      console.log(creditsRes)
+      const similarRes = await getMovieSimilar(location.state)
+      setSimilarMovies(similarRes)
     }
     requestGetMovieDetail()
   }, [location])
@@ -31,7 +33,11 @@ const DetailPage = () => {
           <DetailSection>
             <DetailUpper>
               <div className="poster">
-                <img src={POSTER_BASE_URL + movieDetails.poster_path} alt="poster" />
+                {movieDetails.poster_path ? (
+                  <img src={POSTER_BASE_URL + movieDetails.poster_path} alt={movieDetails.title} />
+                ) : (
+                  <img src="/no_image.webp" alt="이미지 없음" />
+                )}
               </div>
               <div className="desc">
                 <div className="row">
@@ -39,13 +45,13 @@ const DetailPage = () => {
                 </div>
                 <div className="row">
                   <h2>개봉</h2>
-                  <span>{movieDetails.release_date}</span>
+                  <span>{movieDetails.release_date.slice(0, 4)}</span>
                 </div>
                 <div className="row">
                   <h2>감독</h2>
                   <div className="director">
                     {movieCredits.crew.map((crew) => (
-                      <>{crew.job === 'Director' && <span key={crew.id}>{crew.name}</span>}</>
+                      <>{crew.job === 'Director' && <span key={crew.name}>{crew.name}</span>}</>
                     ))}
                   </div>
                 </div>
@@ -65,8 +71,7 @@ const DetailPage = () => {
                     {movieCredits.cast.map((cast, index) => (
                       <>{index <= MAX_CAST_NUMBER && <span key={cast.id}>{cast.name}, </span>}</>
                     ))}
-                    {/* <span>Jim Carrey</span>, <span>Layra Linney</span>, <span>Noah Emmerich</span>,
-                     <span>Natascha McElhone</span>, <span>Holland Taylor</span>, <span>...</span> */}
+                    <span>...</span>
                   </div>
                 </div>
                 <DetailMiddle>
@@ -84,7 +89,7 @@ const DetailPage = () => {
             <DetailLower>{movieDetails.overview}</DetailLower>
           </DetailSection>
           <RelatedSection>
-            <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} />
+            <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} />
           </RelatedSection>
         </>
       )}
@@ -152,6 +157,7 @@ const DetailUpper = styled.div`
         font-weight: 600;
         margin-right: 10px;
         word-break: keep-all;
+        color: var(--colors-green);
       }
 
       .genere,

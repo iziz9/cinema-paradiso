@@ -6,24 +6,28 @@ import 'slick-carousel/slick/slick-theme.css'
 import RecommendItem from './RecommendItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
+import { IMovieInfo, IResultList } from '../../types/types'
 
-const RecommendList = ({ title }: { title: string }) => {
+interface IRecommendList {
+  title: string
+  movieList: IMovieInfo[]
+}
+
+const RecommendList = ({ title, movieList }: IRecommendList) => {
   const navigate = useNavigate()
+
   return (
     <RecommendSection>
       <div className="list-slider">
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
-          <RecommendItem number={0} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={1} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={2} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={3} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={4} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={5} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={6} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={7} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={8} onClick={() => navigate('/detail/579974')} />
-          <RecommendItem number={9} onClick={() => navigate('/detail/579974')} />
+          {movieList.map((movie, index) => (
+            <RecommendItem
+              movieInfo={movie}
+              onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
+              key={index}
+            />
+          ))}
         </Slider>
       </div>
     </RecommendSection>
@@ -36,7 +40,7 @@ const RecommendSection = styled.section`
   margin-top: 20px;
 
   h3 {
-    font-size: 20px;
+    font-size: 1.1rem;
   }
 
   .list-slider {

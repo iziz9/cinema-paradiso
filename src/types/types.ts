@@ -14,18 +14,16 @@ export interface IDropDownItem {
 export interface IMovieInfo {
   adult: boolean
   backdrop_path: string
-  first_air_date: string
   genre_ids: number[]
   id: number
-  media_type: string
-  name: string
   title: string
-  origin_country: string[]
   original_language: string
-  original_name: string
+  original_title: string
   overview: string
   popularity: number
   poster_path: string
+  release_date: string
+  video: boolean
   vote_average: number
   vote_count: number
 }
@@ -41,7 +39,7 @@ export interface ISearchBar {
   dropDownRef: React.RefObject<HTMLUListElement>
 }
 export interface IResultList {
-  resultList: IMovieInfo
+  resultList: IMovieInfo[]
 }
 export interface IMovieDetail {
   adult: boolean
