@@ -3,10 +3,13 @@ import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import RecommendItem from './RecommendItem'
+// import RecommendItem from './RecommendItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
 import { IMovieInfo, IResultList } from '../../types/types'
+import SkeletonPoster from '../layout/SkeletonPoster'
+
+const RecommendItem = React.lazy(() => import('./RecommendItem'))
 
 interface IRecommendList {
   title: string
@@ -22,13 +25,17 @@ const RecommendList = ({ title, movieList }: IRecommendList) => {
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
           {movieList.map((movie, index) => (
-            <RecommendItem
-              movieInfo={movie}
-              onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
-              key={index}
-            />
+            <React.Suspense fallback={<SkeletonPoster />} key={index}>
+              <RecommendItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
+            </React.Suspense>
           ))}
         </Slider>
+        {/* <div>아래 테스트</div>
+        <Slider {...carouselSettings}>
+          {movieList.map((movie, index) => (
+            <SkeletonPoster key={index} />
+          ))}
+        </Slider> */}
       </div>
     </RecommendSection>
   )
@@ -54,6 +61,10 @@ const RecommendSection = styled.section`
 
     .slick-list {
       height: auto;
+
+      .slick-slide {
+        position: relative;
+      }
     }
 
     img {

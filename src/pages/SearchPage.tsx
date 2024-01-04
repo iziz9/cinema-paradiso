@@ -20,7 +20,7 @@ const SearchPage = () => {
       <ListContainer>
         <ListItem onClick={() => navigate(`/detail/${movieId}`, { state: { movieId } })}>
           <div className="poster">
-            <img src="/poster1.jpeg" alt="poster" />
+            <img src="/poster1.jpeg" alt="poster" loading="lazy" />
           </div>
           <div className="overlay">
             <p className="title">트루먼 쇼</p>

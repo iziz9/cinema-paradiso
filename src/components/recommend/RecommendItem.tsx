@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { IMovieInfo } from '../../types/types'
+import OverlayPoster from '../layout/OverlayPoster'
 
 type PropsType = {
   movieInfo: IMovieInfo
@@ -12,13 +13,18 @@ const RecommendItem = ({ movieInfo, onClick }: PropsType) => {
 
   return (
     <ItemContainer onClick={onClick}>
-      <div className="poster">
-        {movieInfo.poster_path ? (
-          <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} loading="lazy" />
-        ) : (
+      {movieInfo.poster_path ? (
+        <>
+          <div className="poster">
+            <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} />
+          </div>
+          {/* <OverlayPoster title={movieInfo.title} released={movieInfo.release_date} genre={['ㅇㄹㅇ', 'ㅇㄹㅇㅇ']} /> */}
+        </>
+      ) : (
+        <div className="poster">
           <img src="/no_image.webp" alt="이미지 없음" />
-        )}
-      </div>
+        </div>
+      )}
     </ItemContainer>
   )
 }

@@ -1,17 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
-type posterOverlayType = {
+type overlayPosterType = {
   title: string
-  director: string
+  released: string
   genre: string[]
 }
 
-const posterOverlay = ({ title, director, genre }: posterOverlayType) => {
+const OverlayPoster = ({ title, released, genre }: overlayPosterType) => {
   return (
     <OverlayContainer>
       <div className="title">{title}</div>
-      <div className="director">{director}</div>
+      <div className="released">{released}</div>
       {genre.map((item) => (
         <div className="genre" key={item}>
           {item}
@@ -37,7 +37,7 @@ const OverlayContainer = styled.div`
     font-size: 1.3rem;
     font-weight: 700;
   }
-  .director {
+  .released {
     margin-top: 3px;
   }
   .genre {
@@ -45,4 +45,4 @@ const OverlayContainer = styled.div`
   }
 `
 
-export default posterOverlay
+export default OverlayPoster
