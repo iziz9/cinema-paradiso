@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
@@ -25,17 +25,15 @@ const RecommendList = ({ title, movieList }: IRecommendList) => {
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
           {movieList.map((movie, index) => (
-            <React.Suspense fallback={<SkeletonPoster />} key={index}>
-              <RecommendItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
-            </React.Suspense>
+            // <React.Suspense fallback={<SkeletonPoster />} key={index}>
+            <RecommendItem
+              movieInfo={movie}
+              onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
+              key={movie.id}
+            />
+            // </React.Suspense>
           ))}
         </Slider>
-        {/* <div>아래 테스트</div>
-        <Slider {...carouselSettings}>
-          {movieList.map((movie, index) => (
-            <SkeletonPoster key={index} />
-          ))}
-        </Slider> */}
       </div>
     </RecommendSection>
   )
@@ -64,19 +62,8 @@ const RecommendSection = styled.section`
 
       .slick-slide {
         position: relative;
-      }
-    }
-
-    img {
-      transition: transform 0.3s;
-      cursor: pointer;
-      &:hover {
-        z-index: 100;
-        transform: scale(1.1);
-        -webkit-transform: scale(1.1); /* 크롬, 사파리 */
-        -moz-transform: scale(1.1); /* 파이어폭스 */
-        -ms-transform: scale(1.1); /* IE */
-        -o-transform: scale(1.1); /* 오페라 */
+        width: 100%;
+        height: 100%;
       }
     }
 

@@ -1,6 +1,6 @@
 export const PrevArrow = ({ onClick }: { onClick: () => void }) => {
   return (
-    <button onClick={onClick} className="prev">
+    <button onClick={onClick} className="prev" aria-label="이전">
       <svg className="custom-0" viewBox="0 0 10 40" width="40px" height="40px">
         <path
           fill="#444"
@@ -13,7 +13,7 @@ export const PrevArrow = ({ onClick }: { onClick: () => void }) => {
 
 export const NextArrow = ({ onClick }: { onClick: () => void }) => {
   return (
-    <button onClick={onClick} className="next">
+    <button onClick={onClick} className="next" aria-label="다음">
       <svg className="custom-0" viewBox="0 0 10 40" width="40px" height="40px">
         <path
           fill="#444"

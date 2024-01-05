@@ -6,9 +6,11 @@ const SkeletonPoster = () => {
 }
 
 const SkeletonContainer = styled.div`
-  /* position: relative; */
-  width: 100px;
-  height: 100px;
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1.3;
   background: center / contain no-repeat url('/skeleton_image.webp');
 `
 

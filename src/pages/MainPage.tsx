@@ -19,15 +19,15 @@ const MainPage = () => {
     const getRecommendLists = async () => {
       const popularRes = await getPopularMovieList()
       setPopularMovies(popularRes)
-      const topRatedRes = await getTopRatedMovieList()
-      setTopRatedMovies(topRatedRes)
+      // const topRatedRes = await getTopRatedMovieList()
+      // setTopRatedMovies(topRatedRes)
     }
     getRecommendLists()
   }, [])
 
   const movieRecommendList = [
-    { title: '지금 가장 인기있는 영화', movieList: popularMovies },
-    { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
+    { title: '지금 가장 인기있는 영화', movieList: popularMovies }
+    // { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
     // { title: '오늘의 SF 추천 영화', movieList: sfMovies },
     // { title: '오늘의 로맨스 추천 영화', movieList: romanceMovies }
   ]

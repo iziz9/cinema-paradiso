@@ -18,7 +18,7 @@ const Header = () => {
           <div className="logo">
             <img src="/logo.webp" alt="logo" onClick={() => navigate(PATH.MAIN)} />
           </div>
-          <button className="mypage" onClick={() => navigate(PATH.MYPAGE)}>
+          <button className="mypage" aria-label="마이페이지" onClick={() => navigate(PATH.MYPAGE)}>
             {isMobile ? (
               <MyPageIcon width={'2rem'} height={'2rem'} />
             ) : (
@@ -43,12 +43,16 @@ const HeaderContainer = styled.header`
     align-items: center;
 
     .logo {
+      position: relative;
       text-align: center;
+      width: 120px;
+      height: 54px;
 
       img {
+        position: relative;
         display: block;
-        width: 120px;
-        height: 54px;
+        width: 100%;
+        height: 100%;
         cursor: pointer;
       }
     }
