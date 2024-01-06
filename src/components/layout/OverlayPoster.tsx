@@ -5,11 +5,12 @@ type overlayPosterType = {
   title: string
   released: string
   genre: string[]
+  handleMouseLeave: () => void
 }
 
-const OverlayPoster = ({ title, released, genre }: overlayPosterType) => {
+const OverlayPoster = ({ title, released, genre, handleMouseLeave }: overlayPosterType) => {
   return (
-    <OverlayContainer>
+    <OverlayContainer onMouseLeave={handleMouseLeave}>
       <div className="inner">
         <div className="title">{title}</div>
         <div className="released">{released.slice(0, 4)}</div>
@@ -48,7 +49,7 @@ const OverlayContainer = styled.div`
       margin-right: 3px;
     }
     .released {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       margin-top: 3px;
     }
     .genre {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
@@ -6,9 +6,8 @@ import 'slick-carousel/slick/slick-theme.css'
 // import RecommendItem from './RecommendItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
-import { IMovieInfo, IResultList } from '../../types/types'
+import { IMovieInfo } from '../../types/types'
 import SkeletonPoster from '../layout/SkeletonPoster'
-
 const RecommendItem = React.lazy(() => import('./RecommendItem'))
 
 interface IRecommendList {
@@ -18,20 +17,19 @@ interface IRecommendList {
 
 const RecommendList = ({ title, movieList }: IRecommendList) => {
   const navigate = useNavigate()
-
   return (
     <RecommendSection>
       <div className="list-slider">
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
           {movieList.map((movie, index) => (
-            // <React.Suspense fallback={<SkeletonPoster />} key={index}>
-            <RecommendItem
-              movieInfo={movie}
-              onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
-              key={movie.id}
-            />
-            // </React.Suspense>
+            <React.Suspense fallback={<SkeletonPoster />} key={index}>
+              <RecommendItem
+                movieInfo={movie}
+                onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
+                key={movie.id}
+              />
+            </React.Suspense>
           ))}
         </Slider>
       </div>
@@ -44,10 +42,6 @@ const RecommendSection = styled.section`
   width: 100%;
   margin-top: 20px;
 
-  h3 {
-    font-size: 1.1rem;
-  }
-
   .list-slider {
     position: relative;
     width: 90%;
@@ -57,6 +51,9 @@ const RecommendSection = styled.section`
     gap: 20px;
     padding: 15px 0;
 
+    h3 {
+      font-size: 1.1rem;
+    }
     .slick-list {
       height: auto;
 

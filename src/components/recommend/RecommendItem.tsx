@@ -1,63 +1,60 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
 import SkeletonPoster from '../layout/SkeletonPoster'
 
-type PropsType = {
+type RecommendItemPropsType = {
   movieInfo: IMovieInfo
   onClick: () => void
 }
+const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w440_and_h660_face'
 
-const RecommendItem = ({ movieInfo, onClick }: PropsType) => {
-  const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w440_and_h660_face'
+const RecommendItem = ({ movieInfo, onClick }: RecommendItemPropsType) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
 
-  const handleMouseOver = () => {
+  const handleMouseOver = useCallback(() => {
     setIsHovering(true)
-  }
-  const handleMouseOut = () => {
+  }, [])
+  const handleMouseLeave = useCallback(() => {
     setIsHovering(false)
-  }
+  }, [])
 
   return (
-    <ItemContainer onClick={onClick}>
+    <ItemContainer onClick={onClick} onMouseOver={handleMouseOver}>
       {movieInfo.poster_path ? (
-        <>
-          <div className="poster" onMouseOverCapture={handleMouseOver} onMouseOutCapture={handleMouseOut}>
-            <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} />
-            {/* <SkeletonPoster /> */}
-          </div>
-          {isHovering && (
-            <OverlayPoster title={movieInfo.title} released={movieInfo.release_date} genre={['액션', '코미디']} />
-          )}
-        </>
+        <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} />
       ) : (
-        <div className="poster">
-          <img src="/no_image.webp" alt="이미지 없음" />
-        </div>
+        <img src="/no_image.webp" alt="이미지 없음" />
+      )}
+      {isHovering && (
+        <OverlayPoster
+          title={movieInfo.title}
+          released={movieInfo.release_date}
+          genre={['액션', '코미디']}
+          handleMouseLeave={handleMouseLeave}
+        />
       )}
     </ItemContainer>
   )
 }
 
 const ItemContainer = styled.div`
-  .poster {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1/1.3;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1.3;
 
-    img {
-      position: relative;
-      width: 90%;
-      height: 100%;
-      object-fit: cover;
-      margin: auto;
-    }
+  img {
+    position: relative;
+    width: 90%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
   }
 
-  transition: transform 0.3s;
+  transition: transform 0.5s;
   cursor: pointer;
+
   &:hover {
     z-index: 100;
     transform: scale(1.1);
