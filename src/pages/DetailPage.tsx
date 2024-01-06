@@ -11,6 +11,7 @@ const DetailPage = () => {
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
   const [similarMovies, setSimilarMovies] = useState([])
+  const [directorName, setDirectorName] = useState<string>('')
   const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
   const MAX_CAST_NUMBER = 6
 
@@ -25,6 +26,12 @@ const DetailPage = () => {
     }
     requestGetMovieDetail()
   }, [location])
+
+  useEffect(() => {
+    movieCredits?.crew.forEach((crew) => {
+      if (crew.job === 'Director') setDirectorName(crew.name)
+    })
+  }, [movieCredits])
 
   return (
     <Container>
@@ -50,9 +57,7 @@ const DetailPage = () => {
                 <div className="row">
                   <h2>감독</h2>
                   <div className="director">
-                    {movieCredits.crew.map((crew) => (
-                      <>{crew.job === 'Director' && <span key={crew.name}>{crew.name}</span>}</>
-                    ))}
+                    <span>{directorName}</span>
                   </div>
                 </div>
                 <div className="row">
@@ -68,8 +73,8 @@ const DetailPage = () => {
                 <div className="row">
                   <h2>출연</h2>
                   <div className="credits">
-                    {movieCredits.cast.map((cast, index) => (
-                      <>{index <= MAX_CAST_NUMBER && <span key={cast.id}>{cast.name}, </span>}</>
+                    {movieCredits.cast.slice(0, MAX_CAST_NUMBER).map((cast, index) => (
+                      <span key={index}>{cast.name}, </span>
                     ))}
                     <span>...</span>
                   </div>

@@ -23,13 +23,11 @@ const RecommendList = ({ title, movieList }: IRecommendList) => {
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
           {movieList.map((movie, index) => (
-            <React.Suspense fallback={<SkeletonPoster />} key={index}>
-              <RecommendItem
-                movieInfo={movie}
-                onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
-                key={movie.id}
-              />
-            </React.Suspense>
+            <RecommendItem
+              movieInfo={movie}
+              onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
+              key={movie.id}
+            />
           ))}
         </Slider>
       </div>

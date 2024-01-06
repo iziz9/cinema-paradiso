@@ -11,7 +11,6 @@ const SkeletonPoster = () => {
 
 const SkeletonContainer = styled.div`
   position: relative;
-  display: flex;
   width: 100%;
   height: 100%;
   aspect-ratio: 1/1.3;
@@ -19,6 +18,8 @@ const SkeletonContainer = styled.div`
 
   .shimmer {
     /* background: center / contain no-repeat url('/skeleton_image.webp'); */
+    width: 90%;
+    height: 100%;
     background-color: rgba(255, 255, 255, 0.2);
     transform: skewX(-20deg);
     box-shadow: 0 0 30px 30px rgba(255, 255, 255, 0.05);
