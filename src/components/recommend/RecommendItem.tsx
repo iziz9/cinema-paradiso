@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
 import SkeletonPoster from '../layout/SkeletonPoster'
+import { POSTER_BASE_URL } from '../../utils/defaultValues'
 
 type RecommendItemPropsType = {
   movieInfo: IMovieInfo
   onClick: () => void
 }
-const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w440_and_h660_face'
 
 const RecommendItem = ({ movieInfo, onClick }: RecommendItemPropsType) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
@@ -43,6 +43,8 @@ const ItemContainer = styled.div`
   position: relative;
   width: 100%;
   aspect-ratio: 1/1.3;
+  display: flex;
+  justify-content: center;
 
   img {
     position: relative;

@@ -21,7 +21,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     if (!searchValue) {
       return alert('검색어를 입력해주세요.')
     }
-    navigate(`/search/${searchValue}`)
+    navigate(`/search/${searchValue}`, { state: searchValue })
   }
   // searchValue 문자열 지운 후 공백문자만 입력하면 공백으로 인식 못하는 오류-수정하기
   useEffect(() => {
@@ -35,7 +35,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   useEffect(() => {
     const getList = async () => {
       const res = await getSearchingMovieList(searchValue)
-      setAutoCompleteList(res.slice(0, MAX_INDEX))
+      setAutoCompleteList(res.results.slice(0, MAX_INDEX))
     }
     searchValue && getList()
   }, [searchValue])
@@ -87,8 +87,8 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           break
         case 'Enter':
           if (!searchValue.trim().length) goToSearchPage()
-          else if (focusIndex >= MIN_INDEX) changeInputValue()
-          else if (focusIndex < MIN_INDEX) goToSearchPage()
+          else if (focusIndex > MIN_INDEX) changeInputValue()
+          else if (focusIndex <= MIN_INDEX) goToSearchPage()
           break
       }
     }

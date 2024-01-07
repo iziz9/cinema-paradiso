@@ -26,12 +26,12 @@ export const getTopRatedMovieList = async () => {
 
 export const getSearchingMovieList = async (query: string, page = 1) => {
   return await axiosInstance
-    .get(`search/movie?query=${query}&include_adult=true`, {
-      params: { ...defaultOption, page }
+    .get(`search/movie`, {
+      params: { ...defaultOption, query, includes_adult: false, page }
     })
     .then((res) => {
       console.log(res.data.results)
-      return res.data.results
+      return res.data
     })
 }
 export const getMovieDetail = async (movieId: number) => {

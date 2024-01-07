@@ -4,7 +4,7 @@ import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/recommend/RecommendList'
 import { useLocation } from 'react-router-dom'
 import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/request'
-import { IMovieCredits, IMovieDetail, IResultList } from '../types/types'
+import { IMovieCredits, IMovieDetail } from '../types/types'
 
 const DetailPage = () => {
   const location = useLocation()
@@ -52,7 +52,7 @@ const DetailPage = () => {
                 </div>
                 <div className="row">
                   <h2>개봉</h2>
-                  <span>{movieDetails.release_date.slice(0, 4)}</span>
+                  <span>{movieDetails.release_date.replaceAll('-', '.')}</span>
                 </div>
                 <div className="row">
                   <h2>감독</h2>
