@@ -1,22 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
+import { genresId, genresIdType } from '../../utils/defaultValues'
 
 type overlayPosterType = {
   title: string
   released: string
-  genre: string[]
+  genreIds: number[]
   handleMouseLeave: () => void
 }
 
-const OverlayPoster = ({ title, released, genre, handleMouseLeave }: overlayPosterType) => {
+const OverlayPoster = ({ title, released, genreIds, handleMouseLeave }: overlayPosterType) => {
   return (
     <OverlayContainer onMouseLeave={handleMouseLeave}>
       <div className="inner">
         <div className="title">{title}</div>
         <div className="released">{released.slice(0, 4)}</div>
         <div className="genre">
-          {genre.map((item, index) => (
-            <span key={item}>{index > 0 ? `·${item}` : item}</span>
+          {genreIds.map((id, index) => (
+            <span key={id}>{index > 0 ? `·${genresId[id as genresIdType]}` : genresId[id as genresIdType]}</span>
           ))}
         </div>
       </div>
@@ -57,6 +58,7 @@ const OverlayContainer = styled.div`
       display: flex;
       gap: 2px;
       color: var(--colors-green);
+      flex-wrap: wrap;
     }
   }
 `

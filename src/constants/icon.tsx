@@ -51,8 +51,8 @@ export const BookmarkBlankIcon = () => {
       fill="currentColor"
       strokeWidth="0"
       viewBox="0 0 24 24"
-      height="40px"
-      width="40px"
+      height="30px"
+      width="30px"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g id="Bookmark_Plus">
@@ -72,8 +72,8 @@ export const BookmarkFillIcon = () => {
       fill="currentColor"
       strokeWidth="0"
       viewBox="0 0 24 24"
-      height="40px"
-      width="40px"
+      height="30px"
+      width="30px"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g id="Bookmark_Minus">

@@ -22,7 +22,7 @@ const SearchPage = () => {
   const navigate = useNavigate()
   const DropDownRef = useRef<HTMLUListElement>(null)
   const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
-  const [movieList, setMovieList] = useState<IMovieInfo[]>()
+  const [movieList, setMovieList] = useState<IMovieInfo[]>([])
   const [page, setPage] = useState<number>(1)
   const [totalResults, setTotalResults] = useState<ITotalResults>({
     totalCount: 0,
@@ -44,6 +44,7 @@ const SearchPage = () => {
       <SearchBar isDropDownOpen={isDropDownOpen} setIsDropDownOpen={setisDropDownOpen} dropDownRef={DropDownRef} />
       <ResultsCount>검색결과 {totalResults.totalCount}건</ResultsCount>
       <ListContainer>
+        {!movieList.length && <NoResult>일치하는 검색 결과가 없습니다.</NoResult>}
         {movieList?.map((movie) => (
           <ListItem key={movie.id}>
             <RecommendItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
@@ -99,6 +100,9 @@ const ListItem = styled.li`
   @media (max-width: 450px) {
     width: calc(100% / 2 - 4px);
   }
+`
+const NoResult = styled.div`
+  margin-top: 80px;
 `
 
 export default SearchPage

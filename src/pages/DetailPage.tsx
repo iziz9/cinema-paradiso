@@ -6,14 +6,15 @@ import { useLocation } from 'react-router-dom'
 import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/request'
 import { IMovieCredits, IMovieDetail } from '../types/types'
 
+const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
+const MAX_CAST_NUMBER = 6
+
 const DetailPage = () => {
   const location = useLocation()
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
   const [similarMovies, setSimilarMovies] = useState([])
   const [directorName, setDirectorName] = useState<string>('')
-  const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
-  const MAX_CAST_NUMBER = 6
 
   useEffect(() => {
     const requestGetMovieDetail = async () => {
@@ -38,7 +39,17 @@ const DetailPage = () => {
       {movieDetails && movieCredits && (
         <>
           <DetailSection>
-            <DetailUpper>
+            <DetailBookmark>
+              <button>
+                <BookmarkBlankIcon />
+                <span>관심등록</span>
+              </button>
+              {/* <button>
+                <BookmarkFillIcon />
+                <span>관심삭제</span>
+              </button> */}
+            </DetailBookmark>
+            <DetailInfo>
               <div className="poster">
                 {movieDetails.poster_path ? (
                   <img src={POSTER_BASE_URL + movieDetails.poster_path} alt={movieDetails.title} />
@@ -79,19 +90,12 @@ const DetailPage = () => {
                     <span>...</span>
                   </div>
                 </div>
-                <DetailMiddle>
-                  <button>
-                    <BookmarkBlankIcon />
-                    <span>관심등록</span>
-                  </button>
-                  {/* <button>
-                <BookmarkFillIcon />
-                <span>관심삭제</span>
-              </button> */}
-                </DetailMiddle>
               </div>
-            </DetailUpper>
-            <DetailLower>{movieDetails.overview}</DetailLower>
+            </DetailInfo>
+            <DetailOverview>
+              <h2>줄거리</h2>
+              {movieDetails.overview}
+            </DetailOverview>
           </DetailSection>
           <RelatedSection>
             <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} />
@@ -115,10 +119,10 @@ const DetailSection = styled.section`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
 `
 
-const DetailUpper = styled.div`
+const DetailInfo = styled.div`
   position: relative;
   width: 100%;
   height: auto;
@@ -201,13 +205,11 @@ const DetailUpper = styled.div`
   }
 `
 
-const DetailMiddle = styled.div`
+const DetailBookmark = styled.div`
   position: relative;
   width: 100%;
-  margin-top: 20px;
   display: flex;
   justify-content: end;
-  gap: 10px;
 
   button {
     color: #ffffff55;
@@ -223,9 +225,23 @@ const DetailMiddle = styled.div`
   }
 `
 
-const DetailLower = styled.div`
+const DetailOverview = styled.div`
   position: relative;
   line-height: 1.5rem;
+  padding: 0 32px;
+  text-align: left;
+
+  h2 {
+    display: block;
+    font-weight: 600;
+    margin-right: 10px;
+    word-break: keep-all;
+    color: var(--colors-green);
+  }
+
+  @media (max-width: 560px) {
+    padding: 0;
+  }
 `
 
 const RelatedSection = styled.section``

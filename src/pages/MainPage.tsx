@@ -2,10 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import RecommendList from '../components/recommend/RecommendList'
-import { getPopularMovieList, getTopRatedMovieList } from '../api/request'
-import { IMovieInfo } from '../types/types'
-
-const RECOMMEND_LIST_DEFAULT: IMovieInfo[] = []
+import { getGenresMovieList, getPopularMovieList, getTopRatedMovieList } from '../api/request'
+import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
 
 const MainPage = () => {
   const DropDownRef = useRef<HTMLUListElement>(null)
@@ -21,15 +19,19 @@ const MainPage = () => {
       setPopularMovies(popularRes)
       // const topRatedRes = await getTopRatedMovieList()
       // setTopRatedMovies(topRatedRes)
+      // const sfRes = await getGenresMovieList(878)
+      // setSfMovies(sfRes)
+      // const romanceRes = await getGenresMovieList(10749)
+      // setRomanceMovies(romanceRes)
     }
     getRecommendLists()
   }, [])
 
   const movieRecommendList = [
     { title: '지금 가장 인기있는 영화', movieList: popularMovies }
-    // { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
-    // { title: '오늘의 SF 추천 영화', movieList: sfMovies },
-    // { title: '오늘의 로맨스 추천 영화', movieList: romanceMovies }
+    // { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies },
+    // { title: 'SF 추천 영화', movieList: sfMovies },
+    // { title: '로맨스 추천 영화', movieList: romanceMovies }
   ]
 
   return (

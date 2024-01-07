@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
 import SkeletonPoster from '../layout/SkeletonPoster'
-import { POSTER_BASE_URL } from '../../utils/defaultValues'
+import { POSTER_BASE_URL, genresId } from '../../utils/defaultValues'
 
 type RecommendItemPropsType = {
   movieInfo: IMovieInfo
@@ -23,17 +23,27 @@ const RecommendItem = ({ movieInfo, onClick }: RecommendItemPropsType) => {
   return (
     <ItemContainer onClick={onClick} onMouseOver={handleMouseOver}>
       {movieInfo.poster_path ? (
-        <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} />
+        <>
+          <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} />
+          {isHovering && (
+            <OverlayPoster
+              title={movieInfo.title}
+              released={movieInfo.release_date}
+              genreIds={movieInfo.genre_ids}
+              handleMouseLeave={handleMouseLeave}
+            />
+          )}
+        </>
       ) : (
-        <img src="/no_image.webp" alt="이미지 없음" />
-      )}
-      {isHovering && (
-        <OverlayPoster
-          title={movieInfo.title}
-          released={movieInfo.release_date}
-          genre={['액션', '코미디']}
-          handleMouseLeave={handleMouseLeave}
-        />
+        <>
+          <img src="/no_image.webp" alt="이미지 없음" />
+          <OverlayPoster
+            title={movieInfo.title}
+            released={movieInfo.release_date}
+            genreIds={movieInfo.genre_ids}
+            handleMouseLeave={handleMouseLeave}
+          />
+        </>
       )}
     </ItemContainer>
   )

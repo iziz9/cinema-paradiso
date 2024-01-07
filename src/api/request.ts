@@ -64,3 +64,13 @@ export const getMovieSimilar = async (movieId: number) => {
       return res.data.results
     })
 }
+export const getGenresMovieList = async (with_genres: number) => {
+  return await axiosInstance
+    .get(`discover/movie`, {
+      params: { ...defaultOption, page: 1, sort_by: 'popularity.desc', with_genres }
+    })
+    .then((res) => {
+      console.log(res.data.results)
+      return res.data.results
+    })
+}

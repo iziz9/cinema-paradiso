@@ -1,23 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendList from '../components/recommend/RecommendList'
+import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
+import { getPopularMovieList, getTopRatedMovieList } from '../api/request'
 
 const MyPage = () => {
+  const [popularMovies, setPopularMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const data = []
+
+  useEffect(() => {
+    const getRecommendLists = async () => {
+      const popularRes = await getPopularMovieList()
+      setPopularMovies(popularRes)
+      const topRatedRes = await getTopRatedMovieList()
+      setTopRatedMovies(topRatedRes)
+    }
+    getRecommendLists()
+  }, [])
+
+  const movieRecommendList = [
+    //임시, 메인페이지 중복
+    { title: '지금 가장 인기있는 영화', movieList: popularMovies },
+    { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
+  ]
+
   if (data.length < 1)
     //api데이터
     return (
       <MyPageContainer>
         <div className="no-result">
           <p>좋아하는 영화, 보고싶은 영화를 관심 등록 해 보세요!</p>
-          <p>나의 취향에 맞는 영화를 추천받을 수 있어요.</p>
-          <div className="example">
-            <img src="/mypage_example.webp" alt="관심영화 등록 방법" />
-          </div>
+          <p>취향에 맞는 영화를 추천받을 수 있어요.</p>
         </div>
-        {/* <RecommendList title={'관객 평점이 가장 높은 영화'} /> */}
-        {/* <RecommendList title={'지금 가장 인기있는 영화'} /> */}
+        {movieRecommendList.map((list, index) => (
+          <RecommendList title={list.title} movieList={list.movieList} key={index} />
+        ))}
       </MyPageContainer>
     )
   return (
@@ -37,33 +56,14 @@ const MyPageContainer = styled.main`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 40px 0;
+    padding: 100px 0;
     margin: auto;
     text-align: center;
     font-size: 1.2rem;
-
-    .example {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-
-      img {
-        position: relative;
-        width: 50%;
-        height: auto;
-        margin: 20px auto 0;
-        border: 1px solid var(--colors-green);
-        border-radius: 16px;
-      }
-    }
+    line-height: 1.3rem;
 
     @media (max-width: 833px) {
-      font-size: 1.1rem;
-      .example {
-        img {
-          width: 80%;
-        }
-      }
+      font-size: 1rem;
     }
   }
 `
