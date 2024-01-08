@@ -4,7 +4,6 @@ import { SearchIcon } from '../../constants/icon'
 import { useNavigate } from 'react-router-dom'
 import DropDownBox from './DropDownBox'
 import useDebounce from '../../hooks/useDebounce'
-import { checkInputValid } from '../../utils/InputValidation'
 import { getSearchingMovieList } from '../../api/request'
 import { IMovieInfo, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
@@ -16,13 +15,11 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
 
-  const goToSearchPage = () => {
-    if (!debouncedQuery) {
-      return alert('검색어를 입력해주세요.')
-    }
-    navigate(`/search/${debouncedQuery}`, { state: debouncedQuery })
+  const checkInputValid = (query: string) => {
+    if (query.trim().length === 0) return false
+    return true
   }
-  // searchValue 문자열 지운 후 공백문자만 입력하면 공백으로 인식 못하는 오류-수정하기
+
   useEffect(() => {
     if (debouncedQuery.length === 0 || debouncedQuery.trim() === '') {
       return setAutoCompleteList([])
@@ -33,7 +30,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
       setAutoCompleteList(res.results.slice(0, MAX_INDEX))
     }
 
-    const isValid = checkInputValid(debouncedQuery)
+    const isValid = checkInputValid(debouncedQuery) // debouncee 되기 전이면..?
     isValid && getList()
   }, [debouncedQuery])
 
@@ -62,13 +59,15 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     }
   }
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    // if (autoCompleteList.length === 0 && e.key === 'Enter') {
-    //   goToSearchPage()
-    //   //인풋 체인지
-    //   //검색페이지로 넘기기
-    // }
+  const goToSearchPage = () => {
+    const isValid = checkInputValid(tempQuery)
+    if (!isValid) return alert('검색어를 입력해주세요.')
 
+    setIsDropDownOpen(false)
+    navigate(`/search/${tempQuery}`, { state: tempQuery })
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (autoCompleteList.length === 0) {
       switch (e.key) {
         case 'Enter':
@@ -86,9 +85,10 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
       const isLastIndex = focusIndex + 1 === autoCompleteList.length
       switch (e.key) {
         case 'Enter':
-          if (!debouncedQuery.trim().length) goToSearchPage()
-          else if (focusIndex > MIN_INDEX) changeInputValue()
-          else if (focusIndex <= MIN_INDEX) goToSearchPage()
+          if (focusIndex > MIN_INDEX) {
+            changeInputValue()
+            goToSearchPage()
+          } else if (focusIndex <= MIN_INDEX) goToSearchPage()
           break
         case 'ArrowDown':
           if (!isLastIndex) {
@@ -108,14 +108,13 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   }
 
   return (
-    <SearchBarContainer>
+    <SearchBarContainer onBlur={() => setIsDropDownOpen(false)}>
       <div className="searchbar">
         <input
           type="text"
           placeholder="어떤 영화를 찾아볼까요?"
           maxLength={20}
           onFocus={() => setIsDropDownOpen(true)}
-          // onBlur={() => setIsDropDownOpen(false)} //드롭다운 클릭 blur로 인식 문제
           onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => handleKeyDown(e)}
           value={tempQuery}
