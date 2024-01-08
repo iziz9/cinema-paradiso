@@ -111,8 +111,14 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     }
   }
 
+  const handleBlurDropDown = () => {
+    setTimeout(() => {
+      setIsDropDownOpen(false)
+    }, 200)
+  }
+
   return (
-    <SearchBarContainer>
+    <SearchBarContainer onBlur={() => handleBlurDropDown()}>
       <div className="searchbar">
         <input
           type="text"

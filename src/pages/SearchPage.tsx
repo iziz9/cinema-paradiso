@@ -76,7 +76,7 @@ const ListContainer = styled.ul`
 const ListItem = styled.li`
   position: relative;
   width: calc(100% / 5 - 4px);
-  margin: 16px auto;
+  margin: 16px 0;
   cursor: pointer;
 
   &:hover {
