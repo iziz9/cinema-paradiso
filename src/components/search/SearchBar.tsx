@@ -12,33 +12,30 @@ import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../ut
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
   const [tempQuery, setTempQuery] = useState<string>('')
-  const debouncedValue = useDebounce(tempQuery)
+  const debouncedQuery = useDebounce(tempQuery)
   const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
-  const [searchValue, setSearchValue] = useState<string>('')
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
 
   const goToSearchPage = () => {
-    if (!searchValue) {
+    if (!debouncedQuery) {
       return alert('검색어를 입력해주세요.')
     }
-    navigate(`/search/${searchValue}`, { state: searchValue })
+    navigate(`/search/${debouncedQuery}`, { state: debouncedQuery })
   }
   // searchValue 문자열 지운 후 공백문자만 입력하면 공백으로 인식 못하는 오류-수정하기
   useEffect(() => {
-    if (debouncedValue.length === 0 || debouncedValue.trim() === '') {
+    if (debouncedQuery.length === 0 || debouncedQuery.trim() === '') {
       return setAutoCompleteList([])
     }
-    const isValid = checkInputValid(debouncedValue)
-    isValid && setSearchValue(debouncedValue)
-  }, [debouncedValue])
 
-  useEffect(() => {
     const getList = async () => {
-      const res = await getSearchingMovieList(searchValue)
+      const res = await getSearchingMovieList(debouncedQuery)
       setAutoCompleteList(res.results.slice(0, MAX_INDEX))
     }
-    searchValue && getList()
-  }, [searchValue])
+
+    const isValid = checkInputValid(debouncedQuery)
+    isValid && getList()
+  }, [debouncedQuery])
 
   useEffect(() => {
     const ul = dropDownRef.current
@@ -66,12 +63,33 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (autoCompleteList.length === 0 && e.key === 'Escape') {
-      return setIsDropDownOpen(false)
+    // if (autoCompleteList.length === 0 && e.key === 'Enter') {
+    //   goToSearchPage()
+    //   //인풋 체인지
+    //   //검색페이지로 넘기기
+    // }
+
+    if (autoCompleteList.length === 0) {
+      switch (e.key) {
+        case 'Enter':
+          goToSearchPage()
+          break
+        case 'Escape':
+          dispatch({ type: 'RESET' })
+          e.currentTarget.blur()
+          setIsDropDownOpen(false)
+          break
+      }
     }
+
     if (!e.nativeEvent.isComposing && autoCompleteList.length > 0) {
       const isLastIndex = focusIndex + 1 === autoCompleteList.length
       switch (e.key) {
+        case 'Enter':
+          if (!debouncedQuery.trim().length) goToSearchPage()
+          else if (focusIndex > MIN_INDEX) changeInputValue()
+          else if (focusIndex <= MIN_INDEX) goToSearchPage()
+          break
         case 'ArrowDown':
           if (!isLastIndex) {
             dispatch({ type: 'INCREMENT' })
@@ -84,11 +102,6 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           dispatch({ type: 'RESET' })
           e.currentTarget.blur()
           setIsDropDownOpen(false)
-          break
-        case 'Enter':
-          if (!searchValue.trim().length) goToSearchPage()
-          else if (focusIndex > MIN_INDEX) changeInputValue()
-          else if (focusIndex <= MIN_INDEX) goToSearchPage()
           break
       }
     }
