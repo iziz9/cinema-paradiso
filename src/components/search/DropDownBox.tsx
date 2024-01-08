@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import DropDownItem from './DropDownItem'
 import { IDropDownBox } from '../../types/types'
 
-const DropDownBox = ({ list, focusIndex, resetQueryAndIndex }: IDropDownBox, ref: Ref<HTMLUListElement>) => {
+const DropDownBox = ({ list, focusIndex, searchingRecommendedValue }: IDropDownBox, ref: Ref<HTMLUListElement>) => {
   return list.length ? (
     <DropDownContainer ref={ref}>
       {list.map((item, index) => (
         <DropDownItem
           title={item.title}
           isFocused={focusIndex === index}
-          resetQueryAndIndex={resetQueryAndIndex}
+          searchingRecommendedValue={searchingRecommendedValue}
           key={item.id}
         />
       ))}

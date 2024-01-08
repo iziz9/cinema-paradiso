@@ -6,7 +6,7 @@ function useDebounce(searchValue: string) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       return setDebouncedValue(searchValue)
-    }, 300)
+    }, 400)
     return () => clearTimeout(timeoutId)
   }, [searchValue])
 

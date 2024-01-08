@@ -46,32 +46,37 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     dispatch({ type: 'RESET' })
   }
 
-  const resetQueryAndIndex = (query: string) => {
+  const resetInputValueAndIndex = (query: string) => {
     setTempQuery(query)
     dispatch({ type: 'RESET' })
+    return true
   }
 
-  const changeInputValue = () => {
-    const focusedList = dropDownRef.current?.children[focusIndex]
-    const query = focusedList?.textContent
+  const searchingRecommendedValue = (query: string) => {
+    const isResetCompleted = resetInputValueAndIndex(query)
+    isResetCompleted && goToSearchPage(query)
+  }
+
+  const changeInputValueToRecommend = () => {
+    const focusedListItem = dropDownRef.current?.children[focusIndex]
+    const query = focusedListItem?.textContent
     if (query && query.length > 0) {
-      resetQueryAndIndex(query)
+      searchingRecommendedValue(query)
     }
   }
 
-  const goToSearchPage = () => {
-    const isValid = checkInputValid(tempQuery)
+  const goToSearchPage = (query: string) => {
+    const isValid = checkInputValid(query)
     if (!isValid) return alert('검색어를 입력해주세요.')
-
     setIsDropDownOpen(false)
-    navigate(`/search/${tempQuery}`, { state: tempQuery })
+    navigate(`/search/${query}`, { state: query })
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (autoCompleteList.length === 0) {
       switch (e.key) {
         case 'Enter':
-          goToSearchPage()
+          goToSearchPage(tempQuery)
           break
         case 'Escape':
           dispatch({ type: 'RESET' })
@@ -86,9 +91,8 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
       switch (e.key) {
         case 'Enter':
           if (focusIndex > MIN_INDEX) {
-            changeInputValue()
-            goToSearchPage()
-          } else if (focusIndex <= MIN_INDEX) goToSearchPage()
+            changeInputValueToRecommend()
+          } else if (focusIndex <= MIN_INDEX) goToSearchPage(tempQuery)
           break
         case 'ArrowDown':
           if (!isLastIndex) {
@@ -108,7 +112,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   }
 
   return (
-    <SearchBarContainer onBlur={() => setIsDropDownOpen(false)}>
+    <SearchBarContainer>
       <div className="searchbar">
         <input
           type="text"
@@ -121,14 +125,14 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           role="searchbox"
           required
         />
-        <div className="search-icon" onClick={() => goToSearchPage()} data-testid="searchbutton">
+        <div className="search-icon" onClick={() => goToSearchPage(tempQuery)} data-testid="searchbutton">
           <SearchIcon />
         </div>
         {isDropDownOpen && (
           <DropDownBox
             list={autoCompleteList}
             focusIndex={focusIndex}
-            resetQueryAndIndex={resetQueryAndIndex}
+            searchingRecommendedValue={searchingRecommendedValue}
             ref={dropDownRef}
           />
         )}
