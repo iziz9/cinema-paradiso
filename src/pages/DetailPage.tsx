@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
-import RecommendList from '../components/recommend/RecommendList'
+import RecommendList from '../components/carousel/RecommendList'
 import { useLocation } from 'react-router-dom'
 import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/request'
 import { IMovieCredits, IMovieDetail } from '../types/types'

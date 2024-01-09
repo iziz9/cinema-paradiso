@@ -9,7 +9,7 @@ export interface IAutoCompleteLayout extends ChildrenProps {
 export interface IDropDownItem {
   title: string
   isFocused: boolean
-  searchingRecommendedValue: (query: string) => void
+  searchAutoCompleteValue: (query: string) => void
 }
 export interface IMovieInfo {
   adult: boolean
@@ -30,7 +30,7 @@ export interface IMovieInfo {
 export interface IDropDownBox {
   list: IMovieInfo[]
   focusIndex: number
-  searchingRecommendedValue: (query: string) => void
+  searchAutoCompleteValue: (query: string) => void
   ref: Ref<HTMLUListElement>
 }
 export interface ISearchBar {

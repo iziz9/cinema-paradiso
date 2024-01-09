@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import OverlayPoster from '../components/layout/OverlayPoster'
 import { getSearchingMovieList } from '../api/request'
 import { IMovieInfo } from '../types/types'
-import RecommendItem from '../components/recommend/RecommendItem'
+import RecommendItem from '../components/carousel/RecommendItem'
 
 interface ITotalResults {
   totalCount: number
@@ -28,6 +28,7 @@ const SearchPage = () => {
     totalCount: 0,
     totalPages: 0
   })
+  // const { count, increment, reset, setNumber } = useCounterStore()
 
   useEffect(() => {
     const getMovieList = async () => {

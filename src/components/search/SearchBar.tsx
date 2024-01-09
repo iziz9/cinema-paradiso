@@ -7,11 +7,13 @@ import useDebounce from '../../hooks/useDebounce'
 import { getSearchingMovieList } from '../../api/request'
 import { IMovieInfo, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
+import { useSearchValueStore } from '../../store/searchValueStore'
 
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
-  const [tempQuery, setTempQuery] = useState<string>('')
-  const debouncedQuery = useDebounce(tempQuery)
+  // const [tempQuery, setTempQuery] = useState<string>('')
+  const { searchValue, setSearchValue } = useSearchValueStore()
+  const debouncedSearchValue = useDebounce(searchValue)
   const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
 
@@ -21,18 +23,18 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   }
 
   useEffect(() => {
-    if (debouncedQuery.length === 0 || debouncedQuery.trim() === '') {
+    if (debouncedSearchValue.length === 0 || debouncedSearchValue.trim() === '') {
       return setAutoCompleteList([])
     }
 
     const getList = async () => {
-      const res = await getSearchingMovieList(debouncedQuery)
+      const res = await getSearchingMovieList(debouncedSearchValue)
       setAutoCompleteList(res.results.slice(0, MAX_INDEX))
     }
 
-    const isValid = checkInputValid(debouncedQuery) // debouncee 되기 전이면..?
+    const isValid = checkInputValid(debouncedSearchValue) // debouncee 되기 전이면..?
     isValid && getList()
-  }, [debouncedQuery])
+  }, [debouncedSearchValue])
 
   useEffect(() => {
     const ul = dropDownRef.current
@@ -42,17 +44,17 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   }, [focusIndex, dropDownRef])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTempQuery(e.target.value)
+    setSearchValue(e.target.value)
     dispatch({ type: 'RESET' })
   }
 
   const resetInputValueAndIndex = (query: string) => {
-    setTempQuery(query)
+    setSearchValue(query)
     dispatch({ type: 'RESET' })
     return true
   }
 
-  const searchingRecommendedValue = (query: string) => {
+  const searchAutoCompleteValue = (query: string) => {
     const isResetCompleted = resetInputValueAndIndex(query)
     isResetCompleted && goToSearchPage(query)
   }
@@ -61,7 +63,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     const focusedListItem = dropDownRef.current?.children[focusIndex]
     const query = focusedListItem?.textContent
     if (query && query.length > 0) {
-      searchingRecommendedValue(query)
+      searchAutoCompleteValue(query)
     }
   }
 
@@ -76,7 +78,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     if (autoCompleteList.length === 0) {
       switch (e.key) {
         case 'Enter':
-          goToSearchPage(tempQuery)
+          goToSearchPage(searchValue)
           break
         case 'Escape':
           dispatch({ type: 'RESET' })
@@ -92,7 +94,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
         case 'Enter':
           if (focusIndex > MIN_INDEX) {
             changeInputValueToRecommend()
-          } else if (focusIndex <= MIN_INDEX) goToSearchPage(tempQuery)
+          } else if (focusIndex <= MIN_INDEX) goToSearchPage(searchValue)
           break
         case 'ArrowDown':
           if (!isLastIndex) {
@@ -127,18 +129,18 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           onFocus={() => setIsDropDownOpen(true)}
           onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => handleKeyDown(e)}
-          value={tempQuery}
+          value={searchValue}
           role="searchbox"
           required
         />
-        <div className="search-icon" onClick={() => goToSearchPage(tempQuery)} data-testid="searchbutton">
+        <div className="search-icon" onClick={() => goToSearchPage(searchValue)} data-testid="searchbutton">
           <SearchIcon />
         </div>
         {isDropDownOpen && (
           <DropDownBox
             list={autoCompleteList}
             focusIndex={focusIndex}
-            searchingRecommendedValue={searchingRecommendedValue}
+            searchAutoCompleteValue={searchAutoCompleteValue}
             ref={dropDownRef}
           />
         )}

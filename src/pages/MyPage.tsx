@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
-import RecommendList from '../components/recommend/RecommendList'
+import RecommendList from '../components/carousel/RecommendList'
 import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
 import { getPopularMovieList, getTopRatedMovieList } from '../api/request'
 
@@ -42,14 +42,19 @@ const MyPage = () => {
   return (
     <MyPageContainer>
       <Chart />
-      {/* <RecommendList title={'관심 등록한 영화'} /> */}
-      {/* <RecommendList title={'취향 저격 추천 영화'} /> */}
+      {movieRecommendList.map((list, index) => (
+        <RecommendList title={list.title} movieList={list.movieList} key={index} />
+      ))}
     </MyPageContainer>
   )
 }
 
 const MyPageContainer = styled.main`
   position: relative;
+
+  button {
+    color: white;
+  }
 
   .no-result {
     background-color: var(--colors-darkgray);

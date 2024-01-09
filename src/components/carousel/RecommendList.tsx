@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-// import RecommendItem from './RecommendItem'
+import RecommendItem from './RecommendItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
 import { IMovieInfo } from '../../types/types'
 import SkeletonPoster from '../layout/SkeletonPoster'
-const RecommendItem = React.lazy(() => import('./RecommendItem'))
+// const RecommendItem = React.lazy(() => import('./RecommendItem'))
 
 interface IRecommendList {
   title: string

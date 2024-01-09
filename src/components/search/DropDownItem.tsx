@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { IDropDownItem } from '../../types/types'
 
-const DropDownItem = ({ title, isFocused, searchingRecommendedValue }: IDropDownItem) => {
+const DropDownItem = ({ title, isFocused, searchAutoCompleteValue }: IDropDownItem) => {
   return (
     <DropDownItemContainer
       $isfocused={isFocused.toString()}
       onClick={() => {
-        searchingRecommendedValue(title)
+        searchAutoCompleteValue(title)
       }}
     >
       <div className="icon">
