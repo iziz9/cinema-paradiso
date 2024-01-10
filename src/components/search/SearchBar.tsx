@@ -34,13 +34,10 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     const getAutoCompleteList = async () => {
       const res = await getSearchingMovieList(debouncedSearchValue)
       setAutoCompleteList(res.results.slice(0, MAX_INDEX))
-      setCachedAutoComplete([
-        {
-          searchValue: searchValue,
-          data: res.results.slice(0, MAX_INDEX),
-          expire: currentTime + EXPIRE_TIME
-        }
-      ])
+      setCachedAutoComplete(searchValue, {
+        data: res.results.slice(0, MAX_INDEX),
+        expire: currentTime + EXPIRE_TIME
+      })
     }
 
     const isValid = checkInputValid(debouncedSearchValue)

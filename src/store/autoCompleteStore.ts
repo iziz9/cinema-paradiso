@@ -2,26 +2,25 @@ import { create } from 'zustand'
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
 import { IMovieInfo } from '../types/types'
 
-interface IUseAutoCompleteItem {
-  searchValue: string
+interface ICachedAutoComplete {
+  [key: string]: ICachedAutoCompleteData
+}
+interface ICachedAutoCompleteData {
   data: IMovieInfo[]
   expire: number
 }
-
 interface IUseAutoCompleteStore {
-  cachedAutoComplete: IUseAutoCompleteItem[] //배열아니구 객체로 저장해야됨...
-  setCachedAutoComplete: (list: IUseAutoCompleteItem[]) => void
+  cachedAutoComplete: ICachedAutoComplete //배열아니구 객체로 저장해야됨...
+  setCachedAutoComplete: (searchValue: string, list: ICachedAutoCompleteData) => void
 }
 
 export const useAutoCompleteStore = create(
   devtools(
     persist(
       (set, get) => ({
-        cachedAutoComplete: [],
-        setCachedAutoComplete: (list: IUseAutoCompleteItem[]) => {
-          // if (get().cachedAutoComplete)
-          //   return null //get으로 먼저 불러와서 저장된 값 있고 expire 안 지났다면 업데이트 안함, api요청할때 사용
-          set({ cachedAutoComplete: [...get().cachedAutoComplete].concat(list) })
+        cachedAutoComplete: {},
+        setCachedAutoComplete: (searchValue: string, list: ICachedAutoCompleteData) => {
+          set({ cachedAutoComplete: { ...get().cachedAutoComplete, [searchValue]: list } })
         }
       }),
       {
