@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/carousel/RecommendList'
 import { useLocation } from 'react-router-dom'
-import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/request'
+import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
 import { IMovieCredits, IMovieDetail } from '../types/types'
 
 const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'

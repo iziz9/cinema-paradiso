@@ -4,18 +4,22 @@ import { SearchIcon } from '../../constants/icon'
 import { useNavigate } from 'react-router-dom'
 import DropDownBox from './DropDownBox'
 import useDebounce from '../../hooks/useDebounce'
-import { getSearchingMovieList } from '../../api/request'
+import { getSearchingMovieList } from '../../api/movieRequest'
 import { IMovieInfo, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 import { useSearchValueStore } from '../../store/searchValueStore'
+import { useAutoCompleteStore } from '../../store/autoCompleteStore'
+
+export const currentTime = Date.now()
+export const EXPIRE_TIME = 7 * 60 * 1000
 
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
-  // const [tempQuery, setTempQuery] = useState<string>('')
   const { searchValue, setSearchValue } = useSearchValueStore()
   const debouncedSearchValue = useDebounce(searchValue)
   const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
+  const { cachedAutoComplete, setCachedAutoComplete } = useAutoCompleteStore()
 
   const checkInputValid = (query: string) => {
     if (query.trim().length === 0) return false
@@ -27,13 +31,20 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
       return setAutoCompleteList([])
     }
 
-    const getList = async () => {
+    const getAutoCompleteList = async () => {
       const res = await getSearchingMovieList(debouncedSearchValue)
       setAutoCompleteList(res.results.slice(0, MAX_INDEX))
+      setCachedAutoComplete([
+        {
+          searchValue: searchValue,
+          data: res.results.slice(0, MAX_INDEX),
+          expire: currentTime + EXPIRE_TIME
+        }
+      ])
     }
 
-    const isValid = checkInputValid(debouncedSearchValue) // debouncee 되기 전이면..?
-    isValid && getList()
+    const isValid = checkInputValid(debouncedSearchValue)
+    isValid && getAutoCompleteList()
   }, [debouncedSearchValue])
 
   useEffect(() => {
@@ -44,6 +55,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
   }, [focusIndex, dropDownRef])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    !isDropDownOpen && setIsDropDownOpen(true)
     setSearchValue(e.target.value)
     dispatch({ type: 'RESET' })
   }

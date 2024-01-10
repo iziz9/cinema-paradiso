@@ -2,10 +2,10 @@ import axiosInstance from './axiosInstance'
 
 const defaultOption = { language: 'ko-KR' }
 
-export const getPopularMovieList = async () => {
+export const getTrendingMovieList = async () => {
   return await axiosInstance
-    .get(`movie/popular`, {
-      params: { ...defaultOption, page: 1, region: 410 }
+    .get(`trending/movie/day`, {
+      params: { ...defaultOption, page: 1 }
     })
     .then((res) => {
       console.log(res.data.results)

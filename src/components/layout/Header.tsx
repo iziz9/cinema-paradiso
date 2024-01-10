@@ -5,18 +5,26 @@ import PATH from '../../routes/routePath'
 import InnerLayout from './InnerLayout'
 import { MyPageIcon } from '../../constants/icon'
 import { useMediaQuery } from 'react-responsive'
+import { useSearchValueStore } from '../../store/searchValueStore'
 
 const Header = () => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery({
     query: '(max-width: 833px)'
   })
+  const { setSearchValue } = useSearchValueStore()
+
+  const goToMain = () => {
+    setSearchValue('')
+    navigate(PATH.MAIN)
+  }
+
   return (
     <HeaderContainer>
       <InnerLayout>
         <div className="layout">
           <div className="logo">
-            <img src="/logo.webp" alt="logo" onClick={() => navigate(PATH.MAIN)} />
+            <img src="/logo.webp" alt="logo" onClick={goToMain} />
           </div>
           <button className="mypage" aria-label="마이페이지" onClick={() => navigate(PATH.MYPAGE)}>
             {isMobile ? (

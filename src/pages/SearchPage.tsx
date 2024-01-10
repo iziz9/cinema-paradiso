@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import { useLocation, useNavigate } from 'react-router-dom'
 import OverlayPoster from '../components/layout/OverlayPoster'
-import { getSearchingMovieList } from '../api/request'
+import { getSearchingMovieList } from '../api/movieRequest'
 import { IMovieInfo } from '../types/types'
 import RecommendItem from '../components/carousel/RecommendItem'
 
@@ -28,7 +28,6 @@ const SearchPage = () => {
     totalCount: 0,
     totalPages: 0
   })
-  // const { count, increment, reset, setNumber } = useCounterStore()
 
   useEffect(() => {
     const getMovieList = async () => {

@@ -3,26 +3,26 @@ import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
 import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
-import { getPopularMovieList, getTopRatedMovieList } from '../api/request'
+import { getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
 
 const MyPage = () => {
-  const [popularMovies, setPopularMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [trendingMovies, setPopularMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
-  const data = []
+  const data = ['', '']
 
   useEffect(() => {
     const getRecommendLists = async () => {
-      const popularRes = await getPopularMovieList()
-      setPopularMovies(popularRes)
+      const trendingRes = await getTrendingMovieList()
+      setPopularMovies(trendingRes)
       const topRatedRes = await getTopRatedMovieList()
       setTopRatedMovies(topRatedRes)
     }
-    getRecommendLists()
+    // getRecommendLists()
   }, [])
 
   const movieRecommendList = [
     //임시, 메인페이지 중복
-    { title: '지금 가장 인기있는 영화', movieList: popularMovies },
+    { title: '지금 가장 인기있는 영화', movieList: trendingMovies },
     { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
   ]
 
@@ -42,19 +42,15 @@ const MyPage = () => {
   return (
     <MyPageContainer>
       <Chart />
-      {movieRecommendList.map((list, index) => (
+      {/* {movieRecommendList.map((list, index) => (
         <RecommendList title={list.title} movieList={list.movieList} key={index} />
-      ))}
+      ))} */}
     </MyPageContainer>
   )
 }
 
 const MyPageContainer = styled.main`
   position: relative;
-
-  button {
-    color: white;
-  }
 
   .no-result {
     background-color: var(--colors-darkgray);
