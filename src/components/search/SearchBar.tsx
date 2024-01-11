@@ -10,16 +10,16 @@ import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../ut
 import { useSearchValueStore } from '../../store/searchValueStore'
 import { useAutoCompleteStore } from '../../store/autoCompleteStore'
 
-export const currentTime = Date.now()
-export const EXPIRE_TIME = 7 * 60 * 1000
-
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
   const { searchValue, setSearchValue } = useSearchValueStore()
   const debouncedSearchValue = useDebounce(searchValue)
   const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
-  const { cachedAutoComplete, setCachedAutoComplete } = useAutoCompleteStore()
+  const { cachedAutoComplete, setCachedAutoComplete, checkCachedAutoComplete } = useAutoCompleteStore()
+
+  const currentTime = Date.now()
+  const EXPIRE_TIME = 7 * 60 * 1000
 
   const checkInputValid = (query: string) => {
     if (query.trim().length === 0) return false
@@ -32,17 +32,20 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     }
 
     const getAutoCompleteList = async () => {
+      const cachedData = checkCachedAutoComplete(debouncedSearchValue)
+      if (cachedData) return setAutoCompleteList(cachedAutoComplete[debouncedSearchValue].data)
+
       const res = await getSearchingMovieList(debouncedSearchValue)
-      setAutoCompleteList(res.results.slice(0, MAX_INDEX))
-      setCachedAutoComplete(searchValue, {
+      setCachedAutoComplete(debouncedSearchValue, {
         data: res.results.slice(0, MAX_INDEX),
         expire: currentTime + EXPIRE_TIME
       })
+      setAutoCompleteList(res.results.slice(0, MAX_INDEX))
     }
 
     const isValid = checkInputValid(debouncedSearchValue)
     isValid && getAutoCompleteList()
-  }, [debouncedSearchValue])
+  }, [debouncedSearchValue, setCachedAutoComplete])
 
   useEffect(() => {
     const ul = dropDownRef.current

@@ -2,60 +2,51 @@ import { create } from 'zustand'
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
 import { IMovieInfo } from '../types/types'
 
-interface ICachedAutoComplete {
+export interface ICachedAutoComplete {
   [key: string]: ICachedAutoCompleteData
 }
-interface ICachedAutoCompleteData {
+export interface ICachedAutoCompleteData {
   data: IMovieInfo[]
   expire: number
 }
 interface IUseAutoCompleteStore {
-  cachedAutoComplete: ICachedAutoComplete //배열아니구 객체로 저장해야됨...
+  cachedAutoComplete: ICachedAutoComplete
   setCachedAutoComplete: (searchValue: string, list: ICachedAutoCompleteData) => void
+  checkCachedAutoComplete: (searchValue: string) => IMovieInfo[] | boolean
+  deleteCachedAutoComplete: (searchValue: string) => void
 }
+
+const STORAGE_NAME = 'auto-complete'
+const DEFAULT_CACHED_VALUE = localStorage.getItem(STORAGE_NAME)
 
 export const useAutoCompleteStore = create(
   devtools(
     persist(
       (set, get) => ({
-        cachedAutoComplete: {},
-        setCachedAutoComplete: (searchValue: string, list: ICachedAutoCompleteData) => {
+        cachedAutoComplete: (DEFAULT_CACHED_VALUE && JSON.parse(DEFAULT_CACHED_VALUE).state) || {},
+        setCachedAutoComplete: (searchValue, list) => {
           set({ cachedAutoComplete: { ...get().cachedAutoComplete, [searchValue]: list } })
+        },
+        checkCachedAutoComplete: (searchValue) => {
+          const cachedList = get().cachedAutoComplete
+          const currentTime = Date.now()
+          if (cachedList[searchValue] && cachedList[searchValue].expire < currentTime) {
+            get().deleteCachedAutoComplete(searchValue)
+          }
+          if (!cachedList[searchValue]) return false
+
+          return true
+        },
+        deleteCachedAutoComplete: (searchValue) => {
+          const cachedList = get().cachedAutoComplete
+          delete cachedList[searchValue]
         }
       }),
       {
-        name: 'auto-complete',
+        name: STORAGE_NAME,
         storage: createJSONStorage(() => localStorage),
         partialize: (state: IUseAutoCompleteStore) => state.cachedAutoComplete
       }
     )
   )
 )
-
-// const storageExample = {
-//   key: `auto-complete-${searchValue}`,
-//   value: {
-//     data: [{}, {}, {}],
-//     expire: currentTime + EXPIRE_TIME
-//   }
-// }
-
-// export const CachingData = ({ searchValue, recommendList }) => {
-//   const expireAddedList = {
-//     data: recommendList,
-//     expire: currentTime + EXPIRE_TIME
-//   }
-//   const jsonData = JSON.stringify(expireAddedList)
-//   localStorage.setItem(searchValue, jsonData)
-// }
-
-// const checkIsCacheExpired = (searchValue: string) => {
-//   const parsedData = parsingStorageItem(searchValue)
-
-//   if (parsedData.expire <= currentTime) {
-//     localStorage.removeItem(searchValue)
-//     return true
-//   }
-
-//   return false
-// }
