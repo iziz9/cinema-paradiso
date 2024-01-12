@@ -66,7 +66,7 @@ export interface IMovieCredits {
   cast: IMovieCreditsCast[]
   crew: ImovieCreditsCrew[]
 }
-interface IMovieCreditsCast {
+export interface IMovieCreditsCast {
   adult: boolean
   gender: number
   id: number
@@ -81,7 +81,7 @@ interface IMovieCreditsCast {
   order: number
   job: string
 }
-interface ImovieCreditsCrew {
+export interface ImovieCreditsCrew {
   adult: boolean
   credit_id: string
   department: string
@@ -93,4 +93,10 @@ interface ImovieCreditsCrew {
   original_name: string
   popularity: number
   profile_path: string
+}
+export interface IWatchListResponse {
+  page: number
+  results: IMovieInfo[]
+  total_pages: number
+  total_results: number
 }

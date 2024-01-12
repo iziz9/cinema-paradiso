@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PieChart, Pie, Cell, Legend, Tooltip, Text } from 'recharts'
 import styled from 'styled-components'
+import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
+import { IMovieInfo } from '../../types/types'
 
 const data = [
   { name: 'SF', value: 400 },
@@ -12,22 +14,13 @@ const data = [
   { name: '드라마', value: 100 }
 ]
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#00CFF8', '#FF2003', '#00BB2F']
+const Chart = ({ watchList }: { watchList: IMovieInfo[] }) => {
+  const [chartValue, setChartValue] = useState([])
 
-const RADIAN = Math.PI / 180
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+  useEffect(() => {
+    // 목록에서 차트 데이터(이름) 추출하기
+  }, [watchList])
 
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" name="favorite">
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  )
-}
-
-const Chart = () => {
   return (
     <ChartContainer>
       <Inner>
@@ -50,7 +43,7 @@ const Chart = () => {
             nameKey="name"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell key={`cell-${index}`} fill={COLOR_LIST[index % COLOR_LIST.length]} />
             ))}
           </Pie>
         </PieChart>
