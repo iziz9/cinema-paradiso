@@ -17,9 +17,16 @@ const data = [
 const Chart = ({ watchList }: { watchList: IMovieInfo[] }) => {
   const [chartValue, setChartValue] = useState([])
 
-  useEffect(() => {
-    // 목록에서 차트 데이터(이름) 추출하기
-  }, [watchList])
+  // useEffect(() => {
+  //   // 목록에서 차트 데이터 추출하기
+  //   const initialValue = 0
+  //   const filteredValue = watchList.reduce((acc, cur) => {
+  //     //cur.genre_ids.map(id => setChartValue(name 이미 있으면 value:+1, 없으면 {name:id, value:1}))
+  //     // 장르 id로 저장하고 장르목록 import해와서 차트 컴포넌트에서 텍스트로 바꾸기
+  //     // return {name: cur.genre_ids, value: value+1}
+  //   }, initialValue)
+  //   // setChartValue(filteredValue)
+  // }, [watchList])
 
   return (
     <ChartContainer>

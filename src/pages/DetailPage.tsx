@@ -7,6 +7,7 @@ import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRe
 import { IMovieCredits, IMovieDetail } from '../types/types'
 
 const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
+const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'
 const MAX_CAST_NUMBER = 6
 
 const DetailPage = () => {
@@ -38,7 +39,7 @@ const DetailPage = () => {
     <Container>
       {movieDetails && movieCredits && (
         <>
-          <DetailSection>
+          <DetailSection backdrop={movieDetails.backdrop_path}>
             <DetailBookmark>
               <button>
                 <BookmarkBlankIcon />
@@ -94,7 +95,7 @@ const DetailPage = () => {
             </DetailInfo>
             <DetailOverview>
               <h2>줄거리</h2>
-              {movieDetails.overview}
+              {movieDetails.overview || '미제공'}
             </DetailOverview>
           </DetailSection>
           <RelatedSection>
@@ -110,9 +111,8 @@ const Container = styled.main`
   position: relative;
 `
 
-const DetailSection = styled.section`
+const DetailSection = styled.section<{ backdrop?: string }>`
   position: relative;
-  background-color: #48484830; //url
   text-align: center;
   margin-top: 10px;
   padding: 30px 20px;
@@ -120,6 +120,17 @@ const DetailSection = styled.section`
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  &::before {
+    content: '';
+    background: ${(props) => (props.backdrop ? `url(${BACKGROUND_URL + props.backdrop}) ` : '#48484830')};
+    opacity: 0.2;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
 `
 
 const DetailInfo = styled.div`
