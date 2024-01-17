@@ -17,21 +17,21 @@ const MainPage = () => {
     const getRecommendLists = async () => {
       const trendingRes = await getTrendingMovieList()
       setPopularMovies(trendingRes)
-      // const topRatedRes = await getTopRatedMovieList()
-      // setTopRatedMovies(topRatedRes)
-      // const sfRes = await getGenresMovieList(878)
-      // setSfMovies(sfRes)
-      // const romanceRes = await getGenresMovieList(10749)
-      // setRomanceMovies(romanceRes)
+      const topRatedRes = await getTopRatedMovieList()
+      setTopRatedMovies(topRatedRes)
+      const sfRes = await getGenresMovieList(878)
+      setSfMovies(sfRes)
+      const romanceRes = await getGenresMovieList(10749)
+      setRomanceMovies(romanceRes)
     }
     getRecommendLists()
   }, [])
 
   const movieRecommendList = [
-    { title: '지금 가장 인기있는 영화', movieList: trendingMovies }
-    // { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies },
-    // { title: 'SF 추천 영화', movieList: sfMovies },
-    // { title: '로맨스 추천 영화', movieList: romanceMovies }
+    { title: '지금 가장 인기있는 영화', movieList: trendingMovies },
+    { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies },
+    { title: 'SF 추천 영화', movieList: sfMovies },
+    { title: '로맨스 추천 영화', movieList: romanceMovies }
   ]
 
   return (

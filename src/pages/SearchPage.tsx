@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
+// import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import { useLocation, useNavigate } from 'react-router-dom'
-import OverlayPoster from '../components/layout/OverlayPoster'
+// import OverlayPoster from '../components/layout/OverlayPoster'
 import { getSearchingMovieList } from '../api/movieRequest'
 import { IMovieInfo } from '../types/types'
 import RecommendItem from '../components/carousel/RecommendItem'
@@ -14,30 +14,32 @@ interface ITotalResults {
 }
 
 const SearchPage = () => {
-  const isMobile = useMediaQuery({
-    //모바일 무한스크롤, pc 페이지네이션
-    query: '(max-width: 833px)'
-  })
+  // const isMobile = useMediaQuery({
+  //   //모바일 무한스크롤, pc 페이지네이션
+  //   query: '(max-width: 833px)'
+  // })
   const location = useLocation()
   const navigate = useNavigate()
   const DropDownRef = useRef<HTMLUListElement>(null)
   const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
   const [movieList, setMovieList] = useState<IMovieInfo[]>([])
-  const [page, setPage] = useState<number>(1)
+  const [selectedPage, setSelectedPage] = useState<number>(1)
   const [totalResults, setTotalResults] = useState<ITotalResults>({
     totalCount: 0,
     totalPages: 0
   })
 
+  //페이지네이션 추가
+
   useEffect(() => {
     const getMovieList = async () => {
-      const movieRes = await getSearchingMovieList(location.state, page)
+      const movieRes = await getSearchingMovieList(location.state, selectedPage)
       setMovieList(movieRes.results)
       setTotalResults({ totalCount: movieRes.total_results, totalPages: movieRes.total_pages })
     }
     getMovieList()
     //페이지별 캐싱 추가
-  }, [location.state, page])
+  }, [location.state, selectedPage])
 
   return (
     <SearchPageContainer>
@@ -50,6 +52,7 @@ const SearchPage = () => {
             <RecommendItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
           </ListItem>
         ))}
+        <div>페이지버튼</div>
       </ListContainer>
     </SearchPageContainer>
   )

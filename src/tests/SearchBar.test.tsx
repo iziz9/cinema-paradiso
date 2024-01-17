@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MainPage from '../pages/MainPage'
-import { RoutedPage, delay, mockConsoleError } from './testUtils'
+import { RoutedPage, mockConsoleError } from './testUtils'
 
 describe('Search function test', () => {
   mockConsoleError()

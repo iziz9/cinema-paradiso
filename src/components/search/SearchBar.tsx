@@ -45,6 +45,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
 
     const isValid = checkInputValid(debouncedSearchValue)
     isValid && getAutoCompleteList()
+    //eslint-disable-next-line
   }, [debouncedSearchValue, setCachedAutoComplete])
 
   useEffect(() => {

@@ -7,7 +7,6 @@ import RecommendItem from './RecommendItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
 import { IMovieInfo } from '../../types/types'
-import SkeletonPoster from '../layout/SkeletonPoster'
 // const RecommendItem = React.lazy(() => import('./RecommendItem'))
 
 interface IRecommendList {

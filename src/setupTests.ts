@@ -9,7 +9,9 @@ window.matchMedia =
   function () {
     return {
       matches: false,
+      //eslint-disable-next-line
       addListener: function () {},
+      //eslint-disable-next-line
       removeListener: function () {}
     }
   }

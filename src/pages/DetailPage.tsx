@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
+import { BookmarkBlankIcon } from '../constants/icon'
 import RecommendList from '../components/carousel/RecommendList'
 import { useLocation } from 'react-router-dom'
 import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
@@ -39,7 +39,7 @@ const DetailPage = () => {
     <Container>
       {movieDetails && movieCredits && (
         <>
-          <DetailSection backdrop={movieDetails.backdrop_path}>
+          <DetailSection $backdrop={movieDetails.backdrop_path}>
             <DetailBookmark>
               <button>
                 <BookmarkBlankIcon />
@@ -111,7 +111,7 @@ const Container = styled.main`
   position: relative;
 `
 
-const DetailSection = styled.section<{ backdrop?: string }>`
+const DetailSection = styled.section<{ $backdrop?: string }>`
   position: relative;
   text-align: center;
   margin-top: 10px;
@@ -123,7 +123,7 @@ const DetailSection = styled.section<{ backdrop?: string }>`
 
   &::before {
     content: '';
-    background: ${(props) => (props.backdrop ? `url(${BACKGROUND_URL + props.backdrop}) ` : '#48484830')};
+    background: ${(props) => (props.$backdrop ? `url(${BACKGROUND_URL + props.$backdrop}) ` : '#48484830')};
     opacity: 0.2;
     position: absolute;
     top: 0px;

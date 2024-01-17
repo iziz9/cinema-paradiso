@@ -1,6 +1,4 @@
 import { BrowserRouter } from 'react-router-dom'
-import MainPage from '../pages/MainPage'
-import { JsxElement } from 'typescript'
 import { ReactNode } from 'react'
 
 export async function delay(ms: number) {

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { PieChart, Pie, Cell, Legend, Tooltip, Text } from 'recharts'
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
 import { IMovieInfo } from '../../types/types'
@@ -15,7 +14,7 @@ const data = [
 ]
 
 const Chart = ({ watchList }: { watchList: IMovieInfo[] }) => {
-  const [chartValue, setChartValue] = useState([])
+  // const [chartValue, setChartValue] = useState([])
 
   // useEffect(() => {
   //   // 목록에서 차트 데이터 추출하기

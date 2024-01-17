@@ -16,10 +16,10 @@ export const useRecommendMovieStore = create(
   )
 )
 
-interface ICachedRecommendItem {
-  title: string
-  movies: IMovieInfo[]
-}
+// interface ICachedRecommendItem {
+//   title: string
+//   movies: IMovieInfo[]
+// }
 // {title : '', movies: []}
 
 // 세션스토리지, expire필요없음

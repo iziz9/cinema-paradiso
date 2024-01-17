@@ -2,8 +2,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
-import SkeletonPoster from '../layout/SkeletonPoster'
-import { POSTER_BASE_URL, genresId } from '../../utils/defaultValues'
+import { POSTER_BASE_URL } from '../../utils/defaultValues'
 
 type RecommendItemPropsType = {
   movieInfo: IMovieInfo
