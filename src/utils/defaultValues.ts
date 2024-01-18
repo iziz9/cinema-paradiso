@@ -23,7 +23,6 @@ export const genresId = {
   10752: '전쟁',
   37: '서부'
 }
-
 export type genresIdType =
   | 28
   | 12

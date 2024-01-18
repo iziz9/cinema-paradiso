@@ -2,24 +2,28 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { IMovieInfo } from '../types/types'
 
+export interface ICachedRecommendMovie {
+  [key: string]: IMovieInfo[]
+}
+interface IUseRecommendMovieStore {
+  cachedRecommendMovie: ICachedRecommendMovie
+  setCachedRecommendMovie: (title: string, list: IMovieInfo[]) => void
+}
+const STORAGE_NAME = 'movie-recommend'
+const DEFAULT_CACHED_VALUE = localStorage.getItem(STORAGE_NAME)
+
 export const useRecommendMovieStore = create(
   persist(
     (set, get) => ({
-      recommendMovie: [],
-      setRecommendList: (list: IMovieInfo[]) => set({ recommendMovie: list }),
-      getRecommendList: (list: IMovieInfo[]) => set({ recommendMovie: list })
+      cachedRecommendMovie: (DEFAULT_CACHED_VALUE && JSON.parse(DEFAULT_CACHED_VALUE).state) || {},
+      setCachedRecommendMovie: (title, list) => {
+        set({ cachedRecommendMovie: { ...get().cachedRecommendMovie, [title]: list } })
+      }
     }),
     {
-      name: 'movie-recommend',
-      storage: createJSONStorage(() => sessionStorage)
+      name: STORAGE_NAME,
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state: IUseRecommendMovieStore) => state.cachedRecommendMovie
     }
   )
 )
-
-// interface ICachedRecommendItem {
-//   title: string
-//   movies: IMovieInfo[]
-// }
-// {title : '', movies: []}
-
-// 세션스토리지, expire필요없음
