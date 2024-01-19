@@ -1,16 +1,9 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { IMovieInfo } from '../types/types'
+import { IUseRecommendMovieStore } from '../types/storeTypes'
 
-export interface ICachedRecommendMovie {
-  [key: string]: IMovieInfo[]
-}
-interface IUseRecommendMovieStore {
-  cachedRecommendMovie: ICachedRecommendMovie
-  setCachedRecommendMovie: (title: string, list: IMovieInfo[]) => void
-}
 const STORAGE_NAME = 'movie-recommend'
-const DEFAULT_CACHED_VALUE = localStorage.getItem(STORAGE_NAME)
+const DEFAULT_CACHED_VALUE = sessionStorage.getItem(STORAGE_NAME) //session
 
 export const useRecommendMovieStore = create(
   persist(

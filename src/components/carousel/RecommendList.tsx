@@ -49,7 +49,7 @@ const RecommendSection = styled.section`
     padding: 15px 0;
 
     h3 {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
     .slick-list {
       height: auto;

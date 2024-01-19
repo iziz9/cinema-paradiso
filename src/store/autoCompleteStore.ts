@@ -1,20 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage, devtools } from 'zustand/middleware'
-import { IMovieInfo } from '../types/types'
-
-export interface ICachedAutoComplete {
-  [key: string]: ICachedAutoCompleteData
-}
-export interface ICachedAutoCompleteData {
-  data: IMovieInfo[]
-  expire: number
-}
-interface IUseAutoCompleteStore {
-  cachedAutoComplete: ICachedAutoComplete
-  setCachedAutoComplete: (searchValue: string, list: ICachedAutoCompleteData) => void
-  checkCachedAutoComplete: (searchValue: string) => IMovieInfo[] | boolean
-  deleteCachedAutoComplete: (searchValue: string) => void
-}
+import { IUseAutoCompleteStore } from '../types/storeTypes'
 
 const STORAGE_NAME = 'auto-complete'
 const DEFAULT_CACHED_VALUE = localStorage.getItem(STORAGE_NAME)

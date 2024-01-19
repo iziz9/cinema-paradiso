@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import RecommendList from '../components/carousel/RecommendList'
 import { getGenresMovieList, getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
-import { RECOMMEND_LIST_DEFAULT, genresId } from '../utils/defaultValues'
+import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { IMovieInfo } from '../types/types'
 
