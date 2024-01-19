@@ -3,10 +3,16 @@ import styled from 'styled-components'
 import SearchBar from '../components/search/SearchBar'
 import RecommendList from '../components/carousel/RecommendList'
 import { getGenresMovieList, getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
-import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
+import { RECOMMEND_LIST_DEFAULT, genresId } from '../utils/defaultValues'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
+import { IMovieInfo } from '../types/types'
 
-const sfGenreId = 878
+const SF_GENRE_ID = 878
+const recommendListTitle = {
+  trending: '지금 가장 인기있는 영화',
+  topRated: '관객 평점이 가장 높은 영화',
+  sf: 'SF 추천 영화'
+}
 
 const MainPage = () => {
   const DropDownRef = useRef<HTMLUListElement>(null)
@@ -17,21 +23,34 @@ const MainPage = () => {
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
 
   const movieRecommendList = [
-    { title: '지금 가장 인기있는 영화', movieList: trendingMovies },
-    { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies },
-    { title: 'SF 추천 영화', movieList: sfMovies }
+    { title: recommendListTitle.trending, movieList: trendingMovies },
+    { title: recommendListTitle.topRated, movieList: topRatedMovies },
+    { title: recommendListTitle.sf, movieList: sfMovies }
   ]
 
   useEffect(() => {
-    const getRecommendLists = async () => {
-      const trendingRes = await getTrendingMovieList()
-      setTrendingMovies(trendingRes)
-      const topRatedRes = await getTopRatedMovieList()
-      setTopRatedMovies(topRatedRes)
-      const sfRes = await getGenresMovieList(sfGenreId)
-      setSfMovies(sfRes)
+    const getCachedList = (title: string) => {
+      if (!cachedRecommendMovie[title]) return false
+      return cachedRecommendMovie[title]
     }
-    getRecommendLists()
+    const getRecommendLists = async (
+      title: string,
+      requestGetList: any,
+      setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>,
+      params?: number
+    ) => {
+      const cachedList = getCachedList(title)
+      if (cachedList) {
+        setRecommendList(cachedList)
+      } else {
+        const requestRes = params ? await requestGetList(params) : await requestGetList()
+        setRecommendList(requestRes)
+        setCachedRecommendMovie(title, requestRes)
+      }
+    }
+    getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
+    getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
+    getRecommendLists(recommendListTitle.sf, getGenresMovieList, setSfMovies, SF_GENRE_ID)
   }, [])
 
   return (

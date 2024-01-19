@@ -13,7 +13,7 @@ const Footer = () => {
         </div>
         <div className="copyright">
           <span>&copy; {currentYear} CINEMA PARADISO. All Rights Reserved.</span>
-          <a href="https://github.com/iziz9/cinema-paradiso" target="_blank" rel="noreferrer">
+          <a href="https://github.com/iziz9/cinema-paradiso" target="_blank" rel="noreferrer" aria-label="github">
             <GithubIcon />
           </a>
         </div>
