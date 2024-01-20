@@ -11,21 +11,18 @@ export interface IUseMovieDetailStore {
   //, credit: IMovieCredits, similar: IMovieDetail => detail안에 넣기
 }
 
-const STORAGE_NAME = 'movie-detail'
-const DEFAULT_CACHED_VALUE = localStorage.getItem(STORAGE_NAME)
-
 export const useRecommendMovieStore = create(
   persist(
     (set, get) => ({
-      cachedMovieDetail: (DEFAULT_CACHED_VALUE && JSON.parse(DEFAULT_CACHED_VALUE).state) || {},
+      cachedMovieDetail: {},
       setCachedMovieDetail: (title, detail) => {
         set({ cachedMovieDetail: { ...get().cachedMovieDetail, [title]: detail } })
       }
     }),
     {
-      name: STORAGE_NAME,
+      name: 'movie-detail',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state: IUseMovieDetailStore) => state.cachedMovieDetail
+      partialize: (state: IUseMovieDetailStore) => ({ cachedMovieDatail: state.cachedMovieDetail })
     }
   )
 )
