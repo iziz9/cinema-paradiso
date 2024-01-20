@@ -71,8 +71,6 @@ const GlobalStyles = createGlobalStyle`
     --screen-pc: 1024px;
 
     /* Screen height */
-    --height-header-pc: 80px;
-    --height-header-mobile: 60px;
     --height-footer: 100px;
 
     /* Colors */

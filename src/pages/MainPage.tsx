@@ -15,8 +15,6 @@ const recommendListTitle = {
 }
 
 const MainPage = () => {
-  const DropDownRef = useRef<HTMLUListElement>(null)
-  const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
   const [trendingMovies, setTrendingMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [sfMovies, setSfMovies] = useState(RECOMMEND_LIST_DEFAULT)
@@ -55,7 +53,6 @@ const MainPage = () => {
 
   return (
     <MainContainer>
-      <SearchBar isDropDownOpen={isDropDownOpen} setIsDropDownOpen={setisDropDownOpen} dropDownRef={DropDownRef} />
       {movieRecommendList.map((list, index) => (
         <RecommendList title={list.title} movieList={list.movieList} key={index} />
       ))}

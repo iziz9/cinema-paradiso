@@ -1,30 +1,35 @@
 import React, { KeyboardEvent, useEffect, useReducer, useState } from 'react'
 import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import DropDownBox from './DropDownBox'
 import useDebounce from '../../hooks/useDebounce'
 import { getSearchingMovieList } from '../../api/movieRequest'
 import { IMovieInfo, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
-import { useSearchValueStore } from '../../store/searchValueStore'
 import { useAutoCompleteStore } from '../../store/autoCompleteStore'
+
+const currentTime = Date.now()
+const EXPIRE_TIME = 7 * 60 * 1000
 
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
-  const { searchValue, setSearchValue } = useSearchValueStore()
+  const [params] = useSearchParams()
+  const [searchValue, setSearchValue] = useState(params.get('q') || '')
   const debouncedSearchValue = useDebounce(searchValue)
   const [autoCompleteList, setAutoCompleteList] = useState<IMovieInfo[]>([])
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX)
   const { cachedAutoComplete, setCachedAutoComplete, checkCachedAutoComplete } = useAutoCompleteStore()
 
-  const currentTime = Date.now()
-  const EXPIRE_TIME = 7 * 60 * 1000
-
   const checkInputValid = (query: string) => {
     if (query.trim().length === 0) return false
     return true
   }
+
+  useEffect(() => {
+    if (!params.get('q')) setSearchValue('')
+    else setSearchValue(params.get('q') || '')
+  }, [params])
 
   useEffect(() => {
     if (debouncedSearchValue.length === 0 || debouncedSearchValue.trim() === '') {
@@ -61,14 +66,14 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     dispatch({ type: 'RESET' })
   }
 
-  const resetInputValueAndIndex = (query: string) => {
+  const resetQueryAndIndex = (query: string) => {
     setSearchValue(query)
     dispatch({ type: 'RESET' })
     return true
   }
 
   const searchAutoCompleteValue = (query: string) => {
-    const isResetCompleted = resetInputValueAndIndex(query)
+    const isResetCompleted = resetQueryAndIndex(query)
     isResetCompleted && goToSearchPage(query)
   }
 
@@ -84,7 +89,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     const isValid = checkInputValid(query)
     if (!isValid) return alert('검색어를 입력해주세요.')
     setIsDropDownOpen(false)
-    navigate(`/search/${query}`, { state: query })
+    navigate(`/search?q=${query}`)
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

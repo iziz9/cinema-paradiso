@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { useMediaQuery } from 'react-responsive'
 import styled from 'styled-components'
-import SearchBar from '../components/search/SearchBar'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 // import OverlayPoster from '../components/layout/OverlayPoster'
 import { getSearchingMovieList } from '../api/movieRequest'
 import { IMovieInfo } from '../types/types'
@@ -18,10 +17,8 @@ const SearchPage = () => {
   //   //모바일 무한스크롤, pc 페이지네이션
   //   query: '(max-width: 833px)'
   // })
-  const location = useLocation()
+  const [params] = useSearchParams()
   const navigate = useNavigate()
-  const DropDownRef = useRef<HTMLUListElement>(null)
-  const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
   const [movieList, setMovieList] = useState<IMovieInfo[]>([])
   const [selectedPage, setSelectedPage] = useState<number>(1)
   const [totalResults, setTotalResults] = useState<ITotalResults>({
@@ -33,17 +30,19 @@ const SearchPage = () => {
 
   useEffect(() => {
     const getMovieList = async () => {
-      const movieRes = await getSearchingMovieList(location.state, selectedPage)
-      setMovieList(movieRes.results)
-      setTotalResults({ totalCount: movieRes.total_results, totalPages: movieRes.total_pages })
+      const searchParam = params.get('q')
+      if (searchParam) {
+        const movieRes = await getSearchingMovieList(searchParam, selectedPage)
+        setMovieList(movieRes.results)
+        setTotalResults({ totalCount: movieRes.total_results, totalPages: movieRes.total_pages })
+      }
     }
     getMovieList()
     //페이지별 캐싱 추가
-  }, [location.state, selectedPage])
+  }, [params, selectedPage])
 
   return (
     <SearchPageContainer>
-      <SearchBar isDropDownOpen={isDropDownOpen} setIsDropDownOpen={setisDropDownOpen} dropDownRef={DropDownRef} />
       <ResultsCount>검색결과 {totalResults.totalCount}건</ResultsCount>
       <ListContainer>
         {!movieList.length && <NoResult>일치하는 검색 결과가 없습니다.</NoResult>}
