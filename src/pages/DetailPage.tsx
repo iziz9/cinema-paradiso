@@ -2,32 +2,48 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BookmarkBlankIcon } from '../constants/icon'
 import RecommendList from '../components/carousel/RecommendList'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
-import { IMovieCredits, IMovieDetail } from '../types/types'
+import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
+import { useMovieDetailStore } from '../store/movieDetailStore'
 
 const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'
 const MAX_CAST_NUMBER = 6
 
 const DetailPage = () => {
-  const location = useLocation()
+  const params = useParams()
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
-  const [similarMovies, setSimilarMovies] = useState([])
+  const [similarMovies, setSimilarMovies] = useState<IMovieInfo[]>([])
   const [directorName, setDirectorName] = useState<string>('')
+  const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
 
   useEffect(() => {
-    const requestGetMovieDetail = async () => {
-      const detailsRes = await getMovieDetail(location.state)
-      setMovieDetails(detailsRes)
-      const creditsRes = await getMovieCredits(location.state)
-      setMovieCredits(creditsRes)
-      const similarRes = await getMovieSimilar(location.state)
-      setSimilarMovies(similarRes)
+    const getCachedData = (id: string) => {
+      if (!cachedMovieDetail[id]) return false
+      return cachedMovieDetail[id]
     }
-    requestGetMovieDetail()
-  }, [location])
+    const requestGetMovieDetail = async (id: string) => {
+      const cachedData = getCachedData(id)
+      if (cachedData) {
+        setMovieDetails(cachedData.details)
+        setMovieCredits(cachedData.credits)
+        setSimilarMovies(cachedData.similar)
+      } else {
+        const detailsRes = await getMovieDetail(params.id || '')
+        setMovieDetails(detailsRes)
+        const creditsRes = await getMovieCredits(params.id || '')
+        setMovieCredits(creditsRes)
+        const similarRes = await getMovieSimilar(params.id || '')
+        setSimilarMovies(similarRes)
+
+        const allDetails = { details: detailsRes, credits: creditsRes, similar: similarRes }
+        setCachedMovieDetail(id, allDetails)
+      }
+    }
+    params.id && requestGetMovieDetail(params.id)
+  }, [params])
 
   useEffect(() => {
     movieCredits?.crew.forEach((crew) => {
@@ -143,7 +159,6 @@ const DetailInfo = styled.div`
 
   .poster {
     position: relative;
-    /* width: 30%; */
     margin: auto;
 
     img {

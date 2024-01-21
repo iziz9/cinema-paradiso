@@ -1,28 +1,32 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { IMovieCredits, IMovieDetail } from '../types/types'
+import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 
+export interface IAllDetails {
+  details: IMovieDetail
+  credits: IMovieCredits
+  similar: IMovieInfo[]
+}
 export interface ICachedMovieDetail {
-  [key: string]: IMovieDetail
+  [key: string]: IAllDetails
 }
 export interface IUseMovieDetailStore {
   cachedMovieDetail: ICachedMovieDetail
-  setCachedMovieDetail: (title: string, detail: IMovieDetail) => void
-  //, credit: IMovieCredits, similar: IMovieDetail => detail안에 넣기
+  setCachedMovieDetail: (id: string, allDetails: IAllDetails) => void
 }
 
-export const useRecommendMovieStore = create(
+export const useMovieDetailStore = create(
   persist(
     (set, get) => ({
       cachedMovieDetail: {},
-      setCachedMovieDetail: (title, detail) => {
-        set({ cachedMovieDetail: { ...get().cachedMovieDetail, [title]: detail } })
+      setCachedMovieDetail: (id, allDetails) => {
+        set({ cachedMovieDetail: { ...get().cachedMovieDetail, [id]: allDetails } })
       }
     }),
     {
       name: 'movie-detail',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state: IUseMovieDetailStore) => ({ cachedMovieDatail: state.cachedMovieDetail })
+      partialize: (state: IUseMovieDetailStore) => ({ cachedMovieDetail: state.cachedMovieDetail })
     }
   )
 )

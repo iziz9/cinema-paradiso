@@ -22,6 +22,10 @@ export const getTopRatedMovieList = async () => {
       console.log(res.data.results)
       return res.data.results
     })
+    .catch((err: any) => {
+      console.log(err)
+      return alert(err)
+    })
 }
 
 export const getSearchingMovieList = async (query: string, page = 1) => {
@@ -34,7 +38,7 @@ export const getSearchingMovieList = async (query: string, page = 1) => {
       return res.data
     })
 }
-export const getMovieDetail = async (movieId: number) => {
+export const getMovieDetail = async (movieId: string) => {
   return await axiosInstance
     .get(`movie/${movieId}`, {
       params: { ...defaultOption }
@@ -43,8 +47,12 @@ export const getMovieDetail = async (movieId: number) => {
       console.log(res.data)
       return res.data
     })
+    .catch((err: any) => {
+      console.log(err)
+      return alert(err)
+    })
 }
-export const getMovieCredits = async (movieId: number) => {
+export const getMovieCredits = async (movieId: string) => {
   return await axiosInstance
     .get(`movie/${movieId}/credits`, {
       params: { ...defaultOption }
@@ -53,8 +61,12 @@ export const getMovieCredits = async (movieId: number) => {
       console.log(res.data)
       return res.data
     })
+    .catch((err: any) => {
+      console.log(err)
+      return alert(err)
+    })
 }
-export const getMovieSimilar = async (movieId: number) => {
+export const getMovieSimilar = async (movieId: string) => {
   return await axiosInstance
     .get(`movie/${movieId}/similar`, {
       params: { ...defaultOption, page: 1 }
@@ -62,6 +74,10 @@ export const getMovieSimilar = async (movieId: number) => {
     .then((res) => {
       console.log(res.data.results)
       return res.data.results
+    })
+    .catch((err: any) => {
+      console.log(err)
+      return 'dpfjskTdma'
     })
 }
 export const getGenresMovieList = async (with_genres: number) => {

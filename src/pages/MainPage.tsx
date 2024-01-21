@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import SearchBar from '../components/search/SearchBar'
 import RecommendList from '../components/carousel/RecommendList'
 import { getGenresMovieList, getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
 import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
