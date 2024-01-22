@@ -100,9 +100,3 @@ export interface IWatchListResponse {
   total_pages: number
   total_results: number
 }
-// export interface IRecommendList {
-//   trendingMovies: IMovieInfo[]
-//   topRatedMovies: IMovieInfo[]
-//   sfMovies: IMovieInfo[]
-//   romanceMovies: IMovieInfo[]
-// }

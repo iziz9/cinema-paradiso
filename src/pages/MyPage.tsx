@@ -22,7 +22,7 @@ const MyPage = () => {
 
   useEffect(() => {
     const getWatchList = async () => {
-      const watchListRes = await getMyWatchList(MY_ACCOUNT)
+      const watchListRes = await getMyWatchList(MY_ACCOUNT + '')
       setMyWatchList(watchListRes)
     }
     getWatchList()

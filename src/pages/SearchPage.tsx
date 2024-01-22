@@ -6,40 +6,40 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getSearchingMovieList } from '../api/movieRequest'
 import { IMovieInfo } from '../types/types'
 import RecommendItem from '../components/carousel/RecommendItem'
-
-interface ITotalResults {
-  totalCount: number
-  totalPages: number
-}
+import { useMediaQuery } from 'react-responsive'
+import useInfinityScroll from '../hooks/useInfinityScroll'
+import Loading from '../components/common/Loading'
 
 const SearchPage = () => {
-  // const isMobile = useMediaQuery({
-  //   //모바일 무한스크롤, pc 페이지네이션
-  //   query: '(max-width: 833px)'
-  // })
+  const isMobile = useMediaQuery({
+    //모바일 무한스크롤, pc 페이지네이션
+    query: '(max-width: 833px)'
+  })
   const [params] = useSearchParams()
   const navigate = useNavigate()
   const [movieList, setMovieList] = useState<IMovieInfo[]>([])
-  const [selectedPage, setSelectedPage] = useState<number>(1)
-  const [totalResults, setTotalResults] = useState<ITotalResults>({
-    totalCount: 0,
-    totalPages: 0
+  const [page, setPage] = useState<number>(1)
+
+  const { isLoading, totalResults, getListData, ref } = useInfinityScroll({
+    request: getSearchingMovieList,
+    payload: params.get('q') as string,
+    page,
+    setPage,
+    setMovieList
   })
 
-  //페이지네이션 추가
-
   useEffect(() => {
-    const getMovieList = async () => {
-      const searchParam = params.get('q')
-      if (searchParam) {
-        const movieRes = await getSearchingMovieList(searchParam, selectedPage)
-        setMovieList(movieRes.results)
-        setTotalResults({ totalCount: movieRes.total_results, totalPages: movieRes.total_pages })
-      }
-    }
-    getMovieList()
-    //페이지별 캐싱 추가
-  }, [params, selectedPage])
+    const searchParam = params.get('q')
+    if (!isLoading) getListData(searchParam as string, page)
+    // const getMovieList = async () => {
+    //   if (searchParam) {
+    //     const movieRes = await getSearchingMovieList(searchParam, page)
+    //     console.log(movieRes)
+    //     setMovieList(movieRes.results)
+    //   }
+    // }
+    // getMovieList()
+  }, [params, page])
 
   return (
     <SearchPageContainer>
@@ -51,8 +51,9 @@ const SearchPage = () => {
             <RecommendItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
           </ListItem>
         ))}
-        <div>페이지버튼</div>
       </ListContainer>
+      {!isLoading && <div ref={ref}></div>}
+      {isLoading && <Loading />}
     </SearchPageContainer>
   )
 }

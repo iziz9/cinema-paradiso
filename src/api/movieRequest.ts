@@ -90,7 +90,7 @@ export const getGenresMovieList = async (with_genres: number) => {
       return res.data.results
     })
 }
-export const getMyWatchList = async (account_id: number, page = 1) => {
+export const getMyWatchList = async (account_id: string, page = 1) => {
   // accountID 스토리지 저장
   return await axiosInstance
     .get(`account/${account_id}/watchlist/movies`, {
