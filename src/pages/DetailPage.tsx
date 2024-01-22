@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom'
 import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
 import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 import { useMovieDetailStore } from '../store/movieDetailStore'
+import { useRecommendMovieStore } from '../store/recommendMovieStore'
+import { recommendListTitle } from '../utils/defaultValues'
 
 const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'
@@ -18,6 +20,7 @@ const DetailPage = () => {
   const [similarMovies, setSimilarMovies] = useState<IMovieInfo[]>([])
   const [directorName, setDirectorName] = useState<string>('')
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
+  const { cachedRecommendMovie } = useRecommendMovieStore()
 
   useEffect(() => {
     const getCachedData = (id: string) => {
@@ -43,6 +46,7 @@ const DetailPage = () => {
       }
     }
     params.id && requestGetMovieDetail(params.id)
+    //eslint-disable-next-line
   }, [params])
 
   useEffect(() => {
@@ -111,12 +115,21 @@ const DetailPage = () => {
             </DetailInfo>
             <DetailOverview>
               <h2>줄거리</h2>
-              {movieDetails.overview || '미제공'}
+              {movieDetails.overview || '줄거리 미제공'}
             </DetailOverview>
           </DetailSection>
-          <RelatedSection>
-            <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} />
-          </RelatedSection>
+          {similarMovies.length ? (
+            <RelatedSection>
+              <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} />
+            </RelatedSection>
+          ) : (
+            <RelatedSection>
+              <RecommendList
+                title={recommendListTitle.trending}
+                movieList={cachedRecommendMovie[recommendListTitle.trending]}
+              />
+            </RelatedSection>
+          )}
         </>
       )}
     </Container>

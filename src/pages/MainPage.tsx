@@ -1,17 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
 import { getGenresMovieList, getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
-import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
+import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../utils/defaultValues'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { IMovieInfo } from '../types/types'
 
 const SF_GENRE_ID = 878
-const recommendListTitle = {
-  trending: '지금 가장 인기있는 영화',
-  topRated: '관객 평점이 가장 높은 영화',
-  sf: 'SF 추천 영화'
-}
 
 const MainPage = () => {
   const [trendingMovies, setTrendingMovies] = useState(RECOMMEND_LIST_DEFAULT)
@@ -48,10 +43,14 @@ const MainPage = () => {
     getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
     getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
     getRecommendLists(recommendListTitle.sf, getGenresMovieList, setSfMovies, SF_GENRE_ID)
+    //eslint-disable-next-line
   }, [])
 
   return (
     <MainContainer>
+      <div className="banner">
+        <img src="/banner.webp" alt="banner" />
+      </div>
       {movieRecommendList.map((list, index) => (
         <RecommendList title={list.title} movieList={list.movieList} key={index} />
       ))}
@@ -63,6 +62,15 @@ const MainContainer = styled.main`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 20px;
+
+  .banner {
+    width: 100%;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
 `
 
 export default MainPage

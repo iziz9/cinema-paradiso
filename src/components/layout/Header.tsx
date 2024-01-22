@@ -49,13 +49,14 @@ const HeaderContainer = styled.header`
       position: relative;
       text-align: center;
       width: 120px;
-      height: 54px;
+      height: 60px;
+      display: flex;
+      align-items: center;
 
       img {
         position: relative;
-        display: block;
-        width: 100%;
-        height: 100%;
+        width: 120px;
+        height: 54px;
         cursor: pointer;
       }
     }

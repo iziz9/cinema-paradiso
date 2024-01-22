@@ -45,8 +45,8 @@ const RecommendSection = styled.section`
     margin: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 15px 0;
+    gap: 15px;
+    padding: 10px 0;
 
     h3 {
       font-size: 1.05rem;

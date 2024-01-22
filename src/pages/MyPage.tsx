@@ -46,7 +46,7 @@ const MyPage = () => {
     { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
   ]
 
-  if (myWatchList.results.length < 1)
+  if (myWatchList.total_results < 1)
     return (
       <MyPageContainer>
         <MyProfile />
@@ -62,7 +62,7 @@ const MyPage = () => {
   return (
     <MyPageContainer>
       <MyProfile />
-      <Chart watchList={myWatchList.results} />
+      <Chart myWatchList={myWatchList} />
       <MyWatchList />
     </MyPageContainer>
   )

@@ -43,3 +43,8 @@ export type genresIdType =
   | 53
   | 10752
   | 37
+export const recommendListTitle = {
+  trending: '지금 가장 인기있는 영화',
+  topRated: '관객 평점이 가장 높은 영화',
+  sf: 'SF 추천 영화'
+}

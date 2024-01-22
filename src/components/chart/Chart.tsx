@@ -1,7 +1,9 @@
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
-import { IMovieInfo } from '../../types/types'
+import { IWatchListResponse } from '../../types/types'
+import { useEffect, useState } from 'react'
+import { genresId } from '../../utils/defaultValues'
 
 const data = [
   { name: 'SF', value: 400 },
@@ -13,25 +15,19 @@ const data = [
   { name: '드라마', value: 100 }
 ]
 
-const Chart = ({ watchList }: { watchList: IMovieInfo[] }) => {
-  // const [chartValue, setChartValue] = useState([])
+const Chart = ({ myWatchList }: { myWatchList: IWatchListResponse }) => {
+  const [favoriteGenre, setFavoriteGenre] = useState<number>(0)
+  const [chartData, setChartData] = useState({})
 
-  // useEffect(() => {
-  //   // 목록에서 차트 데이터 추출하기
-  //   const initialValue = 0
-  //   const filteredValue = watchList.reduce((acc, cur) => {
-  //     //cur.genre_ids.map(id => setChartValue(name 이미 있으면 value:+1, 없으면 {name:id, value:1}))
-  //     // 장르 id로 저장하고 장르목록 import해와서 차트 컴포넌트에서 텍스트로 바꾸기
-  //     // return {name: cur.genre_ids, value: value+1}
-  //   }, initialValue)
-  //   // setChartValue(filteredValue)
-  // }, [watchList])
+  useEffect(() => {
+    //페이지 여러개면 다음페이지도 같이 불러오기
+  }, [myWatchList])
 
   return (
     <ChartContainer>
       <Inner>
         <div className="desc">
-          <p>관심 영화 {'n'}개 중,</p>
+          <p>관심 영화 {myWatchList.total_results}개 중,</p>
           <p>
             <span>{'SF'}</span> 장르가 가장 많아요!
           </p>
