@@ -10,7 +10,7 @@ import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../ut
 import { useAutoCompleteStore } from '../../store/autoCompleteStore'
 
 const currentTime = Date.now()
-const EXPIRE_TIME = 7 * 60 * 1000
+const EXPIRE_TIME = 432000000 //5일
 
 const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBar) => {
   const navigate = useNavigate()
@@ -36,16 +36,19 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
       return setAutoCompleteList([])
     }
 
-    const getAutoCompleteList = async () => {
-      const cachedData = checkCachedAutoComplete(debouncedSearchValue)
-      if (cachedData) return setAutoCompleteList(cachedAutoComplete[debouncedSearchValue].data)
-
+    const cachingAutoCompleteList = async () => {
       const res = await getSearchingMovieList(debouncedSearchValue)
       setCachedAutoComplete(debouncedSearchValue, {
         data: res.results.slice(0, MAX_INDEX),
         expire: currentTime + EXPIRE_TIME
       })
       setAutoCompleteList(res.results.slice(0, MAX_INDEX))
+    }
+
+    const getAutoCompleteList = async () => {
+      const cachedData = checkCachedAutoComplete(debouncedSearchValue)
+      if (cachedData) return setAutoCompleteList(cachedAutoComplete[debouncedSearchValue].data)
+      cachingAutoCompleteList()
     }
 
     const isValid = checkInputValid(debouncedSearchValue)
@@ -177,7 +180,7 @@ const SearchBarContainer = styled.div`
 
   .searchbar {
     position: relative;
-    min-width: 200px;
+    min-width: 220px;
     width: 60%;
 
     input {
@@ -202,6 +205,10 @@ const SearchBarContainer = styled.div`
       top: 15px;
       right: 20px;
       cursor: pointer;
+    }
+
+    @media (max-width: 660px) {
+      width: 70%;
     }
   }
 `
