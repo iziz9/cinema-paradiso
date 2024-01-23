@@ -107,8 +107,8 @@ export const ProfileIcon = () => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      height="60px"
-      width="60px"
+      height="50px"
+      width="50px"
       version="1.1"
       id="Layer_1"
       viewBox="0 0 512 512"
@@ -125,6 +125,66 @@ export const ProfileIcon = () => {
           d="M362.592,360.624c0-57.696-47.728-104.464-106.592-104.464s-106.592,46.768-106.592,104.464H362.592   z"
         />
       </g>
+    </svg>
+  )
+}
+export const DoubleLeftIcon = () => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 448 512"
+      height="20px"
+      width="20px"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M223.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L319.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L393.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34zm-192 34l136 136c9.4 9.4 24.6 9.4 33.9 0l22.6-22.6c9.4-9.4 9.4-24.6 0-33.9L127.9 256l96.4-96.4c9.4-9.4 9.4-24.6 0-33.9L201.7 103c-9.4-9.4-24.6-9.4-33.9 0l-136 136c-9.5 9.4-9.5 24.6-.1 34z"></path>
+    </svg>
+  )
+}
+export const DoubleRightIcon = () => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 448 512"
+      height="20px"
+      width="20px"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path>
+    </svg>
+  )
+}
+export const LeftIcon = () => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 256 512"
+      height="20px"
+      width="20px"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"></path>
+    </svg>
+  )
+}
+export const RightIcon = () => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 256 512"
+      height="20px"
+      width="20px"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path>
     </svg>
   )
 }

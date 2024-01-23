@@ -7,7 +7,7 @@ import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRe
 import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 import { useMovieDetailStore } from '../store/movieDetailStore'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
-import { recommendListTitle } from '../utils/defaultValues'
+import { recommendListTitle } from '../constants/defaultValues'
 
 const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'

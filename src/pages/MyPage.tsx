@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
-import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../utils/defaultValues'
+import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
 import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo } from '../types/types'
@@ -47,6 +47,7 @@ const MyPage = () => {
     }
     const getRecommendLists = async (
       title: string,
+      //eslint-disable-next-line
       requestGetList: any,
       setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>
     ) => {
@@ -64,6 +65,7 @@ const MyPage = () => {
       getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
       getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
     }
+    //eslint-disable-next-line
   }, [page, myWatchList])
 
   if (totalResults.totalCount < 1)

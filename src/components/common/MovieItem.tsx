@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
-import { POSTER_BASE_URL } from '../../utils/defaultValues'
+import { POSTER_BASE_URL } from '../../constants/defaultValues'
 
 type MovieItemPropsType = {
   movieInfo: IMovieInfo

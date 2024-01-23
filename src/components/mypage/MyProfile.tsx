@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { ProfileIcon } from '../../constants/icon'
 
@@ -20,12 +19,11 @@ const MyProfileContainer = styled.section`
   padding: 10px 20px;
   box-sizing: border-box;
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
   font-size: 1.1rem;
   background-color: var(--colors-darkgray);
   color: var(--colors-gray);
-  /* justify-content:; */
 `
 
 export default MyProfile

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
 import { IMovieInfo } from '../../types/types'
 import { useEffect, useState } from 'react'
-import { genresId } from '../../utils/defaultValues'
+import { genresId } from '../../constants/defaultValues'
 import { ITotalResults } from '../../types/hooksTypes'
 
 const data = [
@@ -21,7 +21,7 @@ const Chart = ({ myWatchList, totalResults }: { myWatchList: IMovieInfo[]; total
   const [chartData, setChartData] = useState({})
 
   useEffect(() => {
-    //페이지 여러개면 다음페이지도 같이 불러오기
+    //페이지 여러개면?
   }, [myWatchList])
 
   return (
@@ -30,7 +30,7 @@ const Chart = ({ myWatchList, totalResults }: { myWatchList: IMovieInfo[]; total
         <div className="desc">
           <p>관심 영화 {totalResults.totalCount}개 중,</p>
           <p>
-            <span>{'SF'}</span> 장르가 가장 많아요!
+            <span>{'??'}</span> 장르가 가장 많아요!
           </p>
         </div>
         <PieChart width={300} height={280} className="chart">

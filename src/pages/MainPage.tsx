@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
 import { getGenresMovieList, getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
-import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../utils/defaultValues'
+import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { IMovieInfo } from '../types/types'
 
