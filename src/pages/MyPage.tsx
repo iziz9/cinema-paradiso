@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
-import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
+import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../utils/defaultValues'
 import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo } from '../types/types'
@@ -12,15 +12,18 @@ import MovieItem from '../components/common/MovieItem'
 import { useNavigate } from 'react-router-dom'
 import MovieListStyle from '../components/style/MovieListStyle'
 import MovieItemStyle from '../components/style/MovieItemStyle'
+import ResultCountStyle from '../components/style/ResultCountStyle'
+import { useRecommendMovieStore } from '../store/recommendMovieStore'
 
 const MY_ACCOUNT = Number(process.env.REACT_APP_MY_ACCOUNT) //임시
 
 const MyPage = () => {
   const navigate = useNavigate()
-  const [trendingMovies, setPopularMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [trendingMovies, setTrendingMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [page, setPage] = useState<number>(1)
   const [myWatchList, setMyWatchList] = useState<IMovieInfo[]>([])
+  const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
   const { isLoading, totalResults, getListData, ref } = useInfinityScroll({
     request: getMyWatchList,
     payload: MY_ACCOUNT + '',
@@ -28,28 +31,40 @@ const MyPage = () => {
     setPage,
     setMovieList: setMyWatchList
   })
+  const movieRecommendList = [
+    { title: recommendListTitle.trending, movieList: trendingMovies },
+    { title: recommendListTitle.topRated, movieList: topRatedMovies }
+  ]
 
   useEffect(() => {
-    if (!isLoading) getListData(MY_ACCOUNT + '', page)
-  }, [page])
+    getListData(MY_ACCOUNT + '', page)
+  }, [page, getListData])
 
-  // useEffect(() => {
-  //   const getRecommendList = async () => {
-  //     const trendingRes = await getTrendingMovieList()
-  //     setPopularMovies(trendingRes)
-  //     const topRatedRes = await getTopRatedMovieList()
-  //     setTopRatedMovies(topRatedRes)
-  //   }
-  //   if (page !== 0 && myWatchList.length < 1) {
-  //     getRecommendList()
-  //   }
-  // }, [myWatchList])
+  useEffect(() => {
+    const getCachedList = (title: string) => {
+      if (!cachedRecommendMovie[title]) return false
+      return cachedRecommendMovie[title]
+    }
+    const getRecommendLists = async (
+      title: string,
+      requestGetList: any,
+      setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>
+    ) => {
+      const cachedList = getCachedList(title)
+      if (cachedList) {
+        setRecommendList(cachedList)
+      } else {
+        const requestRes = await requestGetList()
+        setRecommendList(requestRes)
+        setCachedRecommendMovie(title, requestRes)
+      }
+    }
 
-  const movieRecommendList = [
-    //임시, 메인페이지 중복, 캐싱해서 가져오기
-    { title: '지금 가장 인기있는 영화', movieList: trendingMovies },
-    { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
-  ]
+    if (myWatchList.length < 1) {
+      getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
+      getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
+    }
+  }, [page, myWatchList])
 
   if (totalResults.totalCount < 1)
     return (
@@ -69,6 +84,7 @@ const MyPage = () => {
       <MyPageContainer>
         <MyProfile />
         <Chart myWatchList={myWatchList} totalResults={totalResults} />
+        <ResultCountStyle>나의 관심 목록 ({totalResults.totalCount})</ResultCountStyle>
         <MovieListStyle>
           {myWatchList?.map((movie) => (
             <MovieItemStyle key={movie.id}>

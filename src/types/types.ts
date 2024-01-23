@@ -94,3 +94,9 @@ export interface ImovieCreditsCrew {
   popularity: number
   profile_path: string
 }
+export interface IGetRecommendLists {
+  title: string
+  requestGetList: any
+  setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>
+  params?: string
+}
