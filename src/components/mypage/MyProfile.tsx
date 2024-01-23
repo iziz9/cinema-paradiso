@@ -1,17 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
+import { ProfileIcon } from '../../constants/icon'
 
 const MyProfile = () => {
   return (
     <MyProfileContainer>
-      <div>프로필사진</div>
-      <div>이름</div>
+      <div>
+        <ProfileIcon />
+      </div>
+      <div>GUEST 님</div>
     </MyProfileContainer>
   )
 }
 
 const MyProfileContainer = styled.section`
   position: relative;
+  width: 100%;
+  height: 80px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 1.1rem;
+  background-color: var(--colors-darkgray);
+  color: var(--colors-gray);
+  /* justify-content:; */
 `
 
 export default MyProfile

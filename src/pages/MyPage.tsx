@@ -4,41 +4,46 @@ import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
 import { RECOMMEND_LIST_DEFAULT } from '../utils/defaultValues'
 import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
-import MyWatchList from '../components/mypage/MyWatchList'
 import MyProfile from '../components/mypage/MyProfile'
-import { IWatchListResponse } from '../types/types'
+import { IMovieInfo } from '../types/types'
+import useInfinityScroll from '../hooks/useInfinityScroll'
+import Loading from '../components/common/Loading'
+import MovieItem from '../components/common/MovieItem'
+import { useNavigate } from 'react-router-dom'
+import MovieListStyle from '../components/style/MovieListStyle'
+import MovieItemStyle from '../components/style/MovieItemStyle'
 
 const MY_ACCOUNT = Number(process.env.REACT_APP_MY_ACCOUNT) //임시
 
 const MyPage = () => {
+  const navigate = useNavigate()
   const [trendingMovies, setPopularMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
-  const [myWatchList, setMyWatchList] = useState<IWatchListResponse>({
-    page: 0,
-    results: [],
-    total_pages: 0,
-    total_results: 0
+  const [page, setPage] = useState<number>(1)
+  const [myWatchList, setMyWatchList] = useState<IMovieInfo[]>([])
+  const { isLoading, totalResults, getListData, ref } = useInfinityScroll({
+    request: getMyWatchList,
+    payload: MY_ACCOUNT + '',
+    page,
+    setPage,
+    setMovieList: setMyWatchList
   })
 
   useEffect(() => {
-    const getWatchList = async () => {
-      const watchListRes = await getMyWatchList(MY_ACCOUNT + '')
-      setMyWatchList(watchListRes)
-    }
-    getWatchList()
-  }, [])
+    if (!isLoading) getListData(MY_ACCOUNT + '', page)
+  }, [page])
 
-  useEffect(() => {
-    const getRecommendList = async () => {
-      const trendingRes = await getTrendingMovieList()
-      setPopularMovies(trendingRes)
-      const topRatedRes = await getTopRatedMovieList()
-      setTopRatedMovies(topRatedRes)
-    }
-    if (myWatchList.page !== 0 && myWatchList.results.length < 1) {
-      getRecommendList()
-    }
-  }, [myWatchList])
+  // useEffect(() => {
+  //   const getRecommendList = async () => {
+  //     const trendingRes = await getTrendingMovieList()
+  //     setPopularMovies(trendingRes)
+  //     const topRatedRes = await getTopRatedMovieList()
+  //     setTopRatedMovies(topRatedRes)
+  //   }
+  //   if (page !== 0 && myWatchList.length < 1) {
+  //     getRecommendList()
+  //   }
+  // }, [myWatchList])
 
   const movieRecommendList = [
     //임시, 메인페이지 중복, 캐싱해서 가져오기
@@ -46,7 +51,7 @@ const MyPage = () => {
     { title: '관객 평점이 가장 높은 영화', movieList: topRatedMovies }
   ]
 
-  if (myWatchList.total_results < 1)
+  if (totalResults.totalCount < 1)
     return (
       <MyPageContainer>
         <MyProfile />
@@ -59,13 +64,22 @@ const MyPage = () => {
         ))}
       </MyPageContainer>
     )
-  return (
-    <MyPageContainer>
-      <MyProfile />
-      <Chart myWatchList={myWatchList} />
-      <MyWatchList />
-    </MyPageContainer>
-  )
+  else
+    return (
+      <MyPageContainer>
+        <MyProfile />
+        <Chart myWatchList={myWatchList} totalResults={totalResults} />
+        <MovieListStyle>
+          {myWatchList?.map((movie) => (
+            <MovieItemStyle key={movie.id}>
+              <MovieItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
+            </MovieItemStyle>
+          ))}
+        </MovieListStyle>
+        {!isLoading && <div ref={ref}></div>}
+        {isLoading && <Loading />}
+      </MyPageContainer>
+    )
 }
 
 const MyPageContainer = styled.main`

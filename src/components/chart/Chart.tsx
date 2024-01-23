@@ -1,9 +1,10 @@
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
-import { IWatchListResponse } from '../../types/types'
+import { IMovieInfo } from '../../types/types'
 import { useEffect, useState } from 'react'
 import { genresId } from '../../utils/defaultValues'
+import { ITotalResults } from '../../types/hooksTypes'
 
 const data = [
   { name: 'SF', value: 400 },
@@ -15,7 +16,7 @@ const data = [
   { name: '드라마', value: 100 }
 ]
 
-const Chart = ({ myWatchList }: { myWatchList: IWatchListResponse }) => {
+const Chart = ({ myWatchList, totalResults }: { myWatchList: IMovieInfo[]; totalResults: ITotalResults }) => {
   const [favoriteGenre, setFavoriteGenre] = useState<number>(0)
   const [chartData, setChartData] = useState({})
 
@@ -27,7 +28,7 @@ const Chart = ({ myWatchList }: { myWatchList: IWatchListResponse }) => {
     <ChartContainer>
       <Inner>
         <div className="desc">
-          <p>관심 영화 {myWatchList.total_results}개 중,</p>
+          <p>관심 영화 {totalResults.totalCount}개 중,</p>
           <p>
             <span>{'SF'}</span> 장르가 가장 많아요!
           </p>
@@ -65,7 +66,7 @@ const Inner = styled.div`
 
   .desc {
     width: 100%;
-    padding: 20px 0 0;
+    padding: 10px 0 0;
     display: flex;
     flex-direction: column;
     margin: auto;

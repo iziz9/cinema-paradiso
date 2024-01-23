@@ -94,9 +94,3 @@ export interface ImovieCreditsCrew {
   popularity: number
   profile_path: string
 }
-export interface IWatchListResponse {
-  page: number
-  results: IMovieInfo[]
-  total_pages: number
-  total_results: number
-}

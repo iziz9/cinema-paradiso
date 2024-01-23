@@ -18,7 +18,6 @@ const useInfinityScroll = ({ request, payload, page, setPage, setMovieList }: II
       try {
         setIsLoading(true)
         const listData = await request(payload, page)
-        console.log(listData)
         if (!listData) {
           setLastPage(true)
           setMovieList([])

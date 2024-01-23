@@ -4,12 +4,12 @@ import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
 import { POSTER_BASE_URL } from '../../utils/defaultValues'
 
-type RecommendItemPropsType = {
+type MovieItemPropsType = {
   movieInfo: IMovieInfo
   onClick: () => void
 }
 
-const RecommendItem = ({ movieInfo, onClick }: RecommendItemPropsType) => {
+const MovieItem = ({ movieInfo, onClick }: MovieItemPropsType) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
 
   const handleMouseOver = useCallback(() => {
@@ -76,4 +76,4 @@ const ItemContainer = styled.div`
   }
 `
 
-export default RecommendItem
+export default MovieItem

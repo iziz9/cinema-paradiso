@@ -102,3 +102,29 @@ export const LoadingIcon = () => {
     </svg>
   )
 }
+export const ProfileIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      height="60px"
+      width="60px"
+      version="1.1"
+      id="Layer_1"
+      viewBox="0 0 512 512"
+      xmlSpace="preserve"
+    >
+      <path
+        fill="#d6d6d658"
+        d="M256,508C117.04,508,4,394.96,4,256S117.04,4,256,4s252,113.04,252,252S394.96,508,256,508z"
+      />
+      <g>
+        <ellipse fill="#A1BA50" cx="256" cy="175.648" rx="61.712" ry="60.48" />
+        <path
+          fill="#A1BA50"
+          d="M362.592,360.624c0-57.696-47.728-104.464-106.592-104.464s-106.592,46.768-106.592,104.464H362.592   z"
+        />
+      </g>
+    </svg>
+  )
+}

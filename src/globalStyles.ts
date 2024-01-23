@@ -83,6 +83,7 @@ const GlobalStyles = createGlobalStyle`
     --colors-darkgray: #242424;
     --colors-transdark: #00000040;
     --colors-transblack: #000000c7;
+    --colors-antiquewhite: #faebd7;
     
     font-family: 'SUITE-Regular', sans-serif;
     position: relative;

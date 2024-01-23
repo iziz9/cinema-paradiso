@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import RecommendItem from './RecommendItem'
+import MovieItem from '../common/MovieItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
 import { IMovieInfo } from '../../types/types'
-// const RecommendItem = React.lazy(() => import('./RecommendItem'))
+// const MovieItem = React.lazy(() => import('./MovieItem'))
 
 interface IRecommendList {
   title: string
@@ -22,7 +22,7 @@ const RecommendList = ({ title, movieList }: IRecommendList) => {
         <h3>{title}</h3>
         <Slider {...carouselSettings}>
           {movieList.map((movie, index) => (
-            <RecommendItem
+            <MovieItem
               movieInfo={movie}
               onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
               key={movie.id}
