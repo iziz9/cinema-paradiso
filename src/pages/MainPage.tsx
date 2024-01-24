@@ -27,6 +27,7 @@ const MainPage = () => {
     }
     const getRecommendLists = async (
       title: string,
+      // eslint-disable-next-line
       requestGetList: any,
       setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>,
       params?: number

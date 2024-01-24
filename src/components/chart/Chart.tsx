@@ -2,8 +2,8 @@ import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
 import { IMovieInfo } from '../../types/types'
-import { useEffect, useState } from 'react'
-import { genresId } from '../../constants/defaultValues'
+import { useEffect } from 'react'
+// import { genresId } from '../../constants/defaultValues'
 import { ITotalResults } from '../../types/hooksTypes'
 
 const data = [
@@ -17,8 +17,8 @@ const data = [
 ]
 
 const Chart = ({ myWatchList, totalResults }: { myWatchList: IMovieInfo[]; totalResults: ITotalResults }) => {
-  const [favoriteGenre, setFavoriteGenre] = useState<number>(0)
-  const [chartData, setChartData] = useState({})
+  // const [favoriteGenre, setFavoriteGenre] = useState<number>(0)
+  // const [chartData, setChartData] = useState({})
 
   useEffect(() => {
     //페이지 여러개면?

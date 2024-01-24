@@ -33,18 +33,21 @@ const useInfinityScroll = ({ request, payload, page, setPage, setMovieList }: II
         setIsLoading(false)
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [page, payload]
   )
 
   useEffect(() => {
     setPage(1)
     setMovieList([])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [payload])
 
   useEffect(() => {
     if (inView && !lastPage) {
       setPage((prev: number) => prev + 1)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, lastPage])
 
   return { lastPage, isLoading, totalResults, getListData, ref }

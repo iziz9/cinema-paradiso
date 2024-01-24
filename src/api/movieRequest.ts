@@ -8,7 +8,6 @@ export const getTrendingMovieList = async () => {
       params: { ...defaultOption, page: 1 }
     })
     .then((res) => {
-      console.log(res.data.results)
       return res.data.results
     })
 }
@@ -19,11 +18,9 @@ export const getTopRatedMovieList = async () => {
       params: { ...defaultOption, page: 1, region: 410 }
     })
     .then((res) => {
-      console.log(res.data.results)
       return res.data.results
     })
-    .catch((err: any) => {
-      console.log(err)
+    .catch((err: object) => {
       return alert(err)
     })
 }
@@ -34,7 +31,6 @@ export const getSearchingMovieList = async (query: string, page = 1) => {
       params: { ...defaultOption, query, includes_adult: false, page }
     })
     .then((res) => {
-      console.log(res.data.results)
       return res.data
     })
 }
@@ -44,11 +40,9 @@ export const getMovieDetail = async (movieId: string) => {
       params: { ...defaultOption }
     })
     .then((res) => {
-      console.log(res.data)
       return res.data
     })
-    .catch((err: any) => {
-      console.log(err)
+    .catch((err: object) => {
       return alert(err)
     })
 }
@@ -58,11 +52,9 @@ export const getMovieCredits = async (movieId: string) => {
       params: { ...defaultOption }
     })
     .then((res) => {
-      console.log(res.data)
       return res.data
     })
-    .catch((err: any) => {
-      console.log(err)
+    .catch((err: object) => {
       return alert(err)
     })
 }
@@ -72,12 +64,10 @@ export const getMovieSimilar = async (movieId: string) => {
       params: { ...defaultOption, page: 1 }
     })
     .then((res) => {
-      console.log(res.data.results)
       return res.data.results
     })
-    .catch((err: any) => {
-      console.log(err)
-      return 'dpfjskTdma'
+    .catch((err: object) => {
+      return alert(err)
     })
 }
 export const getGenresMovieList = async (with_genres: number) => {
@@ -86,7 +76,6 @@ export const getGenresMovieList = async (with_genres: number) => {
       params: { ...defaultOption, page: 1, sort_by: 'popularity.desc', with_genres }
     })
     .then((res) => {
-      console.log(res.data.results)
       return res.data.results
     })
 }
@@ -97,7 +86,6 @@ export const getMyWatchList = async (account_id: string, page = 1) => {
       params: { ...defaultOption, page }
     })
     .then((res) => {
-      console.log(res.data)
       return res.data
     })
 }

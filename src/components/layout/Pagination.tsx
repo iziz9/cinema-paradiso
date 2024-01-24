@@ -18,6 +18,7 @@ const Pagination = ({ totalPages, page, setPage }: IPagination) => {
     } else if (page % VIEW_LIMIT === 0) {
       setCurrentPageArray(totalPageArray[Math.floor(page / VIEW_LIMIT) - 1])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page])
 
   useEffect(() => {
@@ -80,6 +81,9 @@ const PaginationContainer = styled.div`
   button[disabled] {
     svg {
       color: var(--colors-darkgray);
+      &:hover {
+        cursor: default;
+      }
     }
   }
 `
