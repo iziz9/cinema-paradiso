@@ -80,6 +80,7 @@ const GlobalStyles = createGlobalStyle`
     --colors-yellow: #F4BA24;
     --colors-green: #A1BA50;
     --colors-gray: #cecece;
+    --colors-middlegray: #707070;
     --colors-darkgray: #242424;
     --colors-transdark: #00000040;
     --colors-transblack: #000000c7;

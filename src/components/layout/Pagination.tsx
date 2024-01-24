@@ -1,41 +1,40 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { DoubleLeftIcon, DoubleRightIcon, LeftIcon, RightIcon } from '../../constants/icon'
+import { IPagination } from '../../types/types'
 
-interface IPagination {
-  totalPages: number
-  viewLimit: number
-  page: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
-}
+const VIEW_LIMIT = 5
 
-const Pagination = ({ totalPages, viewLimit, page, setPage }: IPagination) => {
-  // double 버튼 눌렀을 때 버튼목록 마지막페이지arr 안나옴
+const Pagination = ({ totalPages, page, setPage }: IPagination) => {
   const [currentPageArray, setCurrentPageArray] = useState<number[]>([])
   const [totalPageArray, setTotalPageArray] = useState<number[][]>([])
 
   useEffect(() => {
-    if (page % viewLimit === 1) {
-      setCurrentPageArray(totalPageArray[Math.floor(page / viewLimit)])
-    } else if (page % viewLimit === 0) {
-      setCurrentPageArray(totalPageArray[Math.floor(page / viewLimit) - 1])
+    if (page === totalPages) {
+      setCurrentPageArray(totalPageArray[totalPageArray.length - 1])
+    }
+    if (page % VIEW_LIMIT === 1) {
+      setCurrentPageArray(totalPageArray[Math.floor(page / VIEW_LIMIT)])
+    } else if (page % VIEW_LIMIT === 0) {
+      setCurrentPageArray(totalPageArray[Math.floor(page / VIEW_LIMIT) - 1])
     }
   }, [page])
 
-  const sliceArrayByLimit = (totalPages: number) => {
-    const totalPageArray = Array(totalPages)
-      .fill(null)
-      .map((_, i) => i)
-    return Array(Math.ceil(totalPages / viewLimit))
-      .fill(null)
-      .map(() => totalPageArray.splice(0, viewLimit))
-  }
-
   useEffect(() => {
+    setPage(1)
+    const sliceArrayByLimit = (totalPages: number) => {
+      const totalPageArray = Array(totalPages)
+        .fill(null)
+        .map((_, i) => i)
+      return Array(Math.ceil(totalPages / VIEW_LIMIT))
+        .fill(null)
+        .map(() => totalPageArray.splice(0, VIEW_LIMIT))
+    }
+
     const slicedPageArray = sliceArrayByLimit(totalPages)
     setTotalPageArray(slicedPageArray)
     setCurrentPageArray(slicedPageArray[0])
-  }, [totalPages])
+  }, [totalPages, setPage])
 
   return (
     <PaginationContainer>
@@ -64,19 +63,30 @@ const Pagination = ({ totalPages, viewLimit, page, setPage }: IPagination) => {
 
 const PaginationContainer = styled.div`
   position: relative;
-  background-color: orange;
   width: 100%;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  margin-top: 20px;
+
+  svg {
+    color: var(--colors-middlegray);
+    &:hover {
+      color: var(--colors-light);
+    }
+  }
+  button[disabled] {
+    svg {
+      color: var(--colors-darkgray);
+    }
+  }
 `
 const PageButtonContainer = styled.div`
   position: relative;
   display: flex;
-  gap: 15px;
-
+  gap: 20px;
   button[aria-current='page'] {
     color: var(--colors-green);
   }
@@ -84,6 +94,11 @@ const PageButtonContainer = styled.div`
 const PageButton = styled.button`
   position: relative;
   font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--colors-middlegray);
+  &:hover {
+    color: var(--colors-light);
+  }
 `
 
 export default Pagination

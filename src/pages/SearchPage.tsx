@@ -10,8 +10,6 @@ import ResultCountStyle from '../components/style/ResultCountStyle'
 import { ITotalResults } from '../types/hooksTypes'
 import Pagination from '../components/layout/Pagination'
 
-const VIEW_LIMIT = 5
-
 const SearchPage = () => {
   const [params] = useSearchParams()
   const navigate = useNavigate()
@@ -48,7 +46,7 @@ const SearchPage = () => {
             <MovieItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
           </MovieItemStyle>
         ))}
-        <Pagination totalPages={totalResults.totalPages} viewLimit={VIEW_LIMIT} page={page} setPage={setPage} />
+        <Pagination totalPages={totalResults.totalPages} page={page} setPage={setPage} />
       </MovieListStyle>
     </SearchPageContainer>
   )

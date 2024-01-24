@@ -101,3 +101,8 @@ export interface IGetRecommendLists {
   setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>
   params?: string
 }
+export interface IPagination {
+  totalPages: number
+  page: number
+  setPage: React.Dispatch<React.SetStateAction<number>>
+}
