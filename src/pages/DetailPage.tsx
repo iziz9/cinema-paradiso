@@ -120,14 +120,14 @@ const DetailPage = () => {
           </DetailSection>
           {similarMovies.length ? (
             <RelatedSection>
-              <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} />
+              {/* <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} /> */}
             </RelatedSection>
           ) : (
             <RelatedSection>
-              <RecommendList
+              {/* <RecommendList
                 title={recommendListTitle.trending}
                 movieList={cachedRecommendMovie[recommendListTitle.trending]}
-              />
+              /> */}
             </RelatedSection>
           )}
         </>

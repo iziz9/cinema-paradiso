@@ -39,23 +39,23 @@ const Pagination = ({ totalPages, page, setPage }: IPagination) => {
 
   return (
     <PaginationContainer>
-      <button onClick={() => setPage(1)} disabled={page === 1}>
+      <button onClick={() => setPage(1)} disabled={page === 1} aria-label="첫 페이지로">
         <DoubleLeftIcon />
       </button>
-      <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+      <button onClick={() => setPage(page - 1)} disabled={page === 1} aria-label="이전 페이지로">
         <LeftIcon />
       </button>
       <PageButtonContainer role="navigation" aria-label="pagination">
         {currentPageArray?.map((i) => (
-          <PageButton key={i + 1} onClick={() => setPage(i + 1)} aria-current={page === i + 1 ? 'page' : undefined}>
-            {i + 1}
-          </PageButton>
+          <li key={i + 1} onClick={() => setPage(i + 1)}>
+            <PageButton aria-current={page === i + 1 ? 'page' : undefined}>{i + 1}</PageButton>
+          </li>
         ))}
       </PageButtonContainer>
-      <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+      <button onClick={() => setPage(page + 1)} disabled={page === totalPages} aria-label="다음 페이지로">
         <RightIcon />
       </button>
-      <button onClick={() => setPage(totalPages)} disabled={page === totalPages}>
+      <button onClick={() => setPage(totalPages)} disabled={page === totalPages} aria-label="마지막 페이지로">
         <DoubleRightIcon />
       </button>
     </PaginationContainer>
@@ -87,7 +87,7 @@ const PaginationContainer = styled.div`
     }
   }
 `
-const PageButtonContainer = styled.div`
+const PageButtonContainer = styled.ul`
   position: relative;
   display: flex;
   gap: 20px;

@@ -13,6 +13,7 @@ const MainPage = () => {
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [sfMovies, setSfMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
+  const [isLoading, setIsLoading] = useState(false)
 
   const movieRecommendList = [
     { title: recommendListTitle.trending, movieList: trendingMovies },
@@ -41,9 +42,13 @@ const MainPage = () => {
         setCachedRecommendMovie(title, requestRes)
       }
     }
+    setIsLoading(true)
     getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
     getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
     getRecommendLists(recommendListTitle.sf, getGenresMovieList, setSfMovies, SF_GENRE_ID)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
     //eslint-disable-next-line
   }, [])
 
@@ -53,7 +58,7 @@ const MainPage = () => {
         <img src="/banner.webp" alt="banner" />
       </div>
       {movieRecommendList.map((list, index) => (
-        <RecommendList title={list.title} movieList={list.movieList} key={index} />
+        <RecommendList title={list.title} movieList={list.movieList} isLoading={isLoading} key={index} />
       ))}
     </MainContainer>
   )
@@ -69,6 +74,7 @@ const MainContainer = styled.main`
     width: 100%;
     img {
       width: 100%;
+      aspect-ratio: 1/0.352;
       object-fit: cover;
     }
   }

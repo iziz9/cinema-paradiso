@@ -61,6 +61,17 @@ const ItemContainer = styled.div`
     height: 100%;
     object-fit: cover;
     margin: auto;
+
+    animation: fadein 1s;
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
   }
 
   transition: transform 0.5s;

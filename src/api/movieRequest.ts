@@ -10,6 +10,9 @@ export const getTrendingMovieList = async () => {
     .then((res) => {
       return res.data.results
     })
+    .catch((err: object) => {
+      return alert(err)
+    })
 }
 
 export const getTopRatedMovieList = async () => {
@@ -32,6 +35,9 @@ export const getSearchingMovieList = async (query: string, page = 1) => {
     })
     .then((res) => {
       return res.data
+    })
+    .catch((err: object) => {
+      return alert(err)
     })
 }
 export const getMovieDetail = async (movieId: string) => {
@@ -78,14 +84,19 @@ export const getGenresMovieList = async (with_genres: number) => {
     .then((res) => {
       return res.data.results
     })
+    .catch((err: object) => {
+      return alert(err)
+    })
 }
 export const getMyWatchList = async (account_id: string, page = 1) => {
-  // accountID 스토리지 저장
   return await axiosInstance
     .get(`account/${account_id}/watchlist/movies`, {
       params: { ...defaultOption, page }
     })
     .then((res) => {
       return res.data
+    })
+    .catch((err: object) => {
+      return alert(err)
     })
 }
