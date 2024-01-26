@@ -12,8 +12,7 @@ const Pagination = ({ totalPages, page, setPage }: IPagination) => {
   useEffect(() => {
     if (page === totalPages) {
       setCurrentPageArray(totalPageArray[totalPageArray.length - 1])
-    }
-    if (page % VIEW_LIMIT === 1) {
+    } else if (page % VIEW_LIMIT === 1) {
       setCurrentPageArray(totalPageArray[Math.floor(page / VIEW_LIMIT)])
     } else if (page % VIEW_LIMIT === 0) {
       setCurrentPageArray(totalPageArray[Math.floor(page / VIEW_LIMIT) - 1])
@@ -22,7 +21,6 @@ const Pagination = ({ totalPages, page, setPage }: IPagination) => {
   }, [page])
 
   useEffect(() => {
-    setPage(1)
     const sliceArrayByLimit = (totalPages: number) => {
       const totalPageArray = Array(totalPages)
         .fill(null)
@@ -35,7 +33,7 @@ const Pagination = ({ totalPages, page, setPage }: IPagination) => {
     const slicedPageArray = sliceArrayByLimit(totalPages)
     setTotalPageArray(slicedPageArray)
     setCurrentPageArray(slicedPageArray[0])
-  }, [totalPages, setPage])
+  }, [totalPages])
 
   return (
     <PaginationContainer>
