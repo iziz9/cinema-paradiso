@@ -15,7 +15,7 @@ import MovieItemStyle from '../components/style/MovieItemStyle'
 import ResultCountStyle from '../components/style/ResultCountStyle'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 
-const MY_ACCOUNT = Number(process.env.REACT_APP_MY_ACCOUNT) //임시
+const MY_ACCOUNT = String(process.env.REACT_APP_MY_ACCOUNT) //임시
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ const MyPage = () => {
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
   const { isLoading, totalResults, getListData, ref } = useInfinityScroll({
     request: getMyWatchList,
-    payload: MY_ACCOUNT + '',
+    payload: MY_ACCOUNT,
     page,
     setPage,
     setMovieList: setMyWatchList

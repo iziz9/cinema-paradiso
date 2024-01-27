@@ -43,7 +43,7 @@ const Pagination = ({ totalPages, page, setPage }: IPagination) => {
       <button onClick={() => setPage(page - 1)} disabled={page === 1} aria-label="이전 페이지로">
         <LeftIcon />
       </button>
-      <PageButtonContainer role="navigation" aria-label="pagination">
+      <PageButtonContainer aria-label="pagination">
         {currentPageArray?.map((i) => (
           <li key={i + 1} onClick={() => setPage(i + 1)}>
             <PageButton aria-current={page === i + 1 ? 'page' : undefined}>{i + 1}</PageButton>

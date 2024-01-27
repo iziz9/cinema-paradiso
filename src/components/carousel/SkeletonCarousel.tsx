@@ -10,6 +10,7 @@ const SkeletonCarousel = () => {
       <SkeletonPoster />
       <SkeletonPoster />
       <SkeletonPoster />
+      <SkeletonPoster />
     </Slider>
   )
 }

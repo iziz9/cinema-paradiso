@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BookmarkBlankIcon } from '../constants/icon'
+import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/carousel/RecommendList'
 import { useParams } from 'react-router-dom'
-import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
+import {
+  postToMyWatchList,
+  getAccountStates,
+  getMovieCredits,
+  getMovieDetail,
+  getMovieSimilar
+} from '../api/movieRequest'
 import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 import { useMovieDetailStore } from '../store/movieDetailStore'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
@@ -12,17 +18,22 @@ import { recommendListTitle } from '../constants/defaultValues'
 const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'
 const MAX_CAST_NUMBER = 6
+const MY_ACCOUNT = String(process.env.REACT_APP_MY_ACCOUNT) //임시
 
 const DetailPage = () => {
   const params = useParams()
+  const [inMyWatchList, setInMyWatchList] = useState<boolean>(false)
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
   const [similarMovies, setSimilarMovies] = useState<IMovieInfo[]>([])
   const [directorName, setDirectorName] = useState<string>('')
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
   const { cachedRecommendMovie } = useRecommendMovieStore()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
+    if (!params.id) return
+
     const getCachedData = (id: string) => {
       if (!cachedMovieDetail[id]) return false
       return cachedMovieDetail[id]
@@ -34,18 +45,27 @@ const DetailPage = () => {
         setMovieCredits(cachedData.credits)
         setSimilarMovies(cachedData.similar)
       } else {
-        const detailsRes = await getMovieDetail(params.id || '')
+        const detailsRes = await getMovieDetail(id)
         setMovieDetails(detailsRes)
-        const creditsRes = await getMovieCredits(params.id || '')
+        const creditsRes = await getMovieCredits(id)
         setMovieCredits(creditsRes)
-        const similarRes = await getMovieSimilar(params.id || '')
+        const similarRes = await getMovieSimilar(id)
         setSimilarMovies(similarRes)
-
         const allDetails = { details: detailsRes, credits: creditsRes, similar: similarRes }
         setCachedMovieDetail(id, allDetails)
       }
     }
-    params.id && requestGetMovieDetail(params.id)
+    const requestGetMyAccountState = async (id: string) => {
+      const accountRes = await getAccountStates(id)
+      setInMyWatchList(accountRes.watchlist)
+    }
+
+    setIsLoading(true)
+    requestGetMyAccountState(params.id)
+    requestGetMovieDetail(params.id)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
     //eslint-disable-next-line
   }, [params])
 
@@ -55,20 +75,33 @@ const DetailPage = () => {
     })
   }, [movieCredits])
 
+  const addToMyWatchList = async () => {
+    const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, true)
+    console.log(res)
+    if (res.success) setInMyWatchList(true)
+  }
+  const deleteFromMyWatchList = async () => {
+    const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, false)
+    if (res.success) setInMyWatchList(false)
+  }
+
   return (
     <Container>
       {movieDetails && movieCredits && (
         <>
           <DetailSection $backdrop={movieDetails.backdrop_path}>
             <DetailBookmark>
-              <button>
-                <BookmarkBlankIcon />
-                <span>관심등록</span>
-              </button>
-              {/* <button>
-                <BookmarkFillIcon />
-                <span>관심삭제</span>
-              </button> */}
+              {inMyWatchList ? (
+                <button className="delete-button" onClick={() => deleteFromMyWatchList()}>
+                  <BookmarkFillIcon />
+                  <span>관심삭제</span>
+                </button>
+              ) : (
+                <button onClick={() => addToMyWatchList()}>
+                  <BookmarkBlankIcon />
+                  <span>관심등록</span>
+                </button>
+              )}
             </DetailBookmark>
             <DetailInfo>
               <div className="poster">
@@ -120,14 +153,19 @@ const DetailPage = () => {
           </DetailSection>
           {similarMovies.length ? (
             <RelatedSection>
-              {/* <RecommendList title={`<${movieDetails.title}> 비슷한 영화`} movieList={similarMovies} /> */}
+              <RecommendList
+                title={`<${movieDetails.title}> 비슷한 영화`}
+                movieList={similarMovies}
+                isLoading={isLoading}
+              />
             </RelatedSection>
           ) : (
             <RelatedSection>
-              {/* <RecommendList
+              <RecommendList
                 title={recommendListTitle.trending}
                 movieList={cachedRecommendMovie[recommendListTitle.trending]}
-              /> */}
+                isLoading={isLoading}
+              />
             </RelatedSection>
           )}
         </>
@@ -261,6 +299,10 @@ const DetailBookmark = styled.div`
     &:hover {
       color: var(--colors-green);
     }
+  }
+
+  .delete-button {
+    color: var(--colors-green);
   }
 `
 

@@ -88,10 +88,37 @@ export const getGenresMovieList = async (with_genres: number) => {
       return alert(err)
     })
 }
+
 export const getMyWatchList = async (account_id: string, page = 1) => {
   return await axiosInstance
     .get(`account/${account_id}/watchlist/movies`, {
       params: { ...defaultOption, page }
+    })
+    .then((res) => {
+      return res.data
+    })
+    .catch((err: object) => {
+      return alert(err)
+    })
+}
+export const postToMyWatchList = async (account_id: string, media_id: string, watchlist: boolean) => {
+  return await axiosInstance
+    .post(`account/${account_id}/watchlist`, {
+      media_type: 'movie',
+      media_id,
+      watchlist
+    })
+    .then((res) => {
+      return res.data
+    })
+    .catch((err: object) => {
+      return alert(err)
+    })
+}
+export const getAccountStates = async (movie_id: string) => {
+  return await axiosInstance
+    .get(`movie/${movie_id}/account_states`, {
+      params: { ...defaultOption }
     })
     .then((res) => {
       return res.data
