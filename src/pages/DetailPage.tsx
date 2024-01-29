@@ -77,7 +77,6 @@ const DetailPage = () => {
 
   const addToMyWatchList = async () => {
     const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, true)
-    console.log(res)
     if (res.success) setInMyWatchList(true)
   }
   const deleteFromMyWatchList = async () => {

@@ -76,9 +76,9 @@ const MyPage = () => {
           <p>좋아하는 영화, 보고싶은 영화를 관심 등록 해 보세요!</p>
           <p>취향에 맞는 영화를 추천받을 수 있어요.</p>
         </NoResults>
-        {/* {movieRecommendList.map((list, index) => (
-          <RecommendList title={list.title} movieList={list.movieList} key={index} />
-        ))} */}
+        {movieRecommendList.map((list) => (
+          <RecommendList title={list.title} movieList={list.movieList} isLoading={isLoading} key={list.title} />
+        ))}
       </MyPageContainer>
     )
   else
