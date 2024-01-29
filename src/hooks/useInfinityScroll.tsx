@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 // import useModal from './useModal'
-import { IInfinityScrollProps, ITotalResults } from '../types/hooksTypes'
+import { IInfinityScrollProps } from '../types/hooksTypes'
 
-const useInfinityScroll = ({ request, payload, page, setPage, setMovieList }: IInfinityScrollProps) => {
+const useInfinityScroll = ({
+  request,
+  payload,
+  page,
+  setPage,
+  setMovieList,
+  setTotalResults
+}: IInfinityScrollProps) => {
   const [ref, inView] = useInView()
   const [isLoading, setIsLoading] = useState(false)
   const [lastPage, setLastPage] = useState(false)
-  const [totalResults, setTotalResults] = useState<ITotalResults>({
-    totalCount: 0,
-    totalPages: 0
-  })
-  // const { openModal } = useModal()
 
   const getListData = useCallback(
     async (payload: string, page: number) => {
@@ -23,12 +25,20 @@ const useInfinityScroll = ({ request, payload, page, setPage, setMovieList }: II
           setMovieList([])
           return setIsLoading(false)
         }
+
+        if (!listData.results) {
+          setMovieList((prevList) => [...prevList, listData])
+          setTotalResults((prev) => {
+            return { totalCount: prev.totalCount, totalPages: prev.totalPages }
+          })
+          return setIsLoading(false)
+        }
+
         setMovieList((prevList) => [...prevList, ...listData.results])
         setTotalResults({ totalCount: listData.total_results, totalPages: listData.total_pages })
         listData.total_pages === page ? setLastPage(true) : setLastPage(false)
       } catch (error) {
-        console.log(error)
-        // openModal()
+        alert(error)
       } finally {
         setIsLoading(false)
       }
@@ -50,7 +60,7 @@ const useInfinityScroll = ({ request, payload, page, setPage, setMovieList }: II
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, lastPage])
 
-  return { lastPage, isLoading, totalResults, getListData, ref }
+  return { lastPage, isLoading, getListData, ref }
 }
 
 export default useInfinityScroll

@@ -5,7 +5,7 @@ import RecommendList from '../components/carousel/RecommendList'
 import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
 import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
-import { IMovieInfo } from '../types/types'
+import { IMovieInfo, ITotalResults } from '../types/types'
 import useInfinityScroll from '../hooks/useInfinityScroll'
 import Loading from '../components/common/Loading'
 import MovieItem from '../components/common/MovieItem'
@@ -22,25 +22,54 @@ const MyPage = () => {
   const [trendingMovies, setTrendingMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [page, setPage] = useState<number>(1)
+  const [totalResults, setTotalResults] = useState<ITotalResults>({
+    totalCount: 0,
+    totalPages: 0
+  })
   const [myWatchList, setMyWatchList] = useState<IMovieInfo[]>([])
+  const [allMyWatchList, setAllMyWatchList] = useState<IMovieInfo[]>([])
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
-  const { isLoading, totalResults, getListData, ref } = useInfinityScroll({
-    request: getMyWatchList,
+  const { isLoading, getListData, ref } = useInfinityScroll({
+    request: getSavedWatchList,
     payload: MY_ACCOUNT,
     page,
     setPage,
-    setMovieList: setMyWatchList
+    setMovieList: setMyWatchList,
+    setTotalResults
   })
   const movieRecommendList = [
     { title: recommendListTitle.trending, movieList: trendingMovies },
     { title: recommendListTitle.topRated, movieList: topRatedMovies }
   ]
 
+  function getSavedWatchList(payload: string, page: number) {
+    if (page === 1) {
+      return getMyWatchList(payload, page)
+    } else {
+      return getMyWatchList(payload, page)
+      // return watchListForChart.slice(page * 10 + 1, page * 20 + 1) // 안됨
+    }
+  }
+
   useEffect(() => {
-    getListData(MY_ACCOUNT + '', page)
+    getListData(MY_ACCOUNT, page)
   }, [page, getListData])
 
   useEffect(() => {
+    const getAllPagesForChart = async () => {
+      for (let i = 2; i <= totalResults.totalPages; i += 1) {
+        const res = await getMyWatchList(MY_ACCOUNT, i)
+        setAllMyWatchList((prev) => [...prev, ...res.results])
+      }
+    }
+    if (totalResults.totalPages > 1 && page === 1) {
+      getAllPagesForChart()
+    }
+  }, [totalResults, page])
+
+  useEffect(() => {
+    if (page === 1 && myWatchList.length) setAllMyWatchList(myWatchList)
+
     const getCachedList = (title: string) => {
       if (!cachedRecommendMovie[title]) return false
       return cachedRecommendMovie[title]
@@ -66,7 +95,7 @@ const MyPage = () => {
       getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
     }
     //eslint-disable-next-line
-  }, [page, myWatchList])
+  }, [myWatchList])
 
   if (totalResults.totalCount < 1)
     return (
@@ -85,7 +114,7 @@ const MyPage = () => {
     return (
       <MyPageContainer>
         <MyProfile />
-        <Chart myWatchList={myWatchList} totalResults={totalResults} />
+        <Chart watchList={allMyWatchList} totalResults={totalResults} />
         <ResultCountStyle>나의 관심 목록 ({totalResults.totalCount})</ResultCountStyle>
         <MovieListStyle>
           {myWatchList?.map((movie) => (

@@ -1,11 +1,9 @@
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
-import { IMovieInfo } from '../../types/types'
+import { IMovieInfo, ITotalResults } from '../../types/types'
 import { useEffect } from 'react'
 // import { genresId } from '../../constants/defaultValues'
-import { ITotalResults } from '../../types/hooksTypes'
-
 const data = [
   { name: 'SF', value: 400 },
   { name: '로맨스', value: 300 },
@@ -16,13 +14,15 @@ const data = [
   { name: '드라마', value: 100 }
 ]
 
-const Chart = ({ myWatchList, totalResults }: { myWatchList: IMovieInfo[]; totalResults: ITotalResults }) => {
+const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResults: ITotalResults }) => {
   // const [favoriteGenre, setFavoriteGenre] = useState<number>(0)
   // const [chartData, setChartData] = useState({})
 
   useEffect(() => {
-    //페이지 여러개면?
-  }, [myWatchList])
+    watchList.forEach((movie) => {
+      console.log(movie.genre_ids)
+    })
+  }, [watchList])
 
   return (
     <ChartContainer>

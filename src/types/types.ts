@@ -106,3 +106,7 @@ export interface IPagination {
   page: number
   setPage: React.Dispatch<React.SetStateAction<number>>
 }
+export interface ITotalResults {
+  totalCount: number
+  totalPages: number
+}

@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
 import { getSearchingMovieList } from '../api/movieRequest'
-import { IMovieInfo } from '../types/types'
+import { IMovieInfo, ITotalResults } from '../types/types'
 import ResultCountStyle from '../components/style/ResultCountStyle'
-import { ITotalResults } from '../types/hooksTypes'
 import Pagination from '../components/layout/Pagination'
 import Loading from '../components/common/Loading'
 import SearchResults from '../components/search/SearchResults'
@@ -34,7 +33,7 @@ const SearchPage = () => {
           totalPages: res.total_pages
         })
       } catch (err) {
-        console.log(err)
+        alert(err)
       } finally {
         setIsLoading(false)
       }
