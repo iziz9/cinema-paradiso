@@ -5,15 +5,8 @@ import 'slick-carousel/slick/slick-theme.css'
 import MovieItem from '../common/MovieItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
-import { IMovieInfo } from '../../types/types'
 import SkeletonCarousel from './SkeletonCarousel'
-// const MovieItem = React.lazy(() => import('./MovieItem'))
-
-interface IRecommendList {
-  title: string
-  movieList: IMovieInfo[]
-  isLoading: boolean
-}
+import { IRecommendList } from '../../types/types'
 
 const RecommendList = ({ title, movieList, isLoading }: IRecommendList) => {
   const navigate = useNavigate()
@@ -26,7 +19,7 @@ const RecommendList = ({ title, movieList, isLoading }: IRecommendList) => {
           <SkeletonCarousel />
         ) : (
           <Slider {...carouselSettings}>
-            {movieList.map((movie, index) => (
+            {movieList.map((movie) => (
               <MovieItem
                 movieInfo={movie}
                 onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}

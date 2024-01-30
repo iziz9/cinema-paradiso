@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendList from '../components/carousel/RecommendList'
@@ -13,12 +13,14 @@ import {
 import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 import { useMovieDetailStore } from '../store/movieDetailStore'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
-import { recommendListTitle } from '../constants/defaultValues'
-
-const POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
-const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'
-const MAX_CAST_NUMBER = 6
-const MY_ACCOUNT = String(process.env.REACT_APP_MY_ACCOUNT) //임시
+import {
+  BACKGROUND_URL,
+  DETAIL_POSTER_BASE_URL,
+  MAX_CAST_NUMBER,
+  MY_ACCOUNT,
+  recommendListTitle
+} from '../constants/defaultValues'
+import { notify } from '../components/layout/Toast'
 
 const DetailPage = () => {
   const params = useParams()
@@ -77,11 +79,21 @@ const DetailPage = () => {
 
   const addToMyWatchList = async () => {
     const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, true)
-    if (res.success) setInMyWatchList(true)
+    if (res.success) {
+      notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
+      setInMyWatchList(true)
+    } else {
+      notify({ type: 'error', text: '관심 목록 추가에 실패했습니다. 다시 시도해주세요.' })
+    }
   }
   const deleteFromMyWatchList = async () => {
     const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, false)
-    if (res.success) setInMyWatchList(false)
+    if (res.success) {
+      notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
+      setInMyWatchList(false)
+    } else {
+      notify({ type: 'error', text: '관심 목록 삭제에 실패했습니다. 다시 시도해주세요.' })
+    }
   }
 
   return (
@@ -105,7 +117,7 @@ const DetailPage = () => {
             <DetailInfo>
               <div className="poster">
                 {movieDetails.poster_path ? (
-                  <img src={POSTER_BASE_URL + movieDetails.poster_path} alt={movieDetails.title} />
+                  <img src={DETAIL_POSTER_BASE_URL + movieDetails.poster_path} alt={movieDetails.title} />
                 ) : (
                   <img src="/no_image.webp" alt="이미지 없음" />
                 )}

@@ -7,6 +7,7 @@ import ResultCountStyle from '../components/style/ResultCountStyle'
 import Pagination from '../components/layout/Pagination'
 import Loading from '../components/common/Loading'
 import SearchResults from '../components/search/SearchResults'
+import { notify } from '../components/layout/Toast'
 
 const SearchPage = () => {
   const [params] = useSearchParams()
@@ -33,7 +34,7 @@ const SearchPage = () => {
           totalPages: res.total_pages
         })
       } catch (err) {
-        alert(err)
+        notify({ type: 'error', text: '검색 결과를 불러오지 못했습니다.' })
       } finally {
         setIsLoading(false)
       }

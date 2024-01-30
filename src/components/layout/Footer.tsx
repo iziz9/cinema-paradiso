@@ -1,6 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
-import InnerLayout from './InnerLayout'
+import InnerLayout from '../style/InnerLayout'
 import { GithubIcon } from '../../constants/icon'
 
 const Footer = () => {

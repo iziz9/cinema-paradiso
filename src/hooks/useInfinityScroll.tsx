@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-// import useModal from './useModal'
 import { IInfinityScrollProps } from '../types/hooksTypes'
 
 const useInfinityScroll = ({

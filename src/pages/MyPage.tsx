@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendList from '../components/carousel/RecommendList'
-import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
+import { MY_ACCOUNT, RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
 import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo, ITotalResults } from '../types/types'
@@ -14,8 +14,6 @@ import MovieListStyle from '../components/style/MovieListStyle'
 import MovieItemStyle from '../components/style/MovieItemStyle'
 import ResultCountStyle from '../components/style/ResultCountStyle'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
-
-const MY_ACCOUNT = String(process.env.REACT_APP_MY_ACCOUNT) //임시
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -30,7 +28,7 @@ const MyPage = () => {
   const [allMyWatchList, setAllMyWatchList] = useState<IMovieInfo[]>([])
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
   const { isLoading, getListData, ref } = useInfinityScroll({
-    request: getSavedWatchList,
+    request: getMyWatchList,
     payload: MY_ACCOUNT,
     page,
     setPage,
@@ -41,15 +39,6 @@ const MyPage = () => {
     { title: recommendListTitle.trending, movieList: trendingMovies },
     { title: recommendListTitle.topRated, movieList: topRatedMovies }
   ]
-
-  function getSavedWatchList(payload: string, page: number) {
-    if (page === 1) {
-      return getMyWatchList(payload, page)
-    } else {
-      return getMyWatchList(payload, page)
-      // return watchListForChart.slice(page * 10 + 1, page * 20 + 1) // 안됨
-    }
-  }
 
   useEffect(() => {
     getListData(MY_ACCOUNT, page)
@@ -62,9 +51,7 @@ const MyPage = () => {
         setAllMyWatchList((prev) => [...prev, ...res.results])
       }
     }
-    if (totalResults.totalPages > 1 && page === 1) {
-      getAllPagesForChart()
-    }
+    if (totalResults.totalPages > 1 && page === 1) getAllPagesForChart()
   }, [totalResults, page])
 
   useEffect(() => {

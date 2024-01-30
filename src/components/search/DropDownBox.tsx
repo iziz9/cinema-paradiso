@@ -1,4 +1,4 @@
-import React, { Ref, forwardRef } from 'react'
+import { Ref, forwardRef } from 'react'
 import styled from 'styled-components'
 import DropDownItem from './DropDownItem'
 import { IDropDownBox } from '../../types/types'

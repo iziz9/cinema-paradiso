@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { SearchIcon } from '../../constants/icon'
 import { IDropDownItem } from '../../types/types'

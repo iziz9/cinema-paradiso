@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 function useDebounce(searchValue: string) {
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState(searchValue) //없애도?
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState(searchValue)
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

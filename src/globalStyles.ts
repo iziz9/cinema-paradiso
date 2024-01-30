@@ -84,13 +84,24 @@ const GlobalStyles = createGlobalStyle`
     --colors-darkgray: #242424;
     --colors-transdark: #00000040;
     --colors-transblack: #000000c7;
-    --colors-antiquewhite: #faebd7;
     
     font-family: 'SUITE-Regular', sans-serif;
     position: relative;
     min-height: 100%;
     color: var(--colors-light);
 
+  //toastify
+  --toastify-color-light: var(--colors-dark);
+  --toastify-color-dark: #121212;
+
+  /* 기본 적용 스타일 바꾸기 */
+  --toastify-toast-width: 320px;
+  --toastify-toast-background: #fff;
+  --toastify-toast-min-height: 80px;
+  --toastify-toast-max-height: 800px;
+  --toastify-font-family: 'SUITE-Regular', sans-serif;
+  --toastify-text-color-light: var(--colors-light);
+  --toastify-text-color-dark: #fff;
   }
 
   .stop-scrolling {
@@ -123,3 +134,4 @@ const GlobalStyles = createGlobalStyle`
 `
 
 export default GlobalStyles
+//

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { genresId, genresIdType } from '../../constants/defaultValues'
 

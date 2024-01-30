@@ -1,15 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { IMovieInfo } from '../../types/types'
 import OverlayPoster from '../layout/OverlayPoster'
 import { POSTER_BASE_URL } from '../../constants/defaultValues'
+import { IMovieItemProps } from '../../types/types'
 
-type MovieItemPropsType = {
-  movieInfo: IMovieInfo
-  onClick: () => void
-}
-
-const MovieItem = ({ movieInfo, onClick }: MovieItemPropsType) => {
+const MovieItem = ({ movieInfo, onClick }: IMovieItemProps) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
 
   const handleMouseOver = useCallback(() => {

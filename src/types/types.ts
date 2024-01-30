@@ -27,6 +27,15 @@ export interface IMovieInfo {
   vote_average: number
   vote_count: number
 }
+export interface IMovieItemProps {
+  movieInfo: IMovieInfo
+  onClick: () => void
+}
+export interface IRecommendList {
+  title: string
+  movieList: IMovieInfo[]
+  isLoading: boolean
+}
 export interface IDropDownBox {
   list: IMovieInfo[]
   focusIndex: number
@@ -116,4 +125,12 @@ export interface IChartData {
 export interface IChartDataArr {
   name: string
   value: number
+}
+export interface IRenderCustomizedLabel {
+  cx: number
+  cy: number
+  midAngle: number
+  innerRadius: number
+  outerRadius: number
+  percent: number
 }

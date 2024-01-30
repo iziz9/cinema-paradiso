@@ -26,6 +26,7 @@ const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResu
           })
       })
     })
+    //eslint-disable-next-line
   }, [watchList])
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResu
             <span>{getFavoriteGenre()}</span> 장르가 가장 많아요!
           </p>
         </div>
-        <PieChart width={350} height={280} className="chart">
+        <PieChart width={isMobile ? 300 : 400} height={280} className="chart">
           <Tooltip />
           <Legend
             layout={isMobile ? 'horizontal' : 'vertical'}

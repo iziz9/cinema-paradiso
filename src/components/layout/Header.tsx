@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import PATH from '../../routes/routePath'
-import InnerLayout from './InnerLayout'
+import InnerLayout from '../style/InnerLayout'
 import { MyPageIcon } from '../../constants/icon'
 import SearchBar from '../search/SearchBar'
 

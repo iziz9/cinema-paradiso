@@ -8,6 +8,7 @@ import { getSearchingMovieList } from '../../api/movieRequest'
 import { IMovieInfo, ISearchBar } from '../../types/types'
 import { DEFAULT_INDEX, MAX_INDEX, MIN_INDEX, focusIndexReducer } from '../../utils/dropDownFocusing'
 import { useAutoCompleteStore } from '../../store/autoCompleteStore'
+import { notify } from '../layout/Toast'
 
 const currentTime = Date.now()
 const EXPIRE_TIME = 432000000 //5일
@@ -90,7 +91,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
 
   const goToSearchPage = (query: string) => {
     const isValid = checkInputValid(query)
-    if (!isValid) return alert('검색어를 입력해주세요.')
+    if (!isValid) return notify({ type: 'error', text: '검색어를 입력해주세요.' })
     setIsDropDownOpen(false)
     navigate(`/search?q=${query}`)
   }
