@@ -1,28 +1,52 @@
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { COLOR_LIST, renderCustomizedLabel } from './ChartSettings'
-import { IMovieInfo, ITotalResults } from '../../types/types'
-import { useEffect } from 'react'
-// import { genresId } from '../../constants/defaultValues'
-const data = [
-  { name: 'SF', value: 400 },
-  { name: '로맨스', value: 300 },
-  { name: '가족', value: 300 },
-  { name: '액션', value: 200 },
-  { name: '공포', value: 200 },
-  { name: '스릴러', value: 400 },
-  { name: '드라마', value: 100 }
-]
+import { IChartData, IChartDataArr, IMovieInfo, ITotalResults } from '../../types/types'
+import { useEffect, useState } from 'react'
+import { genresId, genresIdType } from '../../constants/defaultValues'
+import { useMediaQuery } from 'react-responsive'
 
 const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResults: ITotalResults }) => {
-  // const [favoriteGenre, setFavoriteGenre] = useState<number>(0)
-  // const [chartData, setChartData] = useState({})
+  const [chartData, setChartData] = useState<IChartData>({})
+  const [favoriteChartData, setFavoriteChartData] = useState<IChartDataArr[]>([])
+  const isMobile = useMediaQuery({
+    query: '(max-width: 600px)'
+  })
 
   useEffect(() => {
     watchList.forEach((movie) => {
-      console.log(movie.genre_ids)
+      movie.genre_ids.forEach((id) => {
+        if (!chartData[id])
+          setChartData((prev) => {
+            return { ...prev, [id]: 1 }
+          })
+        else
+          setChartData((prev) => {
+            return { ...prev, [id]: prev[id] + 1 }
+          })
+      })
     })
   }, [watchList])
+
+  useEffect(() => {
+    const newDataArr: IChartDataArr[] = []
+    let etcCount = 0
+    const sortedChartData = Object.entries(chartData).sort((a, b) => b[1] - a[1])
+    sortedChartData.forEach((genre, index) => {
+      if (index < 7) {
+        const genreId = +genre[0]
+        newDataArr.push({ name: genresId[genreId as genresIdType], value: genre[1] })
+      } else {
+        etcCount += genre[1]
+      }
+    })
+    newDataArr.push({ name: '그 외', value: etcCount })
+    setFavoriteChartData(newDataArr)
+  }, [chartData])
+
+  const getFavoriteGenre = () => {
+    return favoriteChartData.length ? favoriteChartData[0].name : '?'
+  }
 
   return (
     <ChartContainer>
@@ -30,22 +54,27 @@ const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResu
         <div className="desc">
           <p>관심 영화 {totalResults.totalCount}개 중,</p>
           <p>
-            <span>{'??'}</span> 장르가 가장 많아요!
+            <span>{getFavoriteGenre()}</span> 장르가 가장 많아요!
           </p>
         </div>
-        <PieChart width={300} height={280} className="chart">
+        <PieChart width={350} height={280} className="chart">
           <Tooltip />
-          <Legend layout="vertical" align="right" verticalAlign="middle" iconType="plainline" />
+          <Legend
+            layout={isMobile ? 'horizontal' : 'vertical'}
+            align={isMobile ? 'center' : 'right'}
+            verticalAlign={isMobile ? 'bottom' : 'middle'}
+            iconType="plainline"
+          />
           <Pie
-            data={data}
+            data={favoriteChartData}
             labelLine={false}
             label={renderCustomizedLabel}
-            outerRadius={80}
+            outerRadius={100}
             fill="#8884d8"
             dataKey="value"
             nameKey="name"
           >
-            {data.map((entry, index) => (
+            {favoriteChartData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLOR_LIST[index % COLOR_LIST.length]} />
             ))}
           </Pie>
@@ -58,6 +87,7 @@ const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResu
 const ChartContainer = styled.section`
   position: relative;
   background-color: var(--colors-darkgray);
+  padding: 15px 0 35px;
 `
 const Inner = styled.div`
   display: flex;

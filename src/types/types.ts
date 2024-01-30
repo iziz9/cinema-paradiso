@@ -110,3 +110,10 @@ export interface ITotalResults {
   totalCount: number
   totalPages: number
 }
+export interface IChartData {
+  [key: number]: number
+}
+export interface IChartDataArr {
+  name: string
+  value: number
+}

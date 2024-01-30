@@ -1,4 +1,4 @@
-export const COLOR_LIST = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#00CFF8', '#FF2003', '#00BB2F']
+export const COLOR_LIST = ['#0088FE', '#00C49F', '#FFBB28', '#00CFF8', '#FF2003', '#00BB2F', '#d768d4', '#FF8042']
 
 const RADIAN = Math.PI / 180
 //eslint-disable-next-line
