@@ -21,6 +21,7 @@ import {
   recommendListTitle
 } from '../constants/defaultValues'
 import { notify } from '../components/layout/Toast'
+import { useUserStore } from '../store/useUserStore'
 
 const DetailPage = () => {
   const params = useParams()
@@ -32,6 +33,7 @@ const DetailPage = () => {
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
   const { cachedRecommendMovie } = useRecommendMovieStore()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { userInfo } = useUserStore()
 
   useEffect(() => {
     if (!params.id) return
@@ -78,11 +80,16 @@ const DetailPage = () => {
   }, [movieCredits])
 
   const checkUserLogin = () => {
-    // 로그인상태면 true, 아니면 false
-    // 로그인 후 watchList 추가 가능
+    if (!userInfo.uid) {
+      notify({ type: 'warning', text: '로그인 후 이용 가능합니다.' })
+      return false
+    } else return true
   }
 
   const addToMyWatchList = async () => {
+    const loginMember = checkUserLogin()
+    if (!loginMember) return
+
     const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, true)
     if (res.success) {
       notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
@@ -92,6 +99,9 @@ const DetailPage = () => {
     }
   }
   const deleteFromMyWatchList = async () => {
+    const loginMember = checkUserLogin()
+    if (!loginMember) return
+
     const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, false)
     if (res.success) {
       notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })

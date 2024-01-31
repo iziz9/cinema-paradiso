@@ -8,6 +8,7 @@ import SearchBar from '../search/SearchBar'
 import { User, getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import Logo from '../common/Logo'
 import { useUserStore } from '../../store/useUserStore'
+import { notify } from './Toast'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -35,8 +36,9 @@ const Header = () => {
       .then(() => {
         setUserInfo({} as User)
         navigate(PATH.MAIN)
+        notify({ type: 'success', text: '로그아웃 되었습니다.' })
       })
-      .catch((error) => alert(error))
+      .catch((error) => notify({ type: 'error', text: '정상적으로 로그아웃 되지 않았습니다. 다시 시도해주세요.' }))
   }
 
   return (
@@ -89,7 +91,7 @@ const LoginStateButton = styled.button`
   width: 80px;
   height: 30px;
   border: 1px solid var(--colors-green);
-  border-radius: 0;
+  border-radius: 4px;
   color: var(--colors-green);
   font-size: 14px;
   font-weight: 700;
