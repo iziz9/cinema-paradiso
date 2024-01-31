@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import OverlayPoster from '../layout/OverlayPoster'
+import OverlayPoster from './OverlayPoster'
 import { POSTER_BASE_URL } from '../../constants/defaultValues'
 import { IMovieItemProps } from '../../types/types'
 

@@ -1,4 +1,5 @@
-import { IMovieInfo } from '../types/types'
+import { User, UserCredential } from 'firebase/auth'
+import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 
 export interface ICachedRecommendMovie {
   [key: string]: IMovieInfo[]
@@ -20,4 +21,17 @@ export interface IUseAutoCompleteStore {
   setCachedAutoComplete: (searchValue: string, list: ICachedAutoCompleteData) => void
   checkCachedAutoComplete: (searchValue: string) => IMovieInfo[] | boolean
   deleteCachedAutoComplete: (searchValue: string) => void
+}
+export interface IAllDetails {
+  details: IMovieDetail
+  credits: IMovieCredits
+  similar: IMovieInfo[]
+}
+export interface ICachedMovieDetail {
+  [key: string]: IAllDetails
+}
+
+export interface IUseUserStore {
+  userInfo: User
+  setUserInfo: (userInfo: User) => void
 }

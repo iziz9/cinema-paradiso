@@ -77,6 +77,11 @@ const DetailPage = () => {
     })
   }, [movieCredits])
 
+  const checkUserLogin = () => {
+    // 로그인상태면 true, 아니면 false
+    // 로그인 후 watchList 추가 가능
+  }
+
   const addToMyWatchList = async () => {
     const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, true)
     if (res.success) {

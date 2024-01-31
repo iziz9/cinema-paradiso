@@ -1,16 +1,12 @@
 import styled from 'styled-components'
 import InnerLayout from '../components/style/InnerLayout'
-import { useNavigate } from 'react-router-dom'
-import PATH from '../routes/routePath'
+import Logo from '../components/common/Logo'
 
 const ErrorPage = () => {
-  const navigate = useNavigate()
   return (
     <ErrorContainer>
       <InnerLayout>
-        <div className="logo" onClick={() => navigate(PATH.MAIN)}>
-          <img src="/logo.webp" alt="logo" />
-        </div>
+        <Logo />
         <h1>404</h1>
         <h2>Page not found</h2>
         <div className="desc">존재하지 않는 페이지입니다. 경로를 확인해주세요.</div>
@@ -21,20 +17,7 @@ const ErrorPage = () => {
 
 const ErrorContainer = styled.main`
   text-align: center;
-  .logo {
-    position: relative;
-    text-align: center;
-    width: 120px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    img {
-      position: relative;
-      width: 120px;
-      height: 54px;
-      cursor: pointer;
-    }
-  }
+
   h1 {
     margin: 50px auto;
     display: block;

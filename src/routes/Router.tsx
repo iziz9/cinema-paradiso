@@ -7,6 +7,7 @@ import MainPage from '../pages/MainPage'
 import MyPage from '../pages/MyPage'
 import SearchPage from '../pages/SearchPage'
 import DetailPage from '../pages/DetailPage'
+import LoginPage from '../pages/LoginPage'
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
       { index: true, path: PATH.MAIN, element: <MainPage /> },
       { path: PATH.MYPAGE, element: <MyPage /> },
       { path: PATH.SEARCH, element: <SearchPage /> },
-      { path: PATH.DETAIL, element: <DetailPage /> }
+      { path: PATH.DETAIL, element: <DetailPage /> },
+      { path: PATH.LOGIN, element: <LoginPage /> }
     ]
   }
 ])

@@ -2,7 +2,8 @@ const PATH = {
   MAIN: '/',
   MYPAGE: '/mypage',
   DETAIL: '/detail/:id',
-  SEARCH: '/search'
+  SEARCH: '/search',
+  LOGIN: '/login'
 }
 
 export default PATH

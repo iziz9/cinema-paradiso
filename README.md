@@ -23,6 +23,8 @@ $ yarn start
 ![Typescript](https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white)
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white)
 ![styledComponents](https://img.shields.io/badge/styledComponents-DB7093?style=for-the-badge&logo=styledComponents&logoColor=white)
+![Recharts](https://img.shields.io/badge/RECHARTS-1281CA?style=for-the-badge&logo=RECHARTS&logoColor=FFFFFF)
+![Zustand](https://img.shields.io/badge/ZUSTAND-FFC400?style=for-the-badge&logo=zustand&logoColor=FFFFFF)
 
 ## 구현 내용
 
@@ -33,5 +35,6 @@ $ yarn start
 - [x] 마이페이지 관심목록 무한스크롤
 - [x] 자동완성 검색어, 추천 영화 목록 캐싱
 - [x] 마이페이지 관심 장르 차트
+- [x] firebase OAuth
 - [ ] 게스트 세션 추가
 - [ ] 테스트코드 추가

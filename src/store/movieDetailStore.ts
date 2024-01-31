@@ -1,15 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
+import { IAllDetails, ICachedMovieDetail } from '../types/storeTypes'
 
-export interface IAllDetails {
-  details: IMovieDetail
-  credits: IMovieCredits
-  similar: IMovieInfo[]
-}
-export interface ICachedMovieDetail {
-  [key: string]: IAllDetails
-}
 export interface IUseMovieDetailStore {
   cachedMovieDetail: ICachedMovieDetail
   setCachedMovieDetail: (id: string, allDetails: IAllDetails) => void
