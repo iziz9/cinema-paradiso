@@ -5,7 +5,7 @@ import RecommendList from '../components/carousel/RecommendList'
 import { MY_ACCOUNT, RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
 import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
-import { IMovieInfo, ITotalResults } from '../types/types'
+import { IMovieInfo, IMyPageResponse, ITotalResults } from '../types/types'
 import useInfinityScroll from '../hooks/useInfinityScroll'
 import Loading from '../components/common/Loading'
 import MovieItem from '../components/common/MovieItem'
@@ -35,6 +35,7 @@ const MyPage = () => {
     setMovieList: setMyWatchList,
     setTotalResults
   })
+
   const movieRecommendList = [
     { title: recommendListTitle.trending, movieList: trendingMovies },
     { title: recommendListTitle.topRated, movieList: topRatedMovies }
@@ -45,13 +46,25 @@ const MyPage = () => {
   }, [page, getListData])
 
   useEffect(() => {
+    // 1페이지와 합쳐보기
     const getAllPagesForChart = async () => {
+      const requestArray = []
       for (let i = 2; i <= totalResults.totalPages; i += 1) {
-        const res = await getMyWatchList(MY_ACCOUNT, i)
-        setAllMyWatchList((prev) => [...prev, ...res.results])
+        requestArray.push(getMyWatchList(MY_ACCOUNT, i))
       }
+      Promise.all(requestArray).then((res: IMyPageResponse[]) => {
+        const allPageRes = res
+          .map((res) => res.results)
+          .reduce((acc, cur) => {
+            return [...acc, ...cur]
+          }, [])
+        setAllMyWatchList((prev) => [...prev, ...allPageRes])
+      })
     }
-    if (totalResults.totalPages > 1 && page === 1) getAllPagesForChart()
+
+    if (totalResults.totalPages > 1 && page === 1) {
+      getAllPagesForChart()
+    }
   }, [totalResults, page])
 
   useEffect(() => {

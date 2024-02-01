@@ -134,3 +134,9 @@ export interface IRenderCustomizedLabel {
   outerRadius: number
   percent: number
 }
+export interface IMyPageResponse {
+  page: number
+  results: IMovieInfo[]
+  total_pages: number
+  total_results: number
+}

@@ -7,29 +7,19 @@ import { genresId, genresIdType } from '../../constants/defaultValues'
 import { useMediaQuery } from 'react-responsive'
 
 const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResults: ITotalResults }) => {
-  const [chartData, setChartData] = useState<IChartData>({})
   const [favoriteChartData, setFavoriteChartData] = useState<IChartDataArr[]>([])
   const isMobile = useMediaQuery({
     query: '(max-width: 600px)'
   })
 
   useEffect(() => {
+    const chartData: IChartData = {}
     watchList.forEach((movie) => {
       movie.genre_ids.forEach((id) => {
-        if (!chartData[id])
-          setChartData((prev) => {
-            return { ...prev, [id]: 1 }
-          })
-        else
-          setChartData((prev) => {
-            return { ...prev, [id]: prev[id] + 1 }
-          })
+        chartData[id] = chartData[id] + 1 || 1
       })
     })
-    //eslint-disable-next-line
-  }, [watchList])
 
-  useEffect(() => {
     const newDataArr: IChartDataArr[] = []
     let etcCount = 0
     const sortedChartData = Object.entries(chartData).sort((a, b) => b[1] - a[1])
@@ -43,7 +33,9 @@ const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResu
     })
     newDataArr.push({ name: '그 외', value: etcCount })
     setFavoriteChartData(newDataArr)
-  }, [chartData])
+
+    //eslint-disable-next-line
+  }, [watchList])
 
   const getFavoriteGenre = () => {
     return favoriteChartData.length ? favoriteChartData[0].name : '?'
