@@ -7,16 +7,14 @@ export const useUserStore = create(
   persist(
     (set) => ({
       userInfo: {} as User,
-      setUserInfo: (userInfo: User) => set({ userInfo })
+      setUserInfo: (userInfo: User) => set({ userInfo }),
+      userListId: null,
+      setUserListId: (userListId: number) => set({ userListId })
     }),
     {
       name: 'user-info',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state: IUseUserStore) => ({ userInfo: state.userInfo })
+      partialize: (state: IUseUserStore) => ({ userInfo: state.userInfo, userListId: state.userListId })
     }
   )
 )
-
-export const clearUserStore = () => {
-  useUserStore.persist.clearStorage()
-}

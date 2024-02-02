@@ -29,7 +29,7 @@ const GlobalStyles = createGlobalStyle`
   main {
     height: auto;
     padding-bottom: 40px;
-    min-height: calc(100vh - var(--height-header-pc) - var(--height-footer) - 20px);
+    min-height: calc(100vh - var(--height-header-layout) - var(--height-footer) - 20px);
   }
 
   footer {
@@ -71,6 +71,7 @@ const GlobalStyles = createGlobalStyle`
     --screen-pc: 1024px;
 
     /* Screen height */
+    --height-header-layout: 60px;
     --height-footer: 100px;
 
     /* Colors */

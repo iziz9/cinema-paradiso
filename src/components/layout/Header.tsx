@@ -9,24 +9,54 @@ import { User, getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import Logo from '../common/Logo'
 import { useUserStore } from '../../store/useUserStore'
 import { notify } from './Toast'
+import { INewWatchListResult } from '../../types/types'
+import { getAllUsersLists } from '../../api/watchListRequest'
+import { getAllPageDatas } from '../../utils/getAllPageDatas'
 
 const Header = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const DropDownRef = useRef<HTMLUListElement>(null)
   const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
+  const [allUsersLists, setAllUsersLists] = useState<INewWatchListResult[]>([])
   const auth = getAuth()
-  const { userInfo, setUserInfo } = useUserStore()
+  const { userInfo, setUserInfo, setUserListId } = useUserStore()
 
   useEffect(() => {
+    //완성되면 헤더에서 빼고 루트로 옮기기, private router 처리
+    const getAllListData = async () => {
+      const usersListRes = await getAllUsersLists(1)
+      setAllUsersLists(usersListRes.results)
+
+      if (usersListRes.total_pages > 1) {
+        getAllPageDatas({
+          request: getAllUsersLists,
+          totalPages: usersListRes.total_pages,
+          setAllDataList: setAllUsersLists
+        })
+      }
+    }
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        if (pathname === PATH.LOGIN) navigate(PATH.MAIN)
+        // pathname === PATH.LOGIN && navigate(PATH.MAIN)
+        getAllListData()
       } else {
-        if (pathname === PATH.MYPAGE) navigate(PATH.LOGIN)
+        pathname === PATH.MYPAGE && navigate(PATH.LOGIN)
       }
     })
-  }, [auth, navigate, pathname])
+  }, [auth])
+
+  useEffect(() => {
+    if (!allUsersLists.length) return
+
+    allUsersLists.forEach((usersList) => {
+      if (usersList.name === userInfo.uid) {
+        console.log(usersList.id)
+        setUserListId(usersList.id)
+      }
+    })
+  }, [allUsersLists])
 
   const goToLoginPage = () => {
     navigate(PATH.LOGIN)
@@ -76,7 +106,7 @@ const HeaderContainer = styled.header`
   width: 100%;
 
   .layout {
-    height: 100%;
+    height: var(--height-header-layout);
     display: flex;
     justify-content: space-between;
     align-items: center;

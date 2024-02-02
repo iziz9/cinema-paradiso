@@ -17,7 +17,7 @@ import {
   BACKGROUND_URL,
   DETAIL_POSTER_BASE_URL,
   MAX_CAST_NUMBER,
-  MY_ACCOUNT,
+  ADMIN_ID,
   recommendListTitle
 } from '../constants/defaultValues'
 import { notify } from '../components/layout/Toast'
@@ -32,7 +32,7 @@ const DetailPage = () => {
   const [directorName, setDirectorName] = useState<string>('')
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
   const { cachedRecommendMovie } = useRecommendMovieStore()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { userInfo } = useUserStore()
 
   useEffect(() => {
@@ -90,8 +90,9 @@ const DetailPage = () => {
     const loginMember = checkUserLogin()
     if (!loginMember) return
 
-    const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, true)
-    if (res.success) {
+    const res = await postToMyWatchList(params.id as string, true)
+    if (res?.success) {
+      // res가 undefined일때는
       notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
       setInMyWatchList(true)
     } else {
@@ -102,7 +103,7 @@ const DetailPage = () => {
     const loginMember = checkUserLogin()
     if (!loginMember) return
 
-    const res = await postToMyWatchList(MY_ACCOUNT, params.id as string, false)
+    const res = await postToMyWatchList(params.id as string, false)
     if (res.success) {
       notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
       setInMyWatchList(false)

@@ -13,7 +13,7 @@ const MainPage = () => {
   const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [sfMovies, setSfMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const movieRecommendList = [
     { title: recommendListTitle.trending, movieList: trendingMovies },
@@ -28,7 +28,6 @@ const MainPage = () => {
     }
     const getRecommendLists = async (
       title: string,
-      // eslint-disable-next-line
       requestGetList: any,
       setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>,
       params?: number
@@ -42,13 +41,14 @@ const MainPage = () => {
         setCachedRecommendMovie(title, requestRes)
       }
     }
-    setIsLoading(true)
-    getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
-    getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
-    getRecommendLists(recommendListTitle.sf, getGenresMovieList, setSfMovies, SF_GENRE_ID)
-    setTimeout(() => {
+    const getLists = async () => {
+      setIsLoading(true)
+      getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
+      getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
+      getRecommendLists(recommendListTitle.sf, getGenresMovieList, setSfMovies, SF_GENRE_ID)
       setIsLoading(false)
-    }, 2000)
+    }
+    getLists()
     //eslint-disable-next-line
   }, [])
 

@@ -1,4 +1,4 @@
-import { User, UserCredential } from 'firebase/auth'
+import { User } from 'firebase/auth'
 import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 
 export interface ICachedRecommendMovie {
@@ -33,5 +33,7 @@ export interface ICachedMovieDetail {
 
 export interface IUseUserStore {
   userInfo: User
+  userListId: null | number
   setUserInfo: (userInfo: User) => void
+  setUserListId: (userListId: number) => void
 }

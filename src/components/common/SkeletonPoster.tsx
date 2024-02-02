@@ -20,17 +20,6 @@ const SkeletonContainer = styled.div`
     height: 100%;
     object-fit: cover;
     margin: auto;
-    animation: fadeout 2s;
-
-    @keyframes fadeout {
-      from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0;
-      }
-    }
   }
 `
-
 export default SkeletonPoster

@@ -134,9 +134,32 @@ export interface IRenderCustomizedLabel {
   outerRadius: number
   percent: number
 }
-export interface IMyPageResponse {
+export interface IHasPageResponse {
   page: number
   results: IMovieInfo[]
   total_pages: number
   total_results: number
+}
+//lists api
+export interface INewWatchListResponse {
+  page: number
+  results: INewWatchListResult[]
+  total_pages: number
+  total_results: number
+}
+export interface INewWatchListResult {
+  description: string
+  favorite_count: number
+  id: number
+  item_count: number
+  iso_639_1: string
+  list_type: string
+  name: string
+  poster_path: string | null
+}
+export interface ICreateWatchListResponse {
+  success: boolean
+  status_code: number
+  status_message: string // "Success."
+  list_id: number
 }

@@ -49,28 +49,14 @@ const ItemContainer = styled.div`
   aspect-ratio: 1/1.3;
   display: flex;
   justify-content: center;
-
+  cursor: pointer;
   img {
     position: relative;
     width: 90%;
     height: 100%;
     object-fit: cover;
     margin: auto;
-
-    animation: fadein 1s;
-
-    @keyframes fadein {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
   }
-
-  transition: transform 0.5s;
-  cursor: pointer;
 
   &:hover {
     z-index: 100;

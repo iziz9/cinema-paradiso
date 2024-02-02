@@ -153,6 +153,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
           onKeyDown={(e) => handleKeyDown(e)}
           value={searchValue}
           role="searchbox"
+          name="searchbar"
           required
         />
         <div className="search-icon" onClick={() => goToSearchPage(searchValue)} data-testid="searchbutton">

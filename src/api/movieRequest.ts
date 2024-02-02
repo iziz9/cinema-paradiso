@@ -1,3 +1,4 @@
+import { ADMIN_ID } from '../constants/defaultValues'
 import axiosInstance from './axiosInstance'
 
 const defaultOption = { language: 'ko-KR' }
@@ -89,9 +90,9 @@ export const getGenresMovieList = async (with_genres: number) => {
     })
 }
 
-export const getMyWatchList = async (account_id: string, page = 1) => {
+export const getMyWatchList = async (page = 1) => {
   return await axiosInstance
-    .get(`account/${account_id}/watchlist/movies`, {
+    .get(`account/${ADMIN_ID}/watchlist/movies`, {
       params: { ...defaultOption, page }
     })
     .then((res) => {
@@ -101,9 +102,9 @@ export const getMyWatchList = async (account_id: string, page = 1) => {
       return alert(err)
     })
 }
-export const postToMyWatchList = async (account_id: string, media_id: string, watchlist: boolean) => {
+export const postToMyWatchList = async (media_id: string, watchlist: boolean) => {
   return await axiosInstance
-    .post(`account/${account_id}/watchlist`, {
+    .post(`account/${ADMIN_ID}/watchlis`, {
       media_type: 'movie',
       media_id,
       watchlist

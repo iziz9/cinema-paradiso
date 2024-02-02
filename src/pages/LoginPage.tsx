@@ -40,12 +40,11 @@ const LoginContainer = styled.main`
   display: flex;
   flex-direction: column;
   text-align: center;
-  height: 80vh;
 `
 const Content = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 80vh;
   box-sizing: border-box;
   display: flex;
   justify-content: center;

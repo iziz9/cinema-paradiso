@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
@@ -10,24 +11,37 @@ import { IRecommendList } from '../../types/types'
 
 const RecommendList = ({ title, movieList, isLoading }: IRecommendList) => {
   const navigate = useNavigate()
+  const [isCarouselHidden, setIsCarouselHidden] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (!isLoading) {
+      setTimeout(() => setIsCarouselHidden(false), 1000)
+    }
+  }, [isLoading])
+
+  const addAnimation = () => {
+    if (!isLoading && isCarouselHidden) return 'fadeout'
+    else if (!isLoading && !isCarouselHidden) return 'fadein'
+  }
+  const goToDetailPage = (movieId: number) => {
+    navigate(`/detail/${movieId}`, { state: movieId })
+  }
 
   return (
     <RecommendSection>
       <div className="list-slider">
         <h3>{title}</h3>
-        {isLoading ? (
-          <SkeletonCarousel />
-        ) : (
-          <Slider {...carouselSettings}>
-            {movieList.map((movie) => (
-              <MovieItem
-                movieInfo={movie}
-                onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
-                key={movie.id}
-              />
-            ))}
-          </Slider>
-        )}
+        <div className={addAnimation()}>
+          {isCarouselHidden ? (
+            <SkeletonCarousel />
+          ) : (
+            <Slider {...carouselSettings}>
+              {movieList.map((movie) => (
+                <MovieItem movieInfo={movie} onClick={() => goToDetailPage(movie.id)} key={movie.id} />
+              ))}
+            </Slider>
+          )}
+        </div>
       </div>
     </RecommendSection>
   )
@@ -37,6 +51,34 @@ const RecommendSection = styled.section`
   position: relative;
   width: 100%;
   margin-top: 20px;
+
+  .fadein {
+    animation: fadeinloading 3s;
+    animation-fill-mode: forwards;
+  }
+
+  .fadeout {
+    animation: fadeoutloading 1s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeinloading {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeoutloading {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 
   .list-slider {
     position: relative;
