@@ -42,7 +42,7 @@ const MyPage = () => {
   })
 
   useEffect(() => {
-    getListData(userListId, page)
+    if (userListId) getListData(userListId, page)
   }, [page, getListData, userListId])
 
   useEffect(() => {

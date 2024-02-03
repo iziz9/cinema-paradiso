@@ -57,7 +57,7 @@ const Header = () => {
         setUserListId(usersList.id)
       }
     })
-    if (!tempUsersListId) {
+    if (tempUsersListId === 0 && userInfo.uid) {
       postNewUsersList(userInfo.uid)
     }
   }, [allUsersLists, setUserListId, userInfo.uid])
