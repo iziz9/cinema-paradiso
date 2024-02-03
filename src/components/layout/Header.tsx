@@ -10,7 +10,7 @@ import Logo from '../common/Logo'
 import { useUserStore } from '../../store/useUserStore'
 import { notify } from './Toast'
 import { INewWatchListResult } from '../../types/types'
-import { getAllUsersLists } from '../../api/watchListRequest'
+import { getAllUsersLists, postNewUsersList } from '../../api/watchListRequest'
 import { getAllPageDatas } from '../../utils/getAllPageDatas'
 
 const Header = () => {
@@ -20,7 +20,7 @@ const Header = () => {
   const [isDropDownOpen, setisDropDownOpen] = useState<boolean>(false)
   const [allUsersLists, setAllUsersLists] = useState<INewWatchListResult[]>([])
   const auth = getAuth()
-  const { userInfo, setUserInfo, setUserListId } = useUserStore()
+  const { userInfo, setUserInfo, userListId, setUserListId } = useUserStore()
 
   useEffect(() => {
     //완성되면 헤더에서 빼고 루트로 옮기기, private router 처리
@@ -32,6 +32,7 @@ const Header = () => {
         getAllPageDatas({
           request: getAllUsersLists,
           totalPages: usersListRes.total_pages,
+          listId: userListId,
           setAllDataList: setAllUsersLists
         })
       }
@@ -50,12 +51,17 @@ const Header = () => {
   useEffect(() => {
     if (!allUsersLists.length) return
 
+    let tempUsersListId = 0
     allUsersLists.forEach((usersList) => {
       if (usersList.name === userInfo.uid) {
         console.log(usersList.id)
+        tempUsersListId = usersList.id
         setUserListId(usersList.id)
       }
     })
+    if (!tempUsersListId) {
+      postNewUsersList(userInfo.uid)
+    }
   }, [allUsersLists])
 
   const goToLoginPage = () => {

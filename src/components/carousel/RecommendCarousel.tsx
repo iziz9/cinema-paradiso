@@ -7,9 +7,9 @@ import MovieItem from '../common/MovieItem'
 import { carouselSettings } from './CarouselSettings'
 import { useNavigate } from 'react-router-dom'
 import SkeletonCarousel from './SkeletonCarousel'
-import { IRecommendList } from '../../types/types'
+import { IRecommendCarousel } from '../../types/types'
 
-const RecommendList = ({ title, movieList, isLoading }: IRecommendList) => {
+const RecommendCarousel = ({ title, movieList, isLoading }: IRecommendCarousel) => {
   const navigate = useNavigate()
   const [isCarouselHidden, setIsCarouselHidden] = useState<boolean>(true)
 
@@ -124,4 +124,4 @@ const RecommendSection = styled.section`
   }
 `
 
-export default RecommendList
+export default RecommendCarousel

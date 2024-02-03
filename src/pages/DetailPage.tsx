@@ -1,30 +1,20 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
-import RecommendList from '../components/carousel/RecommendList'
+import RecommendCarousel from '../components/carousel/RecommendCarousel'
 import { useParams } from 'react-router-dom'
-import {
-  postToMyWatchList,
-  getAccountStates,
-  getMovieCredits,
-  getMovieDetail,
-  getMovieSimilar
-} from '../api/movieRequest'
+import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
 import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
 import { useMovieDetailStore } from '../store/movieDetailStore'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
-import {
-  BACKGROUND_URL,
-  DETAIL_POSTER_BASE_URL,
-  MAX_CAST_NUMBER,
-  ADMIN_ID,
-  recommendListTitle
-} from '../constants/defaultValues'
+import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER, recommendListTitle } from '../constants/defaultValues'
 import { notify } from '../components/layout/Toast'
 import { useUserStore } from '../store/useUserStore'
+import { checkMovieStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
 
 const DetailPage = () => {
   const params = useParams()
+  const MovieId = params.id
   const [inMyWatchList, setInMyWatchList] = useState<boolean>(false)
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
@@ -33,10 +23,10 @@ const DetailPage = () => {
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
   const { cachedRecommendMovie } = useRecommendMovieStore()
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { userInfo } = useUserStore()
+  const { userInfo, userListId } = useUserStore()
 
   useEffect(() => {
-    if (!params.id) return
+    if (!MovieId) return
 
     const getCachedData = (id: string) => {
       if (!cachedMovieDetail[id]) return false
@@ -60,16 +50,15 @@ const DetailPage = () => {
       }
     }
     const requestGetMyAccountState = async (id: string) => {
-      const accountRes = await getAccountStates(id)
-      setInMyWatchList(accountRes.watchlist)
+      const accountRes = await checkMovieStatus(userListId, +MovieId)
+      setInMyWatchList(accountRes.item_present)
     }
 
     setIsLoading(true)
-    requestGetMyAccountState(params.id)
-    requestGetMovieDetail(params.id)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
+    requestGetMyAccountState(MovieId)
+    requestGetMovieDetail(MovieId)
+    setIsLoading(false)
+
     //eslint-disable-next-line
   }, [params])
 
@@ -88,22 +77,20 @@ const DetailPage = () => {
 
   const addToMyWatchList = async () => {
     const loginMember = checkUserLogin()
-    if (!loginMember) return
-
-    const res = await postToMyWatchList(params.id as string, true)
+    if (!loginMember || !MovieId) return
+    const res = await postAddMovie(userListId, +MovieId)
     if (res?.success) {
-      // res가 undefined일때는
       notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
       setInMyWatchList(true)
     } else {
       notify({ type: 'error', text: '관심 목록 추가에 실패했습니다. 다시 시도해주세요.' })
     }
   }
-  const deleteFromMyWatchList = async () => {
-    const loginMember = checkUserLogin()
-    if (!loginMember) return
 
-    const res = await postToMyWatchList(params.id as string, false)
+  const removeFromMyWatchList = async () => {
+    const loginMember = checkUserLogin()
+    if (!loginMember || !MovieId) return
+    const res = await postRemoveMovie(userListId, +MovieId)
     if (res.success) {
       notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
       setInMyWatchList(false)
@@ -119,7 +106,7 @@ const DetailPage = () => {
           <DetailSection $backdrop={movieDetails.backdrop_path}>
             <DetailBookmark>
               {inMyWatchList ? (
-                <button className="delete-button" onClick={() => deleteFromMyWatchList()}>
+                <button className="delete-button" onClick={() => removeFromMyWatchList()}>
                   <BookmarkFillIcon />
                   <span>관심삭제</span>
                 </button>
@@ -180,7 +167,7 @@ const DetailPage = () => {
           </DetailSection>
           {similarMovies.length ? (
             <RelatedSection>
-              <RecommendList
+              <RecommendCarousel
                 title={`<${movieDetails.title}> 비슷한 영화`}
                 movieList={similarMovies}
                 isLoading={isLoading}
@@ -188,7 +175,7 @@ const DetailPage = () => {
             </RelatedSection>
           ) : (
             <RelatedSection>
-              <RecommendList
+              <RecommendCarousel
                 title={recommendListTitle.trending}
                 movieList={cachedRecommendMovie[recommendListTitle.trending]}
                 isLoading={isLoading}

@@ -33,7 +33,7 @@ export interface ICachedMovieDetail {
 
 export interface IUseUserStore {
   userInfo: User
-  userListId: null | number
+  userListId: number
   setUserInfo: (userInfo: User) => void
   setUserListId: (userListId: number) => void
 }

@@ -31,7 +31,7 @@ export interface IMovieItemProps {
   movieInfo: IMovieInfo
   onClick: () => void
 }
-export interface IRecommendList {
+export interface IRecommendCarousel {
   title: string
   movieList: IMovieInfo[]
   isLoading: boolean

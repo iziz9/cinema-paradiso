@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
-import RecommendList from '../components/carousel/RecommendList'
-import { ADMIN_ID, RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
-import { getTrendingMovieList, getTopRatedMovieList, getMyWatchList } from '../api/movieRequest'
+import RecommendCarousel from '../components/carousel/RecommendCarousel'
+import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
+import { getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo, ITotalResults } from '../types/types'
 import useInfinityScroll from '../hooks/useInfinityScroll'
@@ -15,6 +15,8 @@ import MovieItemStyle from '../components/style/MovieItemStyle'
 import ResultCountStyle from '../components/style/ResultCountStyle'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { getAllPageDatas } from '../utils/getAllPageDatas'
+import { getPersonalList } from '../api/watchListRequest'
+import { useUserStore } from '../store/useUserStore'
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -28,9 +30,10 @@ const MyPage = () => {
   const [myWatchList, setMyWatchList] = useState<IMovieInfo[]>([])
   const [allMyWatchList, setAllMyWatchList] = useState<IMovieInfo[]>([])
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
+  const { userListId } = useUserStore()
   const { isLoading, getListData, ref } = useInfinityScroll({
-    request: getMyWatchList,
-    payload: ADMIN_ID,
+    request: getPersonalList,
+    payload: userListId,
     page,
     setPage,
     setMovieList: setMyWatchList,
@@ -43,15 +46,16 @@ const MyPage = () => {
   ]
 
   useEffect(() => {
-    getListData(ADMIN_ID, page)
+    getListData(userListId, page)
   }, [page, getListData])
 
   useEffect(() => {
     // 1페이지와 합쳐보기
     if (totalResults.totalPages > 1 && page === 1) {
       getAllPageDatas({
-        request: getMyWatchList,
+        request: getPersonalList,
         totalPages: totalResults.totalPages,
+        listId: userListId,
         setAllDataList: setAllMyWatchList
       })
     }
@@ -87,16 +91,16 @@ const MyPage = () => {
     //eslint-disable-next-line
   }, [myWatchList])
 
-  if (totalResults.totalCount < 1)
+  if (totalResults.totalCount < 2)
     return (
       <MyPageContainer>
         <MyProfile />
         <NoResults>
-          <p>좋아하는 영화, 보고싶은 영화를 관심 등록 해 보세요!</p>
+          <p>좋아하는 영화, 보고싶은 영화를 2개 이상 관심 등록 해 보세요!</p>
           <p>취향에 맞는 영화를 추천받을 수 있어요.</p>
         </NoResults>
         {movieRecommendList.map((list) => (
-          <RecommendList title={list.title} movieList={list.movieList} isLoading={isLoading} key={list.title} />
+          <RecommendCarousel title={list.title} movieList={list.movieList} isLoading={isLoading} key={list.title} />
         ))}
       </MyPageContainer>
     )
@@ -105,6 +109,13 @@ const MyPage = () => {
       <MyPageContainer>
         <MyProfile />
         <Chart watchList={allMyWatchList} totalResults={totalResults} />
+        {movieRecommendList.map(
+          (
+            list // 취향추천, 장르코드 활용
+          ) => (
+            <RecommendCarousel title={list.title} movieList={list.movieList} isLoading={isLoading} key={list.title} />
+          )
+        )}
         <ResultCountStyle>나의 관심 목록 ({totalResults.totalCount})</ResultCountStyle>
         <MovieListStyle>
           {myWatchList?.map((movie) => (

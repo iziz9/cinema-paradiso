@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import RecommendList from '../components/carousel/RecommendList'
+import RecommendCarousel from '../components/carousel/RecommendCarousel'
 import { getGenresMovieList, getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
 import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
@@ -58,7 +58,7 @@ const MainPage = () => {
         <img src="/banner.webp" alt="banner" />
       </div>
       {movieRecommendList.map((list, index) => (
-        <RecommendList title={list.title} movieList={list.movieList} isLoading={isLoading} key={index} />
+        <RecommendCarousel title={list.title} movieList={list.movieList} isLoading={isLoading} key={index} />
       ))}
     </MainContainer>
   )

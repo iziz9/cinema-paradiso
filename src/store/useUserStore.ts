@@ -8,7 +8,7 @@ export const useUserStore = create(
     (set) => ({
       userInfo: {} as User,
       setUserInfo: (userInfo: User) => set({ userInfo }),
-      userListId: null,
+      userListId: 0,
       setUserListId: (userListId: number) => set({ userListId })
     }),
     {

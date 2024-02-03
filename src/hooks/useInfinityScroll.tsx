@@ -15,25 +15,25 @@ const useInfinityScroll = ({
   const [lastPage, setLastPage] = useState(false)
 
   const getListData = useCallback(
-    async (payload: string, page: number) => {
+    async (payload: number, page: number) => {
       try {
         setIsLoading(true)
-        const listData = await request(page)
+        const listData = await request(payload, page)
         if (!listData) {
           setLastPage(true)
           setMovieList([])
           return setIsLoading(false)
         }
 
-        if (!listData.results) {
-          setMovieList((prevList) => [...prevList, listData])
+        if (!listData.items) {
+          setMovieList((prevList) => [...prevList, listData.items])
           setTotalResults((prev) => {
             return { totalCount: prev.totalCount, totalPages: prev.totalPages }
           })
           return setIsLoading(false)
         }
 
-        setMovieList((prevList) => [...prevList, ...listData.results])
+        setMovieList((prevList) => [...prevList, ...listData.items])
         setTotalResults({ totalCount: listData.total_results, totalPages: listData.total_pages })
         listData.total_pages === page ? setLastPage(true) : setLastPage(false)
       } catch (error) {
