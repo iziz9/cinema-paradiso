@@ -14,7 +14,7 @@ import { checkMovieStatus, postAddMovie, postRemoveMovie } from '../api/watchLis
 
 const DetailPage = () => {
   const params = useParams()
-  const MovieId = params.id
+  const movieId = params.id
   const [inMyWatchList, setInMyWatchList] = useState<boolean>(false)
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
@@ -26,7 +26,7 @@ const DetailPage = () => {
   const { userInfo, userListId } = useUserStore()
 
   useEffect(() => {
-    if (!MovieId) return
+    if (!movieId) return
 
     const getCachedData = (id: string) => {
       if (!cachedMovieDetail[id]) return false
@@ -49,14 +49,15 @@ const DetailPage = () => {
         setCachedMovieDetail(id, allDetails)
       }
     }
-    const requestGetMyAccountState = async (id: string) => {
-      const accountRes = await checkMovieStatus(userListId, +MovieId)
+
+    const requestGetMyAccountState = async (movieId: string) => {
+      const accountRes = await checkMovieStatus(userListId, +movieId)
       setInMyWatchList(accountRes.item_present)
     }
+    if (userInfo.uid) requestGetMyAccountState(movieId)
 
     setIsLoading(true)
-    requestGetMyAccountState(MovieId)
-    requestGetMovieDetail(MovieId)
+    requestGetMovieDetail(movieId)
     setIsLoading(false)
 
     //eslint-disable-next-line
@@ -77,8 +78,8 @@ const DetailPage = () => {
 
   const addToMyWatchList = async () => {
     const loginMember = checkUserLogin()
-    if (!loginMember || !MovieId) return
-    const res = await postAddMovie(userListId, +MovieId)
+    if (!loginMember || !movieId) return
+    const res = await postAddMovie(userListId, +movieId)
     if (res?.success) {
       notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
       setInMyWatchList(true)
@@ -89,8 +90,8 @@ const DetailPage = () => {
 
   const removeFromMyWatchList = async () => {
     const loginMember = checkUserLogin()
-    if (!loginMember || !MovieId) return
-    const res = await postRemoveMovie(userListId, +MovieId)
+    if (!loginMember || !movieId) return
+    const res = await postRemoveMovie(userListId, +movieId)
     if (res.success) {
       notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
       setInMyWatchList(false)

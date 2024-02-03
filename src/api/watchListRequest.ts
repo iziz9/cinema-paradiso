@@ -1,6 +1,8 @@
-import { ADMIN_ID, DEFAULT_OPTION } from '../constants/defaultValues'
+import { ADMIN_ID } from '../constants/defaultValues'
 import { ICreateWatchListResponse } from '../types/types'
 import axiosInstance from './axiosInstance'
+
+const DEFAULT_OPTION = { language: 'ko' }
 
 export const getAllUsersLists = async (page: number) => {
   return await axiosInstance

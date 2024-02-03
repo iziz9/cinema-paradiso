@@ -51,5 +51,4 @@ export const recommendListTitle = {
 export const DETAIL_POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 export const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'
 export const MAX_CAST_NUMBER = 6
-export const ADMIN_ID = String(process.env.REACT_APP_MY_ACCOUNT) //임시
-export const DEFAULT_OPTION = { language: 'ko' }
+export const ADMIN_ID = String(process.env.REACT_APP_MY_ACCOUNT)

@@ -162,3 +162,10 @@ export interface ICreateWatchListResponse {
   status_message: string // "Success."
   list_id: number
 }
+
+export interface IGetAllPageDatas {
+  request: (listId: number, page: number) => Promise<any>
+  totalPages: number
+  listId: number
+  setAllDataList: (value: React.SetStateAction<any>) => void
+}

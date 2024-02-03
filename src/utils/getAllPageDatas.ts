@@ -1,11 +1,4 @@
-import { IHasPageResponse } from '../types/types'
-
-interface IGetAllPageDatas {
-  request: (listId: number, page: number) => Promise<any>
-  totalPages: number
-  listId: number
-  setAllDataList: (value: React.SetStateAction<any>) => void
-}
+import { IGetAllPageDatas, IHasPageResponse } from '../types/types'
 
 export const getAllPageDatas = async ({ request, totalPages, listId, setAllDataList }: IGetAllPageDatas) => {
   const requestArray = []
