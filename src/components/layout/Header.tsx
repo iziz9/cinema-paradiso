@@ -39,12 +39,12 @@ const Header = () => {
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('상태변경')
         getAllListData()
       } else {
         pathname === PATH.MYPAGE && navigate(PATH.LOGIN)
       }
     })
+    // eslint-disable-next-line
   }, [auth])
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Header = () => {
     if (!tempUsersListId) {
       postNewUsersList(userInfo.uid)
     }
-  }, [allUsersLists])
+  }, [allUsersLists, setUserListId, userInfo.uid])
 
   const goToLoginPage = () => {
     navigate(PATH.LOGIN)
@@ -70,6 +70,7 @@ const Header = () => {
       .then(() => {
         setUserInfo({} as User)
         setUserListId(0)
+        setAllUsersLists([])
         navigate(PATH.MAIN)
         notify({ type: 'success', text: '로그아웃 되었습니다.' })
       })

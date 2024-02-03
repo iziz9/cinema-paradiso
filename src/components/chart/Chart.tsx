@@ -42,9 +42,8 @@ const Chart = ({
         etcCount += genre[1]
       }
     })
-    newDataArr.push({ name: '그 외', value: etcCount })
+    if (etcCount) newDataArr.push({ name: '그 외', value: etcCount })
     setFavoriteChartData(newDataArr)
-
     //eslint-disable-next-line
   }, [watchList])
 

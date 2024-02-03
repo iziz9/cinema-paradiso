@@ -1,7 +1,6 @@
 import { IMovieInfo, ITotalResults } from './types'
 
 export interface IInfinityScrollProps {
-  //eslint-disable-next-line
   request: (payload: number, page: number) => Promise<any> | IMovieInfo[]
   payload: number
   page: number

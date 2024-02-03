@@ -33,7 +33,7 @@ export const carouselSettings = {
   slidesToShow: 5,
   slidesToScroll: 5,
   initialSlide: 0,
-  swipeToSlide: true, //모바일 테스트
+  swipeToSlide: true,
   responsive: [
     {
       breakpoint: 1024,
@@ -63,8 +63,7 @@ export const carouselSettings = {
       breakpoint: 480,
       settings: {
         slidesToShow: 2,
-        slidesToScroll: 2,
-        arrows: false
+        slidesToScroll: 2
       }
     }
   ],

@@ -37,7 +37,7 @@ const HotMoviesList = () => {
         setCachedRecommendMovie(title, requestRes)
       }
     }
-    const getLists = async () => {
+    const getLists = () => {
       setIsLoading(true)
       getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
       getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)

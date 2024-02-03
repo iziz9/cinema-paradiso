@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendCarousel from '../components/carousel/RecommendCarousel'
-import { RECOMMEND_LIST_DEFAULT, genresId } from '../constants/defaultValues'
+import { RECOMMEND_LIST_DEFAULT } from '../constants/defaultValues'
 import { getGenresMovieList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo, ITotalResults } from '../types/types'
@@ -43,7 +43,7 @@ const MyPage = () => {
 
   useEffect(() => {
     getListData(userListId, page)
-  }, [page, getListData])
+  }, [page, getListData, userListId])
 
   useEffect(() => {
     // 1페이지와 합쳐보기
@@ -55,7 +55,7 @@ const MyPage = () => {
         setAllDataList: setAllMyWatchList
       })
     }
-  }, [totalResults, page])
+  }, [totalResults, page, userListId])
 
   useEffect(() => {
     if (page === 1 && myWatchList.length) setAllMyWatchList(myWatchList)
@@ -74,23 +74,22 @@ const MyPage = () => {
         setRecommendList(cachedList)
       } else {
         const requestRes = await requestGetList(favoriteGenreCode)
-        console.log(requestRes)
         setRecommendList(requestRes)
         setCachedRecommendMovie(title, requestRes)
       }
     }
-    if (myWatchList.length > 1 && favoriteGenreCode !== 0) {
+    if (myWatchList.length >= 1 && favoriteGenreCode !== 0) {
       getRecommendLists(`내 취향과 비슷한 영화`, getGenresMovieList, setFavoriteGenreMovies, favoriteGenreCode)
     }
     //eslint-disable-next-line
   }, [favoriteGenreCode, myWatchList])
 
-  if (totalResults.totalCount < 2)
+  if (totalResults.totalCount < 1)
     return (
       <MyPageContainer>
         <MyProfile />
         <NoResults>
-          <p>좋아하는 영화, 보고싶은 영화를 2개 이상 관심 등록 해 보세요!</p>
+          <p>좋아하는 영화, 보고싶은 영화를 관심 등록 해 보세요!</p>
           <p>취향에 맞는 영화를 추천받을 수 있어요.</p>
         </NoResults>
         <HotMoviesList />
