@@ -3,11 +3,19 @@ import styled from 'styled-components'
 import { useUserStore } from '../store/useUserStore'
 import { notify } from '../components/layout/Toast'
 import { GoogleIcon } from '../constants/icon'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import PATH from '../routes/routePath'
 
 const LoginPage = () => {
   const provider = new GoogleAuthProvider()
   const auth = getAuth()
-  const { setUserInfo } = useUserStore()
+  const navigate = useNavigate()
+  const { userInfo, setUserInfo } = useUserStore()
+
+  useEffect(() => {
+    if (userInfo.uid) navigate(PATH.MAIN)
+  }, [userInfo, navigate])
 
   const handleAuth = () => {
     signInWithPopup(auth, provider)

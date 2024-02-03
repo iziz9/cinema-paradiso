@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendCarousel from '../components/carousel/RecommendCarousel'
-import { RECOMMEND_LIST_DEFAULT, recommendListTitle } from '../constants/defaultValues'
-import { getTrendingMovieList, getTopRatedMovieList } from '../api/movieRequest'
+import { RECOMMEND_LIST_DEFAULT, genresId } from '../constants/defaultValues'
+import { getGenresMovieList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo, ITotalResults } from '../types/types'
 import useInfinityScroll from '../hooks/useInfinityScroll'
@@ -17,11 +17,12 @@ import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { getAllPageDatas } from '../utils/getAllPageDatas'
 import { getPersonalList } from '../api/watchListRequest'
 import { useUserStore } from '../store/useUserStore'
+import HotMoviesList from '../components/common/HotMoviesList'
 
 const MyPage = () => {
   const navigate = useNavigate()
-  const [trendingMovies, setTrendingMovies] = useState(RECOMMEND_LIST_DEFAULT)
-  const [topRatedMovies, setTopRatedMovies] = useState(RECOMMEND_LIST_DEFAULT)
+  const [favoriteGenreCode, setFavoriteGenreCode] = useState<number>(0)
+  const [favoriteGenreMovies, setFavoriteGenreMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [page, setPage] = useState<number>(1)
   const [totalResults, setTotalResults] = useState<ITotalResults>({
     totalCount: 0,
@@ -39,11 +40,6 @@ const MyPage = () => {
     setMovieList: setMyWatchList,
     setTotalResults
   })
-
-  const movieRecommendList = [
-    { title: recommendListTitle.trending, movieList: trendingMovies },
-    { title: recommendListTitle.topRated, movieList: topRatedMovies }
-  ]
 
   useEffect(() => {
     getListData(userListId, page)
@@ -63,33 +59,31 @@ const MyPage = () => {
 
   useEffect(() => {
     if (page === 1 && myWatchList.length) setAllMyWatchList(myWatchList)
-
     const getCachedList = (title: string) => {
       if (!cachedRecommendMovie[title]) return false
       return cachedRecommendMovie[title]
     }
     const getRecommendLists = async (
       title: string,
-      //eslint-disable-next-line
       requestGetList: any,
-      setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>
+      setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>,
+      favoriteGenreCode: number
     ) => {
       const cachedList = getCachedList(title)
       if (cachedList) {
         setRecommendList(cachedList)
       } else {
-        const requestRes = await requestGetList()
+        const requestRes = await requestGetList(favoriteGenreCode)
+        console.log(requestRes)
         setRecommendList(requestRes)
         setCachedRecommendMovie(title, requestRes)
       }
     }
-
-    if (myWatchList.length < 1) {
-      getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
-      getRecommendLists(recommendListTitle.topRated, getTopRatedMovieList, setTopRatedMovies)
+    if (myWatchList.length > 1 && favoriteGenreCode !== 0) {
+      getRecommendLists(`내 취향과 비슷한 영화`, getGenresMovieList, setFavoriteGenreMovies, favoriteGenreCode)
     }
     //eslint-disable-next-line
-  }, [myWatchList])
+  }, [favoriteGenreCode, myWatchList])
 
   if (totalResults.totalCount < 2)
     return (
@@ -99,23 +93,15 @@ const MyPage = () => {
           <p>좋아하는 영화, 보고싶은 영화를 2개 이상 관심 등록 해 보세요!</p>
           <p>취향에 맞는 영화를 추천받을 수 있어요.</p>
         </NoResults>
-        {movieRecommendList.map((list) => (
-          <RecommendCarousel title={list.title} movieList={list.movieList} isLoading={isLoading} key={list.title} />
-        ))}
+        <HotMoviesList />
       </MyPageContainer>
     )
   else
     return (
       <MyPageContainer>
         <MyProfile />
-        <Chart watchList={allMyWatchList} totalResults={totalResults} />
-        {movieRecommendList.map(
-          (
-            list // 취향추천, 장르코드 활용
-          ) => (
-            <RecommendCarousel title={list.title} movieList={list.movieList} isLoading={isLoading} key={list.title} />
-          )
-        )}
+        <Chart watchList={allMyWatchList} totalResults={totalResults} setFavoriteGenreCode={setFavoriteGenreCode} />
+        <RecommendCarousel title={'내 취향과 비슷한 영화'} movieList={favoriteGenreMovies} isLoading={isLoading} />
         <ResultCountStyle>나의 관심 목록 ({totalResults.totalCount})</ResultCountStyle>
         <MovieListStyle>
           {myWatchList?.map((movie) => (

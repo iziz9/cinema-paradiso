@@ -6,7 +6,15 @@ import { useEffect, useState } from 'react'
 import { genresId, genresIdType } from '../../constants/defaultValues'
 import { useMediaQuery } from 'react-responsive'
 
-const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResults: ITotalResults }) => {
+const Chart = ({
+  watchList,
+  totalResults,
+  setFavoriteGenreCode
+}: {
+  watchList: IMovieInfo[]
+  totalResults: ITotalResults
+  setFavoriteGenreCode: React.Dispatch<React.SetStateAction<number>>
+}) => {
   const [favoriteChartData, setFavoriteChartData] = useState<IChartDataArr[]>([])
   const isMobile = useMediaQuery({
     query: '(max-width: 600px)'
@@ -24,6 +32,9 @@ const Chart = ({ watchList, totalResults }: { watchList: IMovieInfo[]; totalResu
     let etcCount = 0
     const sortedChartData = Object.entries(chartData).sort((a, b) => b[1] - a[1])
     sortedChartData.forEach((genre, index) => {
+      if (index === 0) {
+        setFavoriteGenreCode(+genre[0])
+      }
       if (index < 7) {
         const genreId = +genre[0]
         newDataArr.push({ name: genresId[genreId as genresIdType], value: genre[1] })

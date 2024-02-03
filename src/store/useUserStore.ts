@@ -14,7 +14,10 @@ export const useUserStore = create(
     {
       name: 'user-info',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state: IUseUserStore) => ({ userInfo: state.userInfo, userListId: state.userListId })
+      partialize: (state: IUseUserStore) => ({
+        userInfo: state.userInfo,
+        userListId: state.userListId
+      })
     }
   )
 )

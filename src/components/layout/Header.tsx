@@ -23,7 +23,6 @@ const Header = () => {
   const { userInfo, setUserInfo, userListId, setUserListId } = useUserStore()
 
   useEffect(() => {
-    //완성되면 헤더에서 빼고 루트로 옮기기, private router 처리
     const getAllListData = async () => {
       const usersListRes = await getAllUsersLists(1)
       setAllUsersLists(usersListRes.results)
@@ -40,7 +39,7 @@ const Header = () => {
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // pathname === PATH.LOGIN && navigate(PATH.MAIN)
+        console.log('상태변경')
         getAllListData()
       } else {
         pathname === PATH.MYPAGE && navigate(PATH.LOGIN)
@@ -54,7 +53,6 @@ const Header = () => {
     let tempUsersListId = 0
     allUsersLists.forEach((usersList) => {
       if (usersList.name === userInfo.uid) {
-        console.log(usersList.id)
         tempUsersListId = usersList.id
         setUserListId(usersList.id)
       }
@@ -71,6 +69,7 @@ const Header = () => {
     signOut(auth)
       .then(() => {
         setUserInfo({} as User)
+        setUserListId(0)
         navigate(PATH.MAIN)
         notify({ type: 'success', text: '로그아웃 되었습니다.' })
       })
