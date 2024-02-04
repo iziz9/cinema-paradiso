@@ -10,7 +10,7 @@ import Logo from '../common/Logo'
 import { useUserStore } from '../../store/useUserStore'
 import { notify } from './Toast'
 import { INewWatchListResult } from '../../types/types'
-import { getAllUsersLists, postNewUsersList } from '../../api/watchListRequest'
+import { getAllUsersLists, postMakePersonalList } from '../../api/watchListRequest'
 import { getAllPageDatas } from '../../utils/getAllPageDatas'
 
 const Header = () => {
@@ -48,7 +48,7 @@ const Header = () => {
   }, [auth])
 
   useEffect(() => {
-    if (!allUsersLists.length) return
+    if (!userInfo.uid || !allUsersLists.length) return
 
     let tempUsersListId = 0
     allUsersLists.forEach((usersList) => {
@@ -57,14 +57,20 @@ const Header = () => {
         setUserListId(usersList.id)
       }
     })
-    if (tempUsersListId === 0 && userInfo.uid) {
-      postNewUsersList(userInfo.uid)
+
+    const getNewListId = async () => {
+      const res = await postMakePersonalList(userInfo.uid)
+      res && setUserListId(res)
+    }
+    if (userInfo.uid && tempUsersListId === 0) {
+      getNewListId()
     }
   }, [allUsersLists, setUserListId, userInfo.uid])
 
   const goToLoginPage = () => {
     navigate(PATH.LOGIN)
   }
+
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {

@@ -17,10 +17,12 @@ export const getAllUsersLists = async (page: number) => {
     })
 }
 
-export const postNewUsersList = async (name: string) => {
+export const postMakePersonalList = async (name: string) => {
   return await axiosInstance
     .post<ICreateWatchListResponse>('list', {
-      data: { ...DEFAULT_OPTION, name, description: '' }
+      ...DEFAULT_OPTION,
+      name,
+      description: ''
     })
     .then((res) => {
       return res.data.list_id
