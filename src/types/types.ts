@@ -136,6 +136,7 @@ export interface IRenderCustomizedLabel {
 export interface IHasPageResponse {
   page: number
   results: IMovieInfo[]
+  items: IMovieInfo[]
   total_pages: number
   total_results: number
 }

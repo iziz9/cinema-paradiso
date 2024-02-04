@@ -6,11 +6,10 @@ export const getAllPageDatas = async ({ request, totalPages, listId, setAllDataL
     requestArray.push(request(listId, i))
   }
   Promise.all(requestArray).then((res: IHasPageResponse[]) => {
-    const allPageRes = res
-      .map((res) => res.results)
-      .reduce((acc, cur) => {
-        return [...acc, ...cur]
-      }, [])
-    setAllDataList((prev: any) => [...prev, ...allPageRes])
+    const allPageRes = res.map((res) => res.items || res.results)
+    const reducedAllPageData = allPageRes.reduce((acc, cur) => {
+      return [...acc, ...cur]
+    }, [])
+    setAllDataList((prev: any) => [...prev, ...reducedAllPageData])
   })
 }

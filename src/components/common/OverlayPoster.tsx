@@ -13,9 +13,9 @@ const OverlayPoster = ({ title, released, genreIds, handleMouseLeave }: overlayP
     <OverlayContainer onMouseLeave={handleMouseLeave}>
       <div className="inner">
         <div className="title">{title}</div>
-        <div className="released">{released.slice(0, 4)}</div>
+        <div className="released">{released?.slice(0, 4)}</div>
         <div className="genre">
-          {genreIds.map((id, index) => (
+          {genreIds?.map((id, index) => (
             <span key={id}>{index > 0 ? `·${genresId[id as genresIdType]}` : genresId[id as genresIdType]}</span>
           ))}
         </div>

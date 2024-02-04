@@ -23,7 +23,7 @@ const Chart = ({
   useEffect(() => {
     const chartData: IChartData = {}
     watchList.forEach((movie) => {
-      movie.genre_ids.forEach((id) => {
+      movie.genre_ids?.forEach((id) => {
         chartData[id] = chartData[id] + 1 || 1
       })
     })

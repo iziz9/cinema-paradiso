@@ -46,6 +46,7 @@ const MyPage = () => {
   }, [page, getListData, userListId])
 
   useEffect(() => {
+    if (!userListId) return
     // 1페이지와 합쳐보기
     if (totalResults.totalPages > 1 && page === 1) {
       getAllPageDatas({
