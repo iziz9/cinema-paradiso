@@ -19,6 +19,7 @@ import { getPersonalList } from '../api/watchListRequest'
 import { useUserStore } from '../store/useUserStore'
 import HotMoviesList from '../components/common/HotMoviesList'
 
+const FAVORITE_TITLE = '내 취향과 비슷한 영화'
 const MyPage = () => {
   const navigate = useNavigate()
   const [favoriteGenreCode, setFavoriteGenreCode] = useState<number>(0)
@@ -47,7 +48,6 @@ const MyPage = () => {
 
   useEffect(() => {
     if (!userListId) return
-    // 1페이지와 합쳐보기
     if (totalResults.totalPages > 1 && page === 1) {
       getAllPageDatas({
         request: getPersonalList,
@@ -80,7 +80,7 @@ const MyPage = () => {
       }
     }
     if (myWatchList.length >= 1 && favoriteGenreCode !== 0) {
-      getRecommendLists(`내 취향과 비슷한 영화`, getGenresMovieList, setFavoriteGenreMovies, favoriteGenreCode)
+      getRecommendLists(FAVORITE_TITLE, getGenresMovieList, setFavoriteGenreMovies, favoriteGenreCode)
     }
     //eslint-disable-next-line
   }, [favoriteGenreCode, myWatchList])

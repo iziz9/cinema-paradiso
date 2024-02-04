@@ -10,9 +10,6 @@ export const getTrendingMovieList = async () => {
     .then((res) => {
       return res.data.results
     })
-    .catch((err: object) => {
-      return alert(err)
-    })
 }
 
 export const getTopRatedMovieList = async () => {
@@ -22,9 +19,6 @@ export const getTopRatedMovieList = async () => {
     })
     .then((res) => {
       return res.data.results
-    })
-    .catch((err: object) => {
-      return alert(err)
     })
 }
 

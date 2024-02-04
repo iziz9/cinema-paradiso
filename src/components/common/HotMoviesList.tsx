@@ -5,6 +5,7 @@ import { IMovieInfo } from '../../types/types'
 import { getTopRatedMovieList, getTrendingMovieList } from '../../api/movieRequest'
 import styled from 'styled-components'
 import RecommendCarousel from '../carousel/RecommendCarousel'
+import { mockedTopRatedList, mockedTrendingList } from '../../mock/hotMovies'
 
 const HotMoviesList = () => {
   const [trendingMovies, setTrendingMovies] = useState(RECOMMEND_LIST_DEFAULT)
@@ -29,14 +30,19 @@ const HotMoviesList = () => {
       params?: number
     ) => {
       const cachedList = getCachedList(title)
-      if (cachedList) {
-        setRecommendList(cachedList)
-      } else {
-        const requestRes = params ? await requestGetList(params) : await requestGetList()
-        setRecommendList(requestRes)
-        setCachedRecommendMovie(title, requestRes)
+      if (cachedList) return setRecommendList(cachedList)
+      else {
+        try {
+          const requestRes = params ? await requestGetList(params) : await requestGetList()
+          setRecommendList(requestRes)
+          setCachedRecommendMovie(title, requestRes)
+        } catch (err) {
+          setTrendingMovies(mockedTrendingList)
+          setTopRatedMovies(mockedTopRatedList)
+        }
       }
     }
+
     const getLists = () => {
       setIsLoading(true)
       getRecommendLists(recommendListTitle.trending, getTrendingMovieList, setTrendingMovies)
