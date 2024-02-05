@@ -12,7 +12,7 @@ export const getAllUsersLists = async (page: number) => {
     .then((res) => {
       return res.data
     })
-    .catch((err: object) => {
+    .catch((err) => {
       return alert(err)
     })
 }
@@ -27,7 +27,7 @@ export const postMakePersonalList = async (name: string) => {
     .then((res) => {
       return res.data.list_id
     })
-    .catch((err: object) => {
+    .catch((err) => {
       return alert(err)
     })
 }
@@ -40,8 +40,8 @@ export const getPersonalList = async (list_id: number, page: number) => {
     .then((res) => {
       return res.data
     })
-    .catch((err: object) => {
-      return alert(err)
+    .catch((err) => {
+      return alert('관심 영화 리스트를 불러올 수 없습니다.')
     })
 }
 
@@ -53,9 +53,6 @@ export const postAddMovie = async (list_id: number, media_id: number) => {
     .then((res) => {
       return res.data
     })
-    .catch((err: object) => {
-      return alert(err)
-    })
 }
 
 export const postRemoveMovie = async (list_id: number, media_id: number) => {
@@ -65,9 +62,6 @@ export const postRemoveMovie = async (list_id: number, media_id: number) => {
     })
     .then((res) => {
       return res.data
-    })
-    .catch((err: object) => {
-      return alert(err)
     })
 }
 
@@ -79,7 +73,7 @@ export const checkMovieStatus = async (list_id: number, movie_id: number) => {
     .then((res) => {
       return res.data
     })
-    .catch((err: object) => {
-      return alert(err)
+    .catch((err) => {
+      return alert('관심 정보 확인에 실패했습니다.')
     })
 }

@@ -39,14 +39,20 @@ const DetailPage = () => {
         setMovieCredits(cachedData.credits)
         setSimilarMovies(cachedData.similar)
       } else {
-        const detailsRes = await getMovieDetail(id)
-        setMovieDetails(detailsRes)
-        const creditsRes = await getMovieCredits(id)
-        setMovieCredits(creditsRes)
-        const similarRes = await getMovieSimilar(id)
-        setSimilarMovies(similarRes)
-        const allDetails = { details: detailsRes, credits: creditsRes, similar: similarRes }
-        setCachedMovieDetail(id, allDetails)
+        try {
+          Promise.all([getMovieDetail(id), getMovieCredits(id), getMovieSimilar(id)]).then((results) => {
+            const details = results[0]
+            const credits = results[1]
+            const similar = results[2]
+            setMovieDetails(details)
+            setMovieCredits(credits)
+            setSimilarMovies(similar)
+            const allDetails = { details, credits, similar }
+            setCachedMovieDetail(id, allDetails)
+          })
+        } catch (err) {
+          notify({ type: 'error', text: '상세 정보를 불러올 수 없습니다.' })
+        }
       }
     }
 
@@ -79,11 +85,13 @@ const DetailPage = () => {
   const addToMyWatchList = async () => {
     const loginMember = checkUserLogin()
     if (!loginMember || !movieId) return
-    const res = await postAddMovie(userListId, +movieId)
-    if (res?.success) {
-      notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
-      setInMyWatchList(true)
-    } else {
+    try {
+      const res = await postAddMovie(userListId, +movieId)
+      if (res?.success) {
+        notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
+        setInMyWatchList(true)
+      }
+    } catch (err) {
       notify({ type: 'error', text: '관심 목록 추가에 실패했습니다. 다시 시도해주세요.' })
     }
   }
@@ -91,11 +99,13 @@ const DetailPage = () => {
   const removeFromMyWatchList = async () => {
     const loginMember = checkUserLogin()
     if (!loginMember || !movieId) return
-    const res = await postRemoveMovie(userListId, +movieId)
-    if (res.success) {
-      notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
-      setInMyWatchList(false)
-    } else {
+    try {
+      const res = await postRemoveMovie(userListId, +movieId)
+      if (res.success) {
+        notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
+        setInMyWatchList(false)
+      }
+    } catch (err) {
       notify({ type: 'error', text: '관심 목록 삭제에 실패했습니다. 다시 시도해주세요.' })
     }
   }
@@ -166,7 +176,7 @@ const DetailPage = () => {
               {movieDetails.overview || '줄거리 미제공'}
             </DetailOverview>
           </DetailSection>
-          {similarMovies.length ? (
+          {similarMovies?.length ? (
             <RelatedSection>
               <RecommendCarousel
                 title={`<${movieDetails.title}> 비슷한 영화`}
@@ -340,6 +350,8 @@ const DetailOverview = styled.div`
   }
 `
 
-const RelatedSection = styled.section``
+const RelatedSection = styled.section`
+  position: relative;
+`
 
 export default DetailPage

@@ -1,3 +1,4 @@
+import { notify } from '../components/layout/Toast'
 import axiosInstance from './axiosInstance'
 
 const DEFAULT_OPTION = { language: 'ko-KR' }
@@ -43,7 +44,7 @@ export const getMovieDetail = async (movieId: string) => {
       return res.data
     })
     .catch((err: object) => {
-      return alert(err)
+      return notify({ type: 'error', text: '영화 정보를 가져올 수 없습니다.' })
     })
 }
 export const getMovieCredits = async (movieId: string) => {
@@ -55,7 +56,7 @@ export const getMovieCredits = async (movieId: string) => {
       return res.data
     })
     .catch((err: object) => {
-      return alert(err)
+      return notify({ type: 'error', text: '영화 정보를 가져올 수 없습니다.' })
     })
 }
 export const getMovieSimilar = async (movieId: string) => {
