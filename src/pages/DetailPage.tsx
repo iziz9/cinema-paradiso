@@ -10,7 +10,7 @@ import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER, recommendListTitle } from '../constants/defaultValues'
 import { notify } from '../components/layout/Toast'
 import { useUserStore } from '../store/useUserStore'
-import { checkMovieStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
+import { getMovieIncludingStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
 
 const DetailPage = () => {
   const params = useParams()
@@ -48,7 +48,7 @@ const DetailPage = () => {
             setMovieCredits(credits)
             setSimilarMovies(similar)
             const allDetails = { details, credits, similar }
-            setCachedMovieDetail(id, allDetails)
+            if (details && credits && similar) setCachedMovieDetail(id, allDetails)
           })
         } catch (err) {
           notify({ type: 'error', text: '상세 정보를 불러올 수 없습니다.' })
@@ -57,8 +57,8 @@ const DetailPage = () => {
     }
 
     const requestGetMyAccountState = async (movieId: string) => {
-      const accountRes = await checkMovieStatus(userListId, +movieId)
-      setInMyWatchList(accountRes.item_present)
+      const watchlistRes = await getMovieIncludingStatus(userListId, +movieId)
+      setInMyWatchList(watchlistRes.item_present)
     }
     if (userInfo.uid) requestGetMyAccountState(movieId)
 

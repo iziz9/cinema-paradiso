@@ -31,9 +31,6 @@ export const getSearchingMovieList = async (query: string, page = 1) => {
     .then((res) => {
       return res.data
     })
-    .catch((err: object) => {
-      return alert(err)
-    })
 }
 export const getMovieDetail = async (movieId: string) => {
   return await axiosInstance
@@ -44,7 +41,7 @@ export const getMovieDetail = async (movieId: string) => {
       return res.data
     })
     .catch((err: object) => {
-      return notify({ type: 'error', text: '영화 정보를 가져올 수 없습니다.' })
+      return notify({ type: 'error', text: '영화 정보를 불러올 수 없습니다.' })
     })
 }
 export const getMovieCredits = async (movieId: string) => {

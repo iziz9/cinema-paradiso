@@ -37,3 +37,7 @@ export interface IUseUserStore {
   setUserInfo: (userInfo: User) => void
   setUserListId: (userListId: number) => void
 }
+export interface IUseMovieDetailStore {
+  cachedMovieDetail: ICachedMovieDetail
+  setCachedMovieDetail: (id: string, allDetails: IAllDetails) => void
+}

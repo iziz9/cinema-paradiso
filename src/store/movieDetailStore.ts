@@ -1,12 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { IAllDetails, ICachedMovieDetail } from '../types/storeTypes'
-
-export interface IUseMovieDetailStore {
-  cachedMovieDetail: ICachedMovieDetail
-  setCachedMovieDetail: (id: string, allDetails: IAllDetails) => void
-}
-
+import { IUseMovieDetailStore } from '../types/storeTypes'
 export const useMovieDetailStore = create(
   persist(
     (set, get) => ({

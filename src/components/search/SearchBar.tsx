@@ -38,12 +38,16 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
     }
 
     const cachingAutoCompleteList = async () => {
-      const res = await getSearchingMovieList(debouncedSearchValue)
-      setCachedAutoComplete(debouncedSearchValue, {
-        data: res.results.slice(0, MAX_INDEX),
-        expire: currentTime + EXPIRE_TIME
-      })
-      setAutoCompleteList(res.results.slice(0, MAX_INDEX))
+      try {
+        const res = await getSearchingMovieList(debouncedSearchValue)
+        setCachedAutoComplete(debouncedSearchValue, {
+          data: res.results.slice(0, MAX_INDEX),
+          expire: currentTime + EXPIRE_TIME
+        })
+        setAutoCompleteList(res.results.slice(0, MAX_INDEX))
+      } catch (err) {
+        setAutoCompleteList([])
+      }
     }
 
     const getAutoCompleteList = async () => {

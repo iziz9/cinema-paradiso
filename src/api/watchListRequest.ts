@@ -65,7 +65,7 @@ export const postRemoveMovie = async (list_id: number, media_id: number) => {
     })
 }
 
-export const checkMovieStatus = async (list_id: number, movie_id: number) => {
+export const getMovieIncludingStatus = async (list_id: number, movie_id: number) => {
   return await axiosInstance
     .get(`list/${list_id}/item_status`, {
       params: { ...DEFAULT_OPTION, movie_id }
