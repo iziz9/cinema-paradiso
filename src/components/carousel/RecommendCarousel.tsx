@@ -14,9 +14,10 @@ const RecommendCarousel = ({ title, movieList, isLoading }: IRecommendCarousel) 
   const [isCarouselHidden, setIsCarouselHidden] = useState<boolean>(true)
 
   useEffect(() => {
+    let timerId
     if (!isLoading) {
-      setTimeout(() => setIsCarouselHidden(false), 1000)
-    }
+      timerId = setTimeout(() => setIsCarouselHidden(false), 1000)
+    } else clearTimeout(timerId)
   }, [isLoading])
 
   const addAnimation = () => {

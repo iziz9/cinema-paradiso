@@ -141,6 +141,7 @@ const SearchBar = ({ isDropDownOpen, setIsDropDownOpen, dropDownRef }: ISearchBa
 
   const handleBlurDropDown = () => {
     setTimeout(() => {
+      dispatch({ type: 'RESET' })
       setIsDropDownOpen(false)
     }, 200)
   }
