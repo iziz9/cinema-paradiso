@@ -14,7 +14,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.info('calling api')
     return config
   },
   (error) => {

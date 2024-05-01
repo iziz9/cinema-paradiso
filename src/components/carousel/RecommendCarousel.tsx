@@ -16,7 +16,7 @@ const RecommendCarousel = ({ title, movieList, isLoading }: IRecommendCarousel) 
   useEffect(() => {
     let timerId
     if (!isLoading) {
-      timerId = setTimeout(() => setIsCarouselHidden(false), 1000)
+      timerId = setTimeout(() => setIsCarouselHidden(false), 2500)
     } else clearTimeout(timerId)
   }, [isLoading])
 
@@ -54,12 +54,12 @@ const RecommendSection = styled.section`
   margin-top: 20px;
 
   .fadein {
-    animation: fadeinloading 3s;
+    animation: fadeinloading 1.5s;
     animation-fill-mode: forwards;
   }
 
   .fadeout {
-    animation: fadeoutloading 1s;
+    animation: fadeoutloading 2.5s;
     animation-fill-mode: forwards;
   }
 

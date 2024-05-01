@@ -7,7 +7,6 @@ import App from '../App'
 import { BrowserRouter } from 'react-router-dom'
 
 const firebaseApp = app
-
 describe('Search function test', () => {
   mockConsoleError()
   afterEach(() => {
@@ -49,11 +48,14 @@ describe('Search function test', () => {
     render(<App />, { wrapper: BrowserRouter })
     const searchbutton = screen.getByTestId<HTMLButtonElement>('searchbutton')
     userEvent.click(searchbutton)
-    // expect(await screen.findByText('검색어를 입력해주세요.')).toBeInTheDocument()
     await waitFor(() => {
       expect(screen.getByText('검색어를 입력해주세요.')).toBeInTheDocument()
     })
   })
+
+  // test('드롭다운을 닫았다가 다시 열면 포커스가 초기화된다', async () => {
+  //   render(<RoutedHeader />)
+  // })
 
   // test('드롭다운 마지막 리스트에서 아래 방향키를 누르면 동작하지 않는다', async () => {
   //   render(<RoutedMainPage />)
@@ -65,9 +67,5 @@ describe('Search function test', () => {
 
   // test('input에 포커스 된 상태에서 위 방향키를 누르면 동작하지 않는다', async () => {
   //   render(<RoutedMainPage />)
-  // })
-
-  // test('드롭다운을 닫았다가 다시 열면 포커스가 초기화된다', async () => {
-  //   render(<RoutedHeader />)
   // })
 })
