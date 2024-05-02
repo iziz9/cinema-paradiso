@@ -80,12 +80,33 @@ self.addEventListener('message', (event) => {
 // Any other custom service worker logic can go here.
 
 self.addEventListener('install', (event) => {
-  console.log('serviceWorker installing')
+  console.log('서비스워커 설치중')
+})
+self.addEventListener('waiting', (event) => {
+  console.log('서비스워커 설치완료')
 })
 self.addEventListener('activate', (event) => {
-  console.log('serviceWorker activating')
+  console.log('서비스워커 활성화')
+  // // 불필요한 캐시 삭제
+  // event.waitUntil(
+  //   caches.keys().then(function (keyList) {
+  //     return Promise.all(
+  //       keyList.map(function (key) {
+  //         if (cacheName.indexOf(key) === -1) {
+  //           return caches.delete(key)
+  //         }
+  //       })
+  //     )
+  //   })
+  // )
 })
 self.addEventListener('fetch', (event) => {
+  // 테스트
+  console.log('요청 : ' + event.request.url)
+  if (event.request.url.includes('/logo.webp')) {
+    event.respondWith(fetch('/no_image.webp'))
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       //캐시를 새로운 데이터와 비교
