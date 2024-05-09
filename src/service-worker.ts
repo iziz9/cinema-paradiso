@@ -79,8 +79,17 @@ self.addEventListener('message', (event) => {
 
 // Any other custom service worker logic can go here.
 
+const movieCache = 'movieCache'
+const contentToCache = ['/static/main.bundle.js', '/static/main.bundle.css', '/static/favicon.ico']
+
 self.addEventListener('install', (event) => {
   console.log('서비스워커 설치중')
+  event.waitUntil(
+    caches.open(movieCache).then((cache) => {
+      console.log('서비스워커 캐싱 : contentToCache')
+      return cache.addAll(contentToCache)
+    })
+  )
 })
 self.addEventListener('waiting', (event) => {
   console.log('서비스워커 설치완료')
@@ -102,15 +111,24 @@ self.addEventListener('activate', (event) => {
 })
 self.addEventListener('fetch', (event) => {
   // 테스트
-  console.log('요청 : ' + event.request.url)
-  if (event.request.url.includes('/logo.webp')) {
-    event.respondWith(fetch('/no_image.webp'))
-  }
+  // console.log('요청 : ' + event.request.url)
+  // if (event.request.url.includes('/logo.webp')) {
+  //   event.respondWith(fetch('/no_image.webp'))
+  // }
 
   event.respondWith(
     caches.match(event.request).then((response) => {
-      //캐시를 새로운 데이터와 비교
-      return response || fetch(event.request)
+      //캐시를 새로운 데이터와 비교해 캐싱 리소스가 있으면 이를 반환, 없다면 fetch 진행
+      return (
+        response ||
+        fetch(event.request).then((response) => {
+          return caches.open(movieCache).then((cache) => {
+            console.log('서비스워커가 새로운 리소스를 캐싱합니다.' + event.request.url)
+            cache.put(event.request, response.clone()) //응답 저장
+            return response
+          })
+        })
+      )
     })
   )
 })
