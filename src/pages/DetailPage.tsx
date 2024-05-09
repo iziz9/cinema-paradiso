@@ -85,28 +85,19 @@ const DetailPage = () => {
   const addToMyWatchList = async () => {
     const loginMember = checkUserLogin()
     if (!loginMember || !movieId) return
-    try {
-      const res = await postAddMovie(userListId, +movieId)
-      if (res?.success) {
-        notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
-        setInMyWatchList(true)
-      }
-    } catch (err) {
-      notify({ type: 'error', text: '관심 목록 추가에 실패했습니다. 다시 시도해주세요.' })
+
+    const res = await postAddMovie(userListId, +movieId)
+    if (res?.success) {
+      setInMyWatchList(true)
     }
   }
 
   const removeFromMyWatchList = async () => {
     const loginMember = checkUserLogin()
     if (!loginMember || !movieId) return
-    try {
-      const res = await postRemoveMovie(userListId, +movieId)
-      if (res.success) {
-        notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
-        setInMyWatchList(false)
-      }
-    } catch (err) {
-      notify({ type: 'error', text: '관심 목록 삭제에 실패했습니다. 다시 시도해주세요.' })
+    const res = await postRemoveMovie(userListId, +movieId)
+    if (res.success) {
+      setInMyWatchList(false)
     }
   }
 

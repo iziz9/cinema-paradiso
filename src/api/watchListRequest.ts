@@ -1,3 +1,4 @@
+import { notify } from '../components/layout/Toast'
 import { ADMIN_ID } from '../constants/defaultValues'
 import { ICreateWatchListResponse } from '../types/types'
 import axiosInstance from './axiosInstance'
@@ -13,7 +14,7 @@ export const getAllUsersLists = async (page: number) => {
       return res.data
     })
     .catch((err) => {
-      return alert(err)
+      return notify({ type: 'error', text: '관심목록 데이터 조회에 실패했습니다.' })
     })
 }
 
@@ -28,7 +29,7 @@ export const postMakePersonalList = async (name: string) => {
       return res.data.list_id
     })
     .catch((err) => {
-      return alert(err)
+      return notify({ type: 'error', text: '관심목록 생성에 실패했습니다.' })
     })
 }
 
@@ -41,7 +42,7 @@ export const getPersonalList = async (list_id: number, page: number) => {
       return res.data
     })
     .catch((err) => {
-      return alert('관심 영화 리스트를 불러올 수 없습니다.')
+      return notify({ type: 'error', text: '관심영화 리스트를 불러올 수 없습니다.' })
     })
 }
 
@@ -51,7 +52,11 @@ export const postAddMovie = async (list_id: number, media_id: number) => {
       media_id
     })
     .then((res) => {
+      notify({ type: 'success', text: '관심 목록에 추가되었습니다.' })
       return res.data
+    })
+    .catch((err) => {
+      return notify({ type: 'error', text: '관심 목록 추가에 실패했습니다. 다시 시도해주세요.' })
     })
 }
 
@@ -61,7 +66,11 @@ export const postRemoveMovie = async (list_id: number, media_id: number) => {
       media_id
     })
     .then((res) => {
+      notify({ type: 'success', text: '관심 목록에서 삭제되었습니다.' })
       return res.data
+    })
+    .catch((err) => {
+      notify({ type: 'error', text: '관심 목록 삭제에 실패했습니다. 다시 시도해주세요.' })
     })
 }
 
