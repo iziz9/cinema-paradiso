@@ -96,21 +96,21 @@ self.addEventListener('waiting', (event) => {
 })
 self.addEventListener('activate', (event) => {
   console.log('서비스워커 활성화')
-  // // 불필요한 캐시 삭제
-  // event.waitUntil(
-  //   caches.keys().then(function (keyList) {
-  //     return Promise.all(
-  //       keyList.map(function (key) {
-  //         if (cacheName.indexOf(key) === -1) {
-  //           return caches.delete(key)
-  //         }
-  //       })
-  //     )
-  //   })
-  // )
+  // 불필요한 캐시 삭제
+  event.waitUntil(
+    caches.keys().then(function (keyList) {
+      return Promise.all(
+        keyList.map((key) => {
+          if (movieCache.indexOf(key) === -1) {
+            return caches.delete(key)
+          }
+          return []
+        })
+      )
+    })
+  )
 })
 self.addEventListener('fetch', (event) => {
-  // 테스트
   event.respondWith(
     caches.match(event.request).then((response) => {
       //캐시를 새로운 데이터와 비교해 캐싱 리소스가 있으면 이를 반환, 없다면 fetch 진행
