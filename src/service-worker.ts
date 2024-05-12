@@ -84,12 +84,12 @@ const contentToCache = ['/static/main.bundle.js', '/static/main.bundle.css', '/s
 
 self.addEventListener('install', (event) => {
   console.log('서비스워커 설치중')
-  // event.waitUntil(
-  //   caches.open(movieCache).then((cache) => {
-  //     console.log('서비스워커 캐싱 : contentToCache')
-  //     return cache.addAll(contentToCache)
-  //   })
-  // )
+  event.waitUntil(
+    caches.open(movieCache).then((cache) => {
+      console.log('서비스워커 캐싱 : contentToCache')
+      return cache.addAll(contentToCache)
+    })
+  )
 })
 self.addEventListener('waiting', (event) => {
   console.log('서비스워커 설치완료')
