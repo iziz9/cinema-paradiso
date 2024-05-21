@@ -111,6 +111,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       const contentType = response.headers.get('content-type')
       if (response.status === 404 || (contentType != null && contentType.indexOf('javascript') === -1)) {
         // No service worker found. Probably a different app. Reload the page.
+        console.log('안되고있음')
         navigator.serviceWorker.ready.then((registration) => {
           registration.unregister().then(() => {
             window.location.reload()
