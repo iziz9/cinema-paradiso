@@ -16,5 +16,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/service-worker.ts", "src/serviceWorkerRegistration.ts"]
+  "include": ["src", "src/service-worker.ts", "src/serviceWorkerRegistration.ts", "src/firebase-messaging-sw.ts"]
 }
