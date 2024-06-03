@@ -80,7 +80,7 @@ self.addEventListener('message', (event) => {
 // Any other custom service worker logic can go here.
 
 const movieCache = 'movieCache'
-const contentToCache = ['/static/main.bundle.js', '/static/main.bundle.css', '/static/favicon.ico']
+const contentToCache = ['logo.webp', 'banner.webp']
 
 self.addEventListener('install', (event) => {
   console.log('서비스워커 설치중')
