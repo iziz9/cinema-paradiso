@@ -1,7 +1,4 @@
 /* eslint-disable no-restricted-globals */
-
-import { onMessage } from "firebase/messaging";
-
 self.addEventListener("push", function (e) {
   if (!e.data.json()) return;
 
