@@ -134,12 +134,14 @@ self.addEventListener('fetch', (event) => {
 onBackgroundMessage(messaging, (payload) => {
   console.log('백그라운드 메시지 수신: ', payload)
 
-  // const notificationTitle = payload.data.title
-  // const notificationOptions = {
-  //   body: payload.data.body
-  // }
+  if (!payload.data) return
 
-  // self.registration.showNotification(notificationTitle, {
-  //   body: notificationOptions.body
-  // })
+  const notificationTitle = payload.data.title
+  const notificationOptions = {
+    body: payload.data.body
+  }
+
+  self.registration.showNotification(notificationTitle, {
+    body: notificationOptions.body
+  })
 })

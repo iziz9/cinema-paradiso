@@ -1,5 +1,7 @@
 /* eslint-disable no-restricted-globals */
 
+import { onMessage } from "firebase/messaging";
+
 self.addEventListener("push", function (e) {
   if (!e.data.json()) return;
 
@@ -12,7 +14,6 @@ self.addEventListener("push", function (e) {
     ...resultData,
   };
   console.log("push: ", { resultData, notificationTitle, notificationOptions });
-  alert(resultData.title, resultData.body)
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 

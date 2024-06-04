@@ -15,7 +15,7 @@ const requestPermission = async () => {
   console.log('권한 요청 중')
 
   const permission = await Notification.requestPermission()
-  if (permission !== 'granted') {
+  if (permission === 'denied') {
     console.log('알림 권한이 허용되지 않음')
     return
   }
