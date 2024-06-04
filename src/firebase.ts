@@ -5,7 +5,7 @@ import 'firebase/auth'
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'cinema-paradiso-green.firebaseapp.com',
   projectId: 'cinema-paradiso-green',

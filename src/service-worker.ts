@@ -111,11 +111,13 @@ self.addEventListener('activate', (event) => {
   )
 })
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return // 임시 - post요청 캐싱 가능여부 확인 필요
+
   event.respondWith(
-    caches.match(event.request).then((response) => {
+    caches.match(event.request).then((resource) => {
       //캐시를 새로운 데이터와 비교해 캐싱 리소스가 있으면 이를 반환, 없다면 fetch 진행
       return (
-        response ||
+        resource ||
         fetch(event.request).then(async (response) => {
           const cache = await caches.open(movieCache)
           console.log('서비스워커가 새로운 리소스를 캐싱합니다.' + event.request.url)

@@ -1,7 +1,7 @@
 import 'firebase/auth'
 import firebaseApp from './firebase'
 import { getMessaging } from 'firebase/messaging/sw'
-import { getToken } from 'firebase/messaging'
+import { getToken, onMessage } from 'firebase/messaging'
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
 // https://firebase.google.com/docs/web/setup#config-object
@@ -32,12 +32,11 @@ const requestPermission = async () => {
   } catch (err) {
     console.log('An error occurred while retrieving token. ', err)
   }
+
+  onMessage(messaging, (payload) => {
+    console.log('수신된 메시지 : ', payload)
+    // ...
+  })
 }
 
 requestPermission()
-
-// const messaging = getMessaging()
-// onMessage(messaging, (payload) => {
-//   console.log('Message received. ', payload)
-//   // ...
-// })
