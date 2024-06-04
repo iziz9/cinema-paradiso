@@ -8,11 +8,13 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { clientsClaim } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
 import { StaleWhileRevalidate } from 'workbox-strategies'
+import { messaging } from './firebase-messaging-sw'
 
 declare const self: ServiceWorkerGlobalScope
 
@@ -127,4 +129,17 @@ self.addEventListener('fetch', (event) => {
       )
     })
   )
+})
+
+onBackgroundMessage(messaging, (payload) => {
+  console.log('백그라운드 메시지 수신: ', payload)
+
+  // const notificationTitle = payload.data.title
+  // const notificationOptions = {
+  //   body: payload.data.body
+  // }
+
+  // self.registration.showNotification(notificationTitle, {
+  //   body: notificationOptions.body
+  // })
 })

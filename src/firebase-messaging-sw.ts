@@ -1,6 +1,6 @@
 import 'firebase/auth'
 import firebaseApp from './firebase'
-import { getMessaging } from 'firebase/messaging/sw'
+import { getMessaging, onBackgroundMessage } from 'firebase/messaging/sw'
 import { getToken, onMessage } from 'firebase/messaging'
 // Initialize the Firebase app in the service worker by passing in
 // your app's Firebase config object.
@@ -44,23 +44,3 @@ const requestPermission = async () => {
 }
 
 requestPermission()
-
-// const getRegistration = async () => {
-//   if (!('serviceWorker' in navigator)) return
-
-//   //이미 등록된 정보 가져오기
-//   let registration = await navigator.serviceWorker.getRegistration()
-//   if (!registration) {
-//     //없으면 서비스워커 등록
-//     registration = await navigator.serviceWorker.register('/service-worker.js')
-//   }
-
-//   registration.showNotification('title', {
-//     body: 'some message'
-//   })
-
-//   navigator.serviceWorker.register('service-worker.js').then((reg) => {
-//     return reg.pushManager.getSubscription().then(() => console.log(reg))
-//   })
-// }
-// getRegistration()
