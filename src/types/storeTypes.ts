@@ -36,6 +36,8 @@ export interface IUseUserStore {
   userListId: number
   setUserInfo: (userInfo: User) => void
   setUserListId: (userListId: number) => void
+  userMessagingToken: string
+  setUserMessagingToken: (messagingToken: string) => void
 }
 export interface IUseMovieDetailStore {
   cachedMovieDetail: ICachedMovieDetail

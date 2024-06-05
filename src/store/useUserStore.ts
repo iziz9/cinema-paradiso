@@ -9,14 +9,17 @@ export const useUserStore = create(
       userInfo: {} as User,
       setUserInfo: (userInfo: User) => set({ userInfo }),
       userListId: 0,
-      setUserListId: (userListId: number) => set({ userListId })
+      setUserListId: (userListId: number) => set({ userListId }),
+      userMessagingToken: '',
+      setUserMessagingToken: (userMessagingToken: string) => set({ userMessagingToken })
     }),
     {
       name: 'user-info',
       storage: createJSONStorage(() => localStorage),
       partialize: (state: IUseUserStore) => ({
         userInfo: state.userInfo,
-        userListId: state.userListId
+        userListId: state.userListId,
+        userMessagingToken: state.userMessagingToken
       })
     }
   )
