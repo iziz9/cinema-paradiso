@@ -11,7 +11,7 @@ self.addEventListener("push", function (e) {
     ...resultData,
   };
   console.log("push: ", { resultData, notificationTitle, notificationOptions });
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 

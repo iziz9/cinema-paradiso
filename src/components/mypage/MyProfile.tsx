@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { ProfileIcon } from '../../constants/icon'
-import { useUserStore } from '../../store/useUserStore'
+import { useUserStore } from '../../store/userStore'
 
 const MyProfile = () => {
   const { userInfo } = useUserStore()

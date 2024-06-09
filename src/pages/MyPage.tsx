@@ -16,7 +16,7 @@ import ResultCountStyle from '../components/style/ResultCountStyle'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { getAllPageDatas } from '../utils/getAllPageDatas'
 import { getPersonalList } from '../api/watchListRequest'
-import { useUserStore } from '../store/useUserStore'
+import { useUserStore } from '../store/userStore'
 import HotMoviesList from '../components/common/HotMoviesList'
 
 const FAVORITE_TITLE = '내 취향과 비슷한 영화'

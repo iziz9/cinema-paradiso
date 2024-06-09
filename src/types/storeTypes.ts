@@ -43,3 +43,8 @@ export interface IUseMovieDetailStore {
   cachedMovieDetail: ICachedMovieDetail
   setCachedMovieDetail: (id: string, allDetails: IAllDetails) => void
 }
+
+export interface IUseNotificationStore {
+  permissionStatus: string
+  setPermissionStatus: (status: string) => void
+}

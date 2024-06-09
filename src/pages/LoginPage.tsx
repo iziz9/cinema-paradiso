@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, UserCredential, getAuth, signInWithPopup } from 'firebase/auth'
 import styled from 'styled-components'
-import { useUserStore } from '../store/useUserStore'
+import { useUserStore } from '../store/userStore'
 import { notify } from '../components/layout/Toast'
 import { GoogleIcon } from '../constants/icon'
 import { useEffect } from 'react'

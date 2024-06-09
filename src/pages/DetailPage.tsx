@@ -9,7 +9,7 @@ import { useMovieDetailStore } from '../store/movieDetailStore'
 import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER, recommendListTitle } from '../constants/defaultValues'
 import { notify } from '../components/layout/Toast'
-import { useUserStore } from '../store/useUserStore'
+import { useUserStore } from '../store/userStore'
 import { getMovieIncludingStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
 
 const DetailPage = () => {

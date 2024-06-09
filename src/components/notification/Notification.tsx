@@ -1,7 +1,8 @@
-import React from 'react'
 import styled from 'styled-components'
+import { useNotificationStore } from '../../store/NotificationStore'
 
 const Notification = () => {
+  const { setPermissionStatus } = useNotificationStore()
   return (
     <NotiContainer>
       <NoticeSection>
@@ -18,20 +19,23 @@ const Notification = () => {
         </div>
       </NoticeSection>
       <ConfirmSection>
-        <button>알림 안 받기</button>
-        <button>푸시알림 받기</button>
+        <button onClick={() => setPermissionStatus('denied')}>알림 안 받기</button>
+        <button onClick={() => setPermissionStatus('granted')}>푸시알림 받기</button>
       </ConfirmSection>
     </NotiContainer>
   )
 }
 
 const NotiContainer = styled.div`
+  position: fixed;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   background-color: var(--colors-light);
   width: fit-content;
   border-radius: 16px;
   padding: 16px;
+  margin: 20px;
   box-sizing: border-box;
 `
 const NoticeSection = styled.div`
