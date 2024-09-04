@@ -14,21 +14,19 @@ import { useNotificationStore } from './store/NotificationStore'
 
 export const messaging = getMessaging(firebaseApp)
 
-const requestPermission = async () => {
-  const permission = await Notification.requestPermission()
-  const { setPermissionStatus } = useNotificationStore.getState()
+export const requestPermission = async () => {
+  const { permissionStatus, setPermissionStatus } = useNotificationStore.getState()
   const { setUserMessagingToken } = useUserStore.getState()
-
   setUserMessagingToken('')
 
-  if (permission === 'denied') {
-    setPermissionStatus('denided')
+  if (permissionStatus !== 'granted') {
+    setPermissionStatus('')
     console.log('알림 권한이 허용되지 않음')
     return
   }
 
-  console.log('알림 권한이 허용됨')
-  setPermissionStatus('granted')
+  const permission = await Notification.requestPermission()
+  if (permission === 'granted') setPermissionStatus('granted')
 
   try {
     const token = await getToken(messaging, {
@@ -40,6 +38,8 @@ const requestPermission = async () => {
       setUserMessagingToken(token)
     }
 
+    return permission
+
     // Show permission request UI
   } catch (err) {
     console.log('An error occurred while retrieving token. ', err)
@@ -50,5 +50,3 @@ const requestPermission = async () => {
     // ...
   })
 }
-
-requestPermission()

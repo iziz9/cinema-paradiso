@@ -36,4 +36,4 @@ $ yarn start
 - [x] 자동완성 검색어, 추천 영화 목록 캐싱
 - [x] 마이페이지 관심 장르 차트
 - [x] firebase OAuth
-- [ ] PWA
+- [x] PWA

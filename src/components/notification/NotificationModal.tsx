@@ -1,8 +1,20 @@
 import styled from 'styled-components'
 import { useNotificationStore } from '../../store/NotificationStore'
+import { requestPermission } from '../../firebase-messaging-sw'
 
-const Notification = () => {
-  const { setPermissionStatus } = useNotificationStore()
+const NotificationModal = () => {
+  const { permissionStatus, setPermissionStatus } = useNotificationStore()
+
+  const setPermissionGranted = () => {
+    setPermissionStatus('granted')
+    requestPermission()
+  }
+  const setPermissionDenied = () => {
+    setPermissionStatus('denied')
+  }
+
+  if (permissionStatus !== '') return <></>
+
   return (
     <NotiContainer>
       <NoticeSection>
@@ -19,8 +31,8 @@ const Notification = () => {
         </div>
       </NoticeSection>
       <ConfirmSection>
-        <button onClick={() => setPermissionStatus('denied')}>알림 안 받기</button>
-        <button onClick={() => setPermissionStatus('granted')}>푸시알림 받기</button>
+        <button onClick={() => setPermissionDenied()}>알림 안 받기</button>
+        <button onClick={() => setPermissionGranted()}>푸시알림 받기</button>
       </ConfirmSection>
     </NotiContainer>
   )
@@ -82,4 +94,4 @@ const ConfirmSection = styled.div`
   }
 `
 
-export default Notification
+export default NotificationModal
