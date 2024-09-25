@@ -1,4 +1,0 @@
-# https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Sitemap: https://cinema-paradiso-green.vercel.app/sitemap.xml
-Disallow: /mypage/

@@ -10,13 +10,11 @@ self.addEventListener("push", function (e) {
     tag: resultData.tag,
     ...resultData,
   };
-  console.log("push: ", { resultData, notificationTitle, notificationOptions });
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 
 self.addEventListener("notificationclick", (event) => {
-  console.log("notification click");
   const url = "/";
   event.notification.close();
   event.waitUntil(Clients.openWindow(url));

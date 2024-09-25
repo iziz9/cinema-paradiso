@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import PATH from '../../routes/routePath'
+import logo from '../../assets/logo.webp'
 
 const Logo = () => {
   const navigate = useNavigate()
   return (
     <LogoContainer onClick={() => navigate(PATH.MAIN)}>
-      <img src="/logo.webp" alt="logo" />
+      <img src={logo} alt="logo" />
     </LogoContainer>
   )
 }

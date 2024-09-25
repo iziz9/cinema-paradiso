@@ -85,19 +85,16 @@ const movieCache = 'movieCache'
 const contentToCache = ['logo.webp', 'banner.webp']
 
 self.addEventListener('install', (event) => {
-  console.log('서비스워커 설치중')
   event.waitUntil(
     caches.open(movieCache).then((cache) => {
-      console.log('서비스워커 캐싱 : contentToCache')
       return cache.addAll(contentToCache)
     })
   )
 })
-self.addEventListener('waiting', (event) => {
-  console.log('서비스워커 설치완료')
-})
+// self.addEventListener('waiting', (event) => {
+//   console.log('서비스워커 설치완료')
+// })
 self.addEventListener('activate', (event) => {
-  console.log('서비스워커 활성화')
   // 불필요한 캐시 삭제
   event.waitUntil(
     caches.keys().then(function (keyList) {
@@ -132,8 +129,6 @@ self.addEventListener('fetch', (event) => {
 })
 
 onBackgroundMessage(messaging, (payload) => {
-  console.log('백그라운드 메시지 수신: ', payload)
-
   if (!payload.data) return
 
   const notificationTitle = payload.data.title

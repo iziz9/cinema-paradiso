@@ -21,7 +21,6 @@ export const requestPermission = async () => {
 
   if (permissionStatus !== 'granted') {
     setPermissionStatus('')
-    console.log('알림 권한이 허용되지 않음')
     return
   }
 
@@ -34,7 +33,6 @@ export const requestPermission = async () => {
     })
     // Send the token to your server and update the UI if necessary
     if (token) {
-      console.log('토큰: ', token)
       setUserMessagingToken(token)
     }
 
@@ -42,11 +40,6 @@ export const requestPermission = async () => {
 
     // Show permission request UI
   } catch (err) {
-    console.log('An error occurred while retrieving token. ', err)
+    console.error('An error occurred while retrieving token. ', err)
   }
-
-  onMessage(messaging, (payload) => {
-    console.log('수신된 메시지 : ', payload)
-    // ...
-  })
 }

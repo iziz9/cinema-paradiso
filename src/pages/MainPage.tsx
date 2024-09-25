@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import HotMoviesList from '../components/common/HotMoviesList'
+import banner from '../assets/banner.webp'
 
 const MainPage = () => {
   return (
     <MainContainer>
       <div className="banner">
-        <img src="/banner.webp" alt="banner" />
+        <img src={banner} alt="banner" />
       </div>
       <HotMoviesList />
     </MainContainer>

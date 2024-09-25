@@ -25,7 +25,6 @@ type Config = {
 
 export function register(config?: Config) {
   if ('serviceWorker' in navigator) {
-    console.log('서비스워커 등록')
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href)
     if (publicUrl.origin !== window.location.origin) {
@@ -120,7 +119,6 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
         })
       } else {
         // Service worker found. Proceed as normal.
-        console.log('서비스워커 동작')
         registerValidSW(swUrl, config)
       }
     })
