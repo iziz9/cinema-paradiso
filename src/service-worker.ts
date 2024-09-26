@@ -1,19 +1,12 @@
 /// <reference lib="webworker" />
 /* eslint-disable no-restricted-globals */
 
-// This service worker can be customized!
-// See https://developers.google.com/web/tools/workbox/modules
-// for the list of available Workbox modules, or add any other
-// code you'd like.
-// You can also remove this file if you'd prefer not to use a
-// service worker, and the Workbox build step will be skipped.
-
 import { onBackgroundMessage } from 'firebase/messaging/sw'
 import { clientsClaim } from 'workbox-core'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
-import { StaleWhileRevalidate } from 'workbox-strategies'
+import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { messaging } from './firebase-messaging-sw'
 
 declare const self: ServiceWorkerGlobalScope
@@ -71,6 +64,34 @@ registerRoute(
   })
 )
 
+//이미지 캐싱
+registerRoute(
+  ({ request }) => request.destination === 'image',
+  new CacheFirst({
+    cacheName: 'images',
+    plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })]
+  })
+)
+
+// CSS, JS 파일 캐싱
+registerRoute(
+  ({ request }) => request.destination === 'script' || request.destination === 'style',
+  new StaleWhileRevalidate({
+    cacheName: 'static-resources'
+  })
+)
+
+// fetch requests 캐싱
+registerRoute(
+  ({ request }) => request.mode === 'cors' || request.mode === 'no-cors',
+  new NetworkFirst({
+    //최신 데이터를 우선 제공, 네트워크 연결이 없을 때 캐싱데이터 제공
+    cacheName: 'api-responses',
+    networkTimeoutSeconds: 10,
+    plugins: [new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 5 * 60 })]
+  })
+)
+
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
@@ -78,8 +99,6 @@ self.addEventListener('message', (event) => {
     self.skipWaiting()
   }
 })
-
-// Any other custom service worker logic can go here.
 
 const movieCache = 'movieCache'
 const contentToCache = ['logo.webp', 'banner.webp']
@@ -94,10 +113,11 @@ self.addEventListener('install', (event) => {
 // self.addEventListener('waiting', (event) => {
 //   console.log('서비스워커 설치완료')
 // })
+
 self.addEventListener('activate', (event) => {
   // 불필요한 캐시 삭제
   event.waitUntil(
-    caches.keys().then(function (keyList) {
+    caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
           if (movieCache.indexOf(key) === -1) {
@@ -109,22 +129,39 @@ self.addEventListener('activate', (event) => {
     })
   )
 })
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return // 임시 - post요청 캐싱 가능여부 확인 필요
 
+// 네트워크 오프라인일 때 캐싱된 데이터 제공
+self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((resource) => {
-      //캐시를 새로운 데이터와 비교해 캐싱 리소스가 있으면 이를 반환, 없다면 fetch 진행
-      return (
-        resource ||
-        fetch(event.request).then(async (response) => {
-          const cache = await caches.open(movieCache)
-          console.log('서비스워커가 새로운 리소스를 캐싱합니다.' + event.request.url)
-          cache.put(event.request, response.clone()) //응답 저장
-          return response
+    //네트워크 우선
+    fetch(event.request)
+      .then(async (response) => {
+        const responseClone = response.clone()
+        const cache = await caches.open(movieCache) //응답 저장
+        console.log('서비스워커가 새로운 리소스를 캐싱합니다.' + event.request.url)
+        cache.put(event.request, responseClone)
+        return response
+      })
+      .catch(async () => {
+        const response = await caches.match(event.request)
+        if (response) return response
+        if (event.request.mode === 'navigate') {
+          // 캐시된 응답이 없고 네비게이션 요청인 경우
+          return caches.match('index.html').then((indexResponse) => {
+            return (
+              indexResponse ||
+              new Response('오프라인페이지를 사용할 수 없습니다.', {
+                status: 404,
+                statusText: 'Not Found'
+              })
+            )
+          })
+        }
+        return new Response('오프라인 상태입니다.', {
+          status: 503,
+          statusText: '서비스를 사용할 수 없습니다.'
         })
-      )
-    })
+      })
   )
 })
 
