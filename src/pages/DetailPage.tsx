@@ -11,7 +11,6 @@ import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER, recommendListT
 import { notify } from '../components/layout/Toast'
 import { useUserStore } from '../store/userStore'
 import { getMovieIncludingStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
-// import noImage from '../assets/no_image.webp'
 
 const DetailPage = () => {
   const params = useParams()
@@ -33,27 +32,26 @@ const DetailPage = () => {
       if (!cachedMovieDetail[id]) return false
       return cachedMovieDetail[id]
     }
+
     const requestGetMovieDetail = async (id: string) => {
       const cachedData = getCachedData(id)
       if (cachedData) {
         setMovieDetails(cachedData.details)
         setMovieCredits(cachedData.credits)
         setSimilarMovies(cachedData.similar)
+        setIsLoading(false)
       } else {
-        try {
-          Promise.all([getMovieDetail(id), getMovieCredits(id), getMovieSimilar(id)]).then((results) => {
-            const details = results[0]
-            const credits = results[1]
-            const similar = results[2]
-            setMovieDetails(details)
-            setMovieCredits(credits)
-            setSimilarMovies(similar)
-            const allDetails = { details, credits, similar }
-            if (details && credits && similar) setCachedMovieDetail(id, allDetails)
-          })
-        } catch (err) {
-          notify({ type: 'error', text: '상세 정보를 불러올 수 없습니다.' })
-        }
+        Promise.all([getMovieDetail(id), getMovieCredits(id), getMovieSimilar(id)]).then((results) => {
+          const details = results[0]
+          const credits = results[1]
+          const similar = results[2]
+          setMovieDetails(details)
+          setMovieCredits(credits)
+          setSimilarMovies(similar)
+          const allDetails = { details, credits, similar }
+          if (details && credits && similar) setCachedMovieDetail(id, allDetails)
+          setIsLoading(false)
+        })
       }
     }
 
@@ -61,11 +59,9 @@ const DetailPage = () => {
       const watchlistRes = await getMovieIncludingStatus(userListId, +movieId)
       setInMyWatchList(watchlistRes.item_present)
     }
-    if (userInfo.uid) requestGetMyAccountState(movieId)
 
-    setIsLoading(true)
+    if (userInfo.uid) requestGetMyAccountState(movieId)
     requestGetMovieDetail(movieId)
-    setIsLoading(false)
 
     //eslint-disable-next-line
   }, [params])
@@ -102,6 +98,17 @@ const DetailPage = () => {
     }
   }
 
+  if (!isLoading && !movieDetails && !movieCredits) {
+    return (
+      <Container>
+        <div className="no-result">
+          <span>영화 정보를 불러올 수 없습니다.</span>
+          <span>인터넷 연결 상태를 확인해주세요.</span>
+        </div>
+      </Container>
+    )
+  }
+
   return (
     <Container>
       {movieDetails && movieCredits && (
@@ -125,7 +132,6 @@ const DetailPage = () => {
                 {movieDetails.poster_path ? (
                   <img src={DETAIL_POSTER_BASE_URL + movieDetails.poster_path} alt={movieDetails.title} />
                 ) : (
-                  // <img src={noImage} alt="이미지 없음" />
                   <img src={'/no_image.webp'} alt="이미지 없음" />
                 )}
               </div>
@@ -194,6 +200,20 @@ const DetailPage = () => {
 
 const Container = styled.main`
   position: relative;
+
+  .no-result {
+    width: 100%;
+    margin: 150px auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    span {
+      font-size: 17px;
+      color: #ddd;
+    }
+  }
 `
 
 const DetailSection = styled.section<{ $backdrop?: string }>`

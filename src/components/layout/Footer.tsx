@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import InnerLayout from '../style/InnerLayout'
 import { GithubIcon } from '../../constants/icon'
-// import logo from '../../assets/logo.webp'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -9,7 +8,6 @@ const Footer = () => {
     <FooterContainer>
       <InnerLayout>
         <div className="logo">
-          {/* <img src={logo} alt="logo" /> */}
           <img src={'/logo.webp'} alt="logo" />
         </div>
         <div className="copyright">

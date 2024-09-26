@@ -83,6 +83,6 @@ export const getMovieIncludingStatus = async (list_id: number, movie_id: number)
       return res.data
     })
     .catch((err) => {
-      notify({ type: 'error', text: '관심 정보를 불러올 수 없습니다.' })
+      notify({ type: 'error', text: '관심 등록 정보를 불러올 수 없습니다.' })
     })
 }
