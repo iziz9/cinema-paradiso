@@ -53,7 +53,7 @@ export const getMovieCredits = async (movieId: string) => {
       return res.data
     })
     .catch((err: object) => {
-      return notify({ type: 'error', text: '영화 정보를 가져올 수 없습니다.' })
+      return notify({ type: 'error', text: '영화 정보를 불러올 수 없습니다.' })
     })
 }
 export const getMovieSimilar = async (movieId: string) => {
@@ -65,7 +65,7 @@ export const getMovieSimilar = async (movieId: string) => {
       return res.data.results
     })
     .catch((err: object) => {
-      return alert(err)
+      return notify({ type: 'error', text: '비슷한 영화 정보를 불러올 수 없습니다.' })
     })
 }
 export const getGenresMovieList = async (with_genres: number) => {
@@ -77,6 +77,6 @@ export const getGenresMovieList = async (with_genres: number) => {
       return res.data.results
     })
     .catch((err: object) => {
-      return alert(err)
+      return notify({ type: 'error', text: '추천 영화 정보를 불러올 수 없습니다.' })
     })
 }

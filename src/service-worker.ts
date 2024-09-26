@@ -69,13 +69,14 @@ registerRoute(
   ({ request }) => request.destination === 'image',
   new CacheFirst({
     cacheName: 'images',
-    plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })]
+    plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 7 * 24 * 60 * 60 })] //7일
   })
 )
 
-// CSS, JS 파일 캐싱
+// CSS, JS, 이미지 파일 캐싱
 registerRoute(
-  ({ request }) => request.destination === 'script' || request.destination === 'style',
+  ({ request }) =>
+    request.destination === 'script' || request.destination === 'style' || request.destination === 'image',
   new StaleWhileRevalidate({
     cacheName: 'static-resources'
   })
@@ -100,19 +101,24 @@ self.addEventListener('message', (event) => {
   }
 })
 
-const movieCache = 'movieCache'
-const contentToCache = ['logo.webp', 'banner.webp']
+const assetsCache = 'assetsCache'
+const contentToCache = [
+  'logo.webp',
+  'banner.webp',
+  'no-image.webp',
+  'login_img.webp',
+  'push_icon.webp',
+  'skeleton_image.webp'
+]
 
 self.addEventListener('install', (event) => {
+  // 지정된 에셋 캐싱
   event.waitUntil(
-    caches.open(movieCache).then((cache) => {
+    caches.open(assetsCache).then((cache) => {
       return cache.addAll(contentToCache)
     })
   )
 })
-// self.addEventListener('waiting', (event) => {
-//   console.log('서비스워커 설치완료')
-// })
 
 self.addEventListener('activate', (event) => {
   // 불필요한 캐시 삭제
@@ -120,7 +126,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
-          if (movieCache.indexOf(key) === -1) {
+          if (assetsCache.indexOf(key) === -1) {
             return caches.delete(key)
           }
           return []
@@ -137,9 +143,9 @@ self.addEventListener('fetch', (event) => {
     fetch(event.request)
       .then(async (response) => {
         const responseClone = response.clone()
-        const cache = await caches.open(movieCache) //응답 저장
+        const cache = await caches.open(assetsCache)
         console.log('서비스워커가 새로운 리소스를 캐싱합니다.' + event.request.url)
-        cache.put(event.request, responseClone)
+        cache.put(event.request, responseClone) //응답 저장
         return response
       })
       .catch(async () => {

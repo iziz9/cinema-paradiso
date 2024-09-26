@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { IInfinityScrollProps } from '../types/hooksTypes'
+import { notify } from '../components/layout/Toast'
 
 const useInfinityScroll = ({
   request,
@@ -37,7 +38,7 @@ const useInfinityScroll = ({
         setTotalResults({ totalCount: listData.total_results, totalPages: listData.total_pages })
         listData.total_pages === page ? setLastPage(true) : setLastPage(false)
       } catch (error) {
-        alert(error)
+        notify({ type: 'error', text: '정보를 불러올 수 없습니다.' })
       } finally {
         setIsLoading(false)
       }

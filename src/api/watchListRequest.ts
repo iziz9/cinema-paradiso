@@ -83,6 +83,6 @@ export const getMovieIncludingStatus = async (list_id: number, movie_id: number)
       return res.data
     })
     .catch((err) => {
-      return alert('관심 정보 확인에 실패했습니다.')
+      notify({ type: 'error', text: '관심 정보를 불러올 수 없습니다.' })
     })
 }
