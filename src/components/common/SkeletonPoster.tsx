@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import skeleton from '../../assets/skeleton_image.webp'
+// import skeleton from '../../assets/skeleton_image.webp'
 
 const SkeletonPoster = () => {
   return (
     <SkeletonContainer>
-      <img src={skeleton} alt="로딩중" />
+      {/* <img src={skeleton} alt="로딩중" /> */}
+      <img src={'/skeleton_image.webp'} alt="로딩중" />
     </SkeletonContainer>
   )
 }

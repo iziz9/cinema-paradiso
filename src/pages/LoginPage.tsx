@@ -6,7 +6,7 @@ import { GoogleIcon } from '../constants/icon'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PATH from '../routes/routePath'
-import loginImage from '../assets/login_img.webp'
+// import loginImage from '../assets/login_img.webp'
 
 const LoginPage = () => {
   const provider = new GoogleAuthProvider()
@@ -30,7 +30,8 @@ const LoginPage = () => {
   return (
     <LoginContainer>
       <Content>
-        <LoginImg src={loginImage} alt="로그인 이미지" />
+        {/* <LoginImg src={loginImage} alt="로그인 이미지" /> */}
+        <LoginImg src={'/login_img.webp'} alt="로그인 이미지" />
         <Center>
           <LoginButton onClick={handleAuth}>
             <GoogleIcon />

@@ -11,7 +11,7 @@ import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER, recommendListT
 import { notify } from '../components/layout/Toast'
 import { useUserStore } from '../store/userStore'
 import { getMovieIncludingStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
-import noImage from '../assets/no_image.webp'
+// import noImage from '../assets/no_image.webp'
 
 const DetailPage = () => {
   const params = useParams()
@@ -125,7 +125,8 @@ const DetailPage = () => {
                 {movieDetails.poster_path ? (
                   <img src={DETAIL_POSTER_BASE_URL + movieDetails.poster_path} alt={movieDetails.title} />
                 ) : (
-                  <img src={noImage} alt="이미지 없음" />
+                  // <img src={noImage} alt="이미지 없음" />
+                  <img src={'/no_image.webp'} alt="이미지 없음" />
                 )}
               </div>
               <div className="desc">

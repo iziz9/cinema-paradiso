@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import OverlayPoster from './OverlayPoster'
 import { POSTER_BASE_URL } from '../../constants/defaultValues'
 import { IMovieItemProps } from '../../types/types'
-import noImage from '../../assets/no_image.webp'
+// import noImage from '../../assets/no_image.webp'
 
 const MovieItem = ({ movieInfo, onClick }: IMovieItemProps) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
@@ -31,7 +31,8 @@ const MovieItem = ({ movieInfo, onClick }: IMovieItemProps) => {
         </>
       ) : (
         <>
-          <img src={noImage} alt="이미지 없음" />
+          {/* <img src={noImage} alt="이미지 없음" /> */}
+          <img src={'/no_image.webp'} alt="이미지 없음" />
           <OverlayPoster
             title={movieInfo.title}
             released={movieInfo.release_date}

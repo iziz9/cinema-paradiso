@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useNotificationStore } from '../../store/NotificationStore'
 import { requestPermission } from '../../firebase-messaging-sw'
-import pushIcon from '../../assets/push_icon.webp'
+// import pushIcon from '../../assets/push_icon.webp'
 
 const NotificationModal = () => {
   const { permissionStatus, setPermissionStatus } = useNotificationStore()
@@ -20,7 +20,8 @@ const NotificationModal = () => {
     <NotiContainer>
       <NoticeSection>
         <div>
-          <img src={pushIcon} alt="웹푸시 아이콘" />
+          {/* <img src={pushIcon} alt="웹푸시 아이콘" /> */}
+          <img src={'/push_icon.webp'} alt="웹푸시 아이콘" />
         </div>
         <div>
           <p>알림을 허용하고 이런 알림을 받아보세요.</p>
