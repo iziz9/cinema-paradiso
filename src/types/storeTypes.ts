@@ -22,13 +22,19 @@ export interface IUseAutoCompleteStore {
   checkCachedAutoComplete: (searchValue: string) => IMovieInfo[] | boolean
   deleteCachedAutoComplete: (searchValue: string) => void
 }
+
 export interface IAllDetails {
-  details: IMovieDetail
-  credits: IMovieCredits
-  similar: IMovieInfo[]
+  details?: IMovieDetail
+  credits?: IMovieCredits
+  similar?: IMovieInfo[]
 }
+
 export interface ICachedMovieDetail {
-  [key: string]: IAllDetails
+  [key: string]: {
+    details?: IMovieDetail
+    credits?: IMovieCredits
+    similar?: IMovieInfo[]
+  }
 }
 
 export interface IUseUserStore {
@@ -41,7 +47,7 @@ export interface IUseUserStore {
 }
 export interface IUseMovieDetailStore {
   cachedMovieDetail: ICachedMovieDetail
-  setCachedMovieDetail: (id: string, allDetails: IAllDetails) => void
+  setCachedMovieDetail: (id: string, category: string, details: IAllDetails) => void
 }
 
 export interface IUseNotificationStore {

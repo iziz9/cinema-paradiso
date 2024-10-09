@@ -3,14 +3,14 @@ import styled from 'styled-components'
 import { BookmarkBlankIcon, BookmarkFillIcon } from '../constants/icon'
 import RecommendCarousel from '../components/carousel/RecommendCarousel'
 import { useParams } from 'react-router-dom'
-import { getMovieCredits, getMovieDetail, getMovieSimilar } from '../api/movieRequest'
-import { IMovieCredits, IMovieDetail, IMovieInfo } from '../types/types'
+import { getMovieCredits, getMovieDetail } from '../api/movieRequest'
+import { IMovieCredits, IMovieDetail } from '../types/types'
 import { useMovieDetailStore } from '../store/movieDetailStore'
-import { useRecommendMovieStore } from '../store/recommendMovieStore'
-import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER, recommendListTitle } from '../constants/defaultValues'
+import { BACKGROUND_URL, DETAIL_POSTER_BASE_URL, MAX_CAST_NUMBER } from '../constants/defaultValues'
 import { notify } from '../components/layout/Toast'
 import { useUserStore } from '../store/userStore'
 import { getMovieIncludingStatus, postAddMovie, postRemoveMovie } from '../api/watchListRequest'
+import Loading from '../components/common/Loading'
 
 const DetailPage = () => {
   const params = useParams()
@@ -18,10 +18,8 @@ const DetailPage = () => {
   const [inMyWatchList, setInMyWatchList] = useState<boolean>(false)
   const [movieDetails, setMovieDetails] = useState<IMovieDetail>()
   const [movieCredits, setMovieCredits] = useState<IMovieCredits>()
-  const [similarMovies, setSimilarMovies] = useState<IMovieInfo[]>([])
   const [directorName, setDirectorName] = useState<string>('')
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
-  const { cachedRecommendMovie } = useRecommendMovieStore()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { userInfo, userListId } = useUserStore()
 
@@ -38,18 +36,15 @@ const DetailPage = () => {
       if (cachedData) {
         setMovieDetails(cachedData.details)
         setMovieCredits(cachedData.credits)
-        setSimilarMovies(cachedData.similar)
         setIsLoading(false)
       } else {
-        Promise.all([getMovieDetail(id), getMovieCredits(id), getMovieSimilar(id)]).then((results) => {
+        Promise.all([getMovieDetail(id), getMovieCredits(id)]).then((results) => {
           const details = results[0]
           const credits = results[1]
-          const similar = results[2]
           setMovieDetails(details)
           setMovieCredits(credits)
-          setSimilarMovies(similar)
-          const allDetails = { details, credits, similar }
-          if (details && credits && similar) setCachedMovieDetail(id, allDetails)
+          if (details) setCachedMovieDetail(id, 'details', details)
+          if (credits) setCachedMovieDetail(id, 'credits', credits)
           setIsLoading(false)
         })
       }
@@ -96,6 +91,16 @@ const DetailPage = () => {
     if (res.success) {
       setInMyWatchList(false)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <Container>
+        <div className="no-result">
+          <Loading />
+        </div>
+      </Container>
+    )
   }
 
   if (!isLoading && !movieDetails && !movieCredits) {
@@ -175,23 +180,9 @@ const DetailPage = () => {
               {movieDetails.overview || '줄거리 미제공'}
             </DetailOverview>
           </DetailSection>
-          {similarMovies?.length ? (
-            <RelatedSection>
-              <RecommendCarousel
-                title={`<${movieDetails.title}> 비슷한 영화`}
-                movieList={similarMovies}
-                isLoading={isLoading}
-              />
-            </RelatedSection>
-          ) : (
-            <RelatedSection>
-              <RecommendCarousel
-                title={recommendListTitle.trending}
-                movieList={cachedRecommendMovie[recommendListTitle.trending]}
-                isLoading={isLoading}
-              />
-            </RelatedSection>
-          )}
+          <RelatedSection>
+            <RecommendCarousel type="similar" relatedText={`<${movieDetails.title}>`} currentMovieId={movieId} />
+          </RelatedSection>
         </>
       )}
     </Container>
