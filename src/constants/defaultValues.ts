@@ -46,7 +46,8 @@ export type genresIdType =
 export const recommendListTitle = {
   trending: '지금 가장 인기있는 영화',
   topRated: '관객 평점이 가장 높은 영화',
-  sf: 'SF 추천 영화'
+  similar: ' 비슷한 영화',
+  genre: '내 취향과 비슷한 영화'
 }
 export const DETAIL_POSTER_BASE_URL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
 export const BACKGROUND_URL = 'https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces'

@@ -14,6 +14,30 @@ const SkeletonContainer = styled.div`
   height: 100%;
   aspect-ratio: 1/1.3;
 
+  /* animation: fadeoutloading 1.5s;
+  animation-fill-mode: forwards;
+
+  @keyframes fadeoutloading {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  } */
+
+  animation: fadeinloading 1.5s;
+  animation-fill-mode: forwards;
+
+  @keyframes fadeinloading {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   img {
     position: relative;
     width: 90%;

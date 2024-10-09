@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import Chart from '../components/chart/Chart'
 import styled from 'styled-components'
 import RecommendCarousel from '../components/carousel/RecommendCarousel'
-import { RECOMMEND_LIST_DEFAULT } from '../constants/defaultValues'
-import { getGenresMovieList } from '../api/movieRequest'
 import MyProfile from '../components/mypage/MyProfile'
 import { IMovieInfo, ITotalResults } from '../types/types'
 import useInfinityScroll from '../hooks/useInfinityScroll'
@@ -13,17 +11,13 @@ import { useNavigate } from 'react-router-dom'
 import MovieListStyle from '../components/style/MovieListStyle'
 import MovieItemStyle from '../components/style/MovieItemStyle'
 import ResultCountStyle from '../components/style/ResultCountStyle'
-import { useRecommendMovieStore } from '../store/recommendMovieStore'
 import { getAllPageDatas } from '../utils/getAllPageDatas'
 import { getPersonalList } from '../api/watchListRequest'
 import { useUserStore } from '../store/userStore'
-import HotMoviesList from '../components/common/HotMoviesList'
 
-const FAVORITE_TITLE = '내 취향과 비슷한 영화'
 const MyPage = () => {
   const navigate = useNavigate()
   const [favoriteGenreCode, setFavoriteGenreCode] = useState<number>(0)
-  const [favoriteGenreMovies, setFavoriteGenreMovies] = useState(RECOMMEND_LIST_DEFAULT)
   const [page, setPage] = useState<number>(1)
   const [totalResults, setTotalResults] = useState<ITotalResults>({
     totalCount: 0,
@@ -31,7 +25,6 @@ const MyPage = () => {
   })
   const [myWatchList, setMyWatchList] = useState<IMovieInfo[]>([])
   const [allMyWatchList, setAllMyWatchList] = useState<IMovieInfo[]>([])
-  const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
   const { userListId } = useUserStore()
   const { isLoading, getListData, ref } = useInfinityScroll({
     request: getPersonalList,
@@ -60,30 +53,8 @@ const MyPage = () => {
 
   useEffect(() => {
     if (page === 1 && myWatchList.length) setAllMyWatchList(myWatchList)
-    const getCachedList = (title: string) => {
-      if (!cachedRecommendMovie[title]) return false
-      return cachedRecommendMovie[title]
-    }
-    const getRecommendLists = async (
-      title: string,
-      requestGetList: any,
-      setRecommendList: React.Dispatch<React.SetStateAction<IMovieInfo[]>>,
-      favoriteGenreCode: number
-    ) => {
-      const cachedList = getCachedList(title)
-      if (cachedList) {
-        setRecommendList(cachedList)
-      } else {
-        const requestRes = await requestGetList(favoriteGenreCode)
-        setRecommendList(requestRes)
-        setCachedRecommendMovie(title, requestRes)
-      }
-    }
-    if (myWatchList.length >= 1 && favoriteGenreCode !== 0) {
-      getRecommendLists(FAVORITE_TITLE, getGenresMovieList, setFavoriteGenreMovies, favoriteGenreCode)
-    }
-    //eslint-disable-next-line
-  }, [favoriteGenreCode, myWatchList])
+    //확인필요
+  }, [favoriteGenreCode, myWatchList, page])
 
   if (totalResults.totalCount < 1)
     return (
@@ -93,7 +64,6 @@ const MyPage = () => {
           <p>좋아하는 영화, 보고싶은 영화를 관심 등록 해 보세요!</p>
           <p>취향에 맞는 영화를 추천받을 수 있어요.</p>
         </NoResults>
-        <HotMoviesList />
       </MyPageContainer>
     )
   else
@@ -101,7 +71,10 @@ const MyPage = () => {
       <MyPageContainer>
         <MyProfile />
         <Chart watchList={allMyWatchList} totalResults={totalResults} setFavoriteGenreCode={setFavoriteGenreCode} />
-        <RecommendCarousel title={'내 취향과 비슷한 영화'} movieList={favoriteGenreMovies} isLoading={isLoading} />
+        {myWatchList.length >= 1 && favoriteGenreCode !== 0 && (
+          <RecommendCarousel type={'genre'} currentMovieId={favoriteGenreCode + ''} />
+        )}
+
         <ResultCountStyle>나의 관심 목록 ({totalResults.totalCount})</ResultCountStyle>
         <MovieListStyle>
           {myWatchList?.map((movie) => (

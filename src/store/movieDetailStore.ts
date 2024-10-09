@@ -5,8 +5,16 @@ export const useMovieDetailStore = create(
   persist(
     (set, get) => ({
       cachedMovieDetail: {},
-      setCachedMovieDetail: (id, allDetails) => {
-        set({ cachedMovieDetail: { ...get().cachedMovieDetail, [id]: allDetails } })
+      setCachedMovieDetail: (id, category, details) => {
+        set((state) => ({
+          cachedMovieDetail: {
+            ...get().cachedMovieDetail,
+            [id]: {
+              ...state.cachedMovieDetail[id],
+              [category]: details
+            }
+          }
+        }))
       }
     }),
     {

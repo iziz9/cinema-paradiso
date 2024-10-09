@@ -33,6 +33,7 @@ const Chart = ({
     const sortedChartData = Object.entries(chartData).sort((a, b) => b[1] - a[1])
     sortedChartData.forEach((genre, index) => {
       if (index === 0) {
+        console.log(genre[0])
         setFavoriteGenreCode(+genre[0])
       }
       if (index < 7) {

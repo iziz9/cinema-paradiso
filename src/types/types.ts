@@ -32,9 +32,10 @@ export interface IMovieItemProps {
   onClick: () => void
 }
 export interface IRecommendCarousel {
-  title: string
-  movieList: IMovieInfo[]
-  isLoading: boolean
+  type: 'topRated' | 'trending' | 'similar' | 'genre'
+  requestList?: (movieId?: string) => Promise<any>
+  currentMovieId?: string
+  relatedText?: string
 }
 export interface IDropDownBox {
   list: IMovieInfo[]
@@ -170,3 +171,5 @@ export interface IGetAllPageDatas {
   listId: number
   setAllDataList: (value: React.SetStateAction<any>) => void
 }
+
+export type IRecommendTitle = 'topRated' | 'trending'

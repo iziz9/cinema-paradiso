@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import HotMoviesList from '../components/common/HotMoviesList'
+import RecommendCarousel from '../components/carousel/RecommendCarousel'
 
 const MainPage = () => {
   return (
@@ -7,7 +7,8 @@ const MainPage = () => {
       <div className="banner">
         <img src={'/banner.webp'} alt="banner" />
       </div>
-      <HotMoviesList />
+      <RecommendCarousel type="trending" />
+      <RecommendCarousel type="topRated" />
     </MainContainer>
   )
 }
