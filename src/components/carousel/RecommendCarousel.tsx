@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import styled from 'styled-components'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import SkeletonCarousel from './SkeletonCarousel'
 import { IRecommendCarousel } from '../../types/types'
 import { recommendListTitle } from '../../constants/defaultValues'
 import CarouselSlider from './CarouselSlider'
@@ -14,9 +13,7 @@ const RecommendCarousel = ({ type, relatedText, currentMovieId }: IRecommendCaro
         {relatedText || ''}
         {recommendListTitle[type]}
       </h3>
-      <Suspense fallback={<SkeletonCarousel />}>
-        <CarouselSlider type={type} currentMovieId={currentMovieId} />
-      </Suspense>
+      <CarouselSlider type={type} currentMovieId={currentMovieId} />
     </RecommendSection>
   )
 }
