@@ -89,7 +89,7 @@ const ConfirmSection = styled.div`
     background-color: var(--colors-gray);
   }
   button:last-child {
-    background-color: var(--colors-green);
+    background-color: #135613;
     color: var(--colors-light);
   }
 `

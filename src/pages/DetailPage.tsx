@@ -41,10 +41,14 @@ const DetailPage = () => {
         Promise.all([getMovieDetail(id), getMovieCredits(id)]).then((results) => {
           const details = results[0]
           const credits = results[1]
-          setMovieDetails(details)
-          setMovieCredits(credits)
-          if (details) setCachedMovieDetail(id, 'details', details)
-          if (credits) setCachedMovieDetail(id, 'credits', credits)
+          if (details) {
+            setMovieDetails(details)
+            setCachedMovieDetail(id, 'details', details)
+          }
+          if (credits) {
+            setMovieCredits(credits)
+            setCachedMovieDetail(id, 'credits', credits)
+          }
           setIsLoading(false)
         })
       }

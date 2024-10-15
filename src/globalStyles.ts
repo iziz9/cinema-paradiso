@@ -91,9 +91,6 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100%;
     color: var(--colors-light);
 
-  //toastify
-  --toastify-color-light: var(--colors-dark);
-  --toastify-color-dark: #121212;
 
   /* 기본 적용 스타일 바꾸기 */
   --toastify-toast-width: 320px;

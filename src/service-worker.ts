@@ -23,6 +23,7 @@ precacheAndRoute(self.__WB_MANIFEST)
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
 const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$')
+
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
@@ -103,6 +104,8 @@ self.addEventListener('message', (event) => {
 
 const assetsCache = 'assetsCache'
 const contentToCache = [
+  '/index.html',
+  '/',
   'logo.webp',
   'banner.webp',
   'no-image.webp',
@@ -138,6 +141,8 @@ self.addEventListener('activate', (event) => {
 
 // 네트워크 오프라인일 때 캐싱된 데이터 제공
 self.addEventListener('fetch', (event) => {
+  if (event.request.url.startsWith('chrome-extension')) return
+
   event.respondWith(
     //네트워크 우선
     fetch(event.request)

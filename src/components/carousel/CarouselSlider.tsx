@@ -86,7 +86,7 @@ const CarouselSlider = ({ type, currentMovieId }: ICarouselSliderProps) => {
   const setImgFadeTime = () => {
     setTimeout(() => {
       setIsLoading(false)
-    }, 800)
+    }, 600)
   }
 
   return (
