@@ -11,6 +11,7 @@ import { getGenresMovieList, getMovieSimilar, getTopRatedMovieList, getTrendingM
 import MovieItem from '../common/MovieItem'
 import styled from 'styled-components'
 import SkeletonCarousel from './SkeletonCarousel'
+import useImageLoading from '../../hooks/useImageLoading'
 
 const requestList = {
   trending: getTrendingMovieList,
@@ -27,8 +28,8 @@ interface ICarouselSliderProps {
 const CarouselSlider = ({ type, currentMovieId }: ICarouselSliderProps) => {
   const { cachedRecommendMovie, setCachedRecommendMovie } = useRecommendMovieStore()
   const { cachedMovieDetail, setCachedMovieDetail } = useMovieDetailStore()
+  const { setIsImgLoading, isAllImgLoaded, setIsAllImgLoaded } = useImageLoading()
   const [movieList, setMovieList] = useState<IMovieInfo[]>(RECOMMEND_LIST_DEFAULT)
-  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -45,7 +46,8 @@ const CarouselSlider = ({ type, currentMovieId }: ICarouselSliderProps) => {
       try {
         const requestRes = await getMovieList(params || null)
         setMovieList(requestRes)
-        setImgFadeTime()
+        !requestRes.length && setIsAllImgLoaded(true)
+
         if (!params) return
         if (type === 'genre') setCachedRecommendMovie(type, requestRes)
         else setCachedMovieDetail(params, type, requestRes)
@@ -57,7 +59,6 @@ const CarouselSlider = ({ type, currentMovieId }: ICarouselSliderProps) => {
           const mockedList = getMockedList(type)
           setMovieList(mockedList)
         }
-        setImgFadeTime()
       }
     }
 
@@ -75,7 +76,7 @@ const CarouselSlider = ({ type, currentMovieId }: ICarouselSliderProps) => {
     navigate(`/detail/${movieId}`, { state: movieId })
   }
 
-  if (!isLoading && !movieList.length) {
+  if (isAllImgLoaded && !movieList.length) {
     return (
       <SliderContainer>
         <div className="blank">비슷한 영화 리스트가 제공되지 않는 영화입니다.</div>
@@ -83,23 +84,21 @@ const CarouselSlider = ({ type, currentMovieId }: ICarouselSliderProps) => {
     )
   }
 
-  const setImgFadeTime = () => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 600)
-  }
-
   return (
     <SliderContainer>
-      {isLoading ? (
-        <SkeletonCarousel />
-      ) : (
-        <Slider {...carouselSettings} className="onload">
-          {movieList?.map((movie: any) => (
-            <MovieItem movieInfo={movie} onClick={() => goToDetailPage(movie.id)} key={movie.id} />
-          ))}
-        </Slider>
-      )}
+      {!isAllImgLoaded && <SkeletonCarousel />}
+
+      <Slider {...carouselSettings} className={isAllImgLoaded ? 'onload' : 'invisible'}>
+        {movieList?.map((movie, idx: number) => (
+          <MovieItem
+            movieInfo={movie}
+            idx={idx}
+            setIsImgLoading={setIsImgLoading}
+            onClick={() => goToDetailPage(movie.id)}
+            key={movie.id}
+          />
+        ))}
+      </Slider>
     </SliderContainer>
   )
 }
@@ -141,6 +140,9 @@ const SliderContainer = styled.div`
   .onload {
     animation: fadeinloading 0.5s;
     animation-fill-mode: forwards;
+  }
+  .invisible {
+    display: none;
   }
 
   button {

@@ -4,7 +4,7 @@ import OverlayPoster from './OverlayPoster'
 import { POSTER_BASE_URL } from '../../constants/defaultValues'
 import { IMovieItemProps } from '../../types/types'
 
-const MovieItem = ({ movieInfo, onClick }: IMovieItemProps) => {
+const MovieItem = ({ movieInfo, idx, onClick, setIsImgLoading }: IMovieItemProps) => {
   const [isHovering, setIsHovering] = useState<boolean>(false)
 
   const handleMouseOver = useCallback(() => {
@@ -14,30 +14,33 @@ const MovieItem = ({ movieInfo, onClick }: IMovieItemProps) => {
     setIsHovering(false)
   }, [])
 
+  const handleImgLoad = (idx: number) => {
+    setIsImgLoading((prev) => {
+      const temp = [...prev]
+      temp[idx] = false
+      return temp
+    })
+  }
+
+  const posterSrc = movieInfo.poster_path
+
   return (
     <ItemContainer onClick={onClick} onMouseOver={handleMouseOver}>
-      {movieInfo.poster_path ? (
-        <>
-          <img src={POSTER_BASE_URL + movieInfo.poster_path} alt={movieInfo.title} />
-          {isHovering && (
-            <OverlayPoster
-              title={movieInfo.title}
-              released={movieInfo.release_date}
-              genreIds={movieInfo.genre_ids}
-              handleMouseLeave={handleMouseLeave}
-            />
-          )}
-        </>
-      ) : (
-        <>
-          <img src={'/no_image.webp'} alt="이미지 없음" />
-          <OverlayPoster
-            title={movieInfo.title}
-            released={movieInfo.release_date}
-            genreIds={movieInfo.genre_ids}
-            handleMouseLeave={handleMouseLeave}
-          />
-        </>
+      <img
+        src={posterSrc ? POSTER_BASE_URL + posterSrc : '/no_image.webp'}
+        alt={movieInfo.title}
+        onLoad={() => {
+          handleImgLoad(idx)
+        }}
+      />
+
+      {(!posterSrc || isHovering) && (
+        <OverlayPoster
+          title={movieInfo.title}
+          released={movieInfo.release_date}
+          genreIds={movieInfo.genre_ids}
+          handleMouseLeave={handleMouseLeave}
+        />
       )}
     </ItemContainer>
   )

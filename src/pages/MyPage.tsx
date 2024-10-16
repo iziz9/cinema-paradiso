@@ -14,6 +14,7 @@ import ResultCountStyle from '../components/style/ResultCountStyle'
 import { getAllPageDatas } from '../utils/getAllPageDatas'
 import { getPersonalList } from '../api/watchListRequest'
 import { useUserStore } from '../store/userStore'
+import useImageLoading from '../hooks/useImageLoading'
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -26,6 +27,7 @@ const MyPage = () => {
   const [myWatchList, setMyWatchList] = useState<IMovieInfo[]>([])
   const [allMyWatchList, setAllMyWatchList] = useState<IMovieInfo[]>([])
   const { userListId } = useUserStore()
+  const { setIsImgLoading, isAllImgLoaded } = useImageLoading()
   const { isLoading, getListData, ref } = useInfinityScroll({
     request: getPersonalList,
     payload: userListId,
@@ -77,9 +79,14 @@ const MyPage = () => {
 
         <ResultCountStyle>나의 관심 목록 ({totalResults.totalCount})</ResultCountStyle>
         <MovieListStyle>
-          {myWatchList?.map((movie) => (
+          {myWatchList?.map((movie, idx: number) => (
             <MovieItemStyle key={movie.id}>
-              <MovieItem movieInfo={movie} onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })} />
+              <MovieItem
+                movieInfo={movie}
+                idx={idx}
+                setIsImgLoading={setIsImgLoading}
+                onClick={() => navigate(`/detail/${movie.id}`, { state: movie.id })}
+              />
             </MovieItemStyle>
           ))}
         </MovieListStyle>

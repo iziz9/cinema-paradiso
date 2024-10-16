@@ -29,7 +29,9 @@ export interface IMovieInfo {
 }
 export interface IMovieItemProps {
   movieInfo: IMovieInfo
+  idx: number
   onClick: () => void
+  setIsImgLoading: React.Dispatch<React.SetStateAction<boolean[]>>
 }
 export interface IRecommendCarousel {
   type: 'topRated' | 'trending' | 'similar' | 'genre'
